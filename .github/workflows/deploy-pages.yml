@@ -91,6 +91,10 @@ jobs:
       # uploading dist/ directly would drop the environment name and every leg
       # would collide on merge. Staging keeps one directory per environment.
       - name: Stage this environment
+        # The job default is working-directory: tests/<env>, so this step has to
+        # go back to the repo root - scripts/build-pages.mjs lives there, not
+        # inside each environment.
+        working-directory: .
         run: node scripts/build-pages.mjs --env=${{ matrix.env }} --out=stage
 
       - name: Upload staged output
