@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -7,24 +8,25 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 @theme {
-  --color-brand: #087ea4;
+  --color-brand: #58c4dc;
   --color-branddark: #000000;
-  --color-accent: #149eca;
+  --color-accent: #58c4dc;
   --color-warn: #f59e0b;
   --color-ok: #95bf47;
 
-  --color-page: #ffffff;
-  --color-panel: #fafafa;
-  --color-panel2: #f2f2f2;
-  --color-ink: #0a0a0a;
-  --color-muted: #666666;
-  --color-line: #eaeaea;
-  --color-code: #f2f2f2;
-  --color-codeink: #0a0a0a;
+  --color-page: #23272f;
+  --color-page2: #191b21;
+  --color-panel: #16181d;
+  --color-panel2: #16181d;
+  --color-ink: #959daf;
+  --color-muted: #ebecf0;
+  --color-line: #2b2f36;
+  --color-code: #16181d;
+  --color-codeink: #58c4dc;
 
-  --font-display: "Optimistic Display", -apple-system, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-body: "Optimistic Display", -apple-system, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-mono: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-display: "Inter", -apple-system, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-body: "Inter", -apple-system, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 html {
