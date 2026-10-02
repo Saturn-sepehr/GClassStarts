@@ -69,11 +69,23 @@ const stageDir = join(repoRoot, "stage");
 const fromStage = assembleOnly && existsSync(stageDir);
 const sourceRoot = fromStage ? stageDir : testsDir;
 
-const envs = readdirSync(sourceRoot, { withFileTypes: true })
+const present = readdirSync(sourceRoot, { withFileTypes: true })
   .filter((d) => d.isDirectory())
-  .map((d) => d.name)
-  .filter((n) => LAYOUT[n] && (!only || n === only))
-  .sort();
+  .map((d) => d.name);
+const envs = present.filter((n) => LAYOUT[n] && (!only || n === only)).sort();
+
+// Loud failure beats a silent empty deploy. This exact situation happened once:
+// upload-artifact stripped the per-environment directory, the merge collapsed
+// every env onto the same files, assemble recognised none of them, public/ came
+// out empty, and the deployment still reported success while every URL 404'd.
+if (assembleOnly && fromStage && !envs.length) {
+  console.error(`\n  ${sourceRoot} contains no recognised environment directories.`);
+  console.error(`  found: ${present.join(", ") || "(empty)"}`);
+  console.error("  expected one of: " + Object.keys(LAYOUT).sort().join(", "));
+  console.error("\n  This means the CI artifacts merged without preserving their");
+  console.error("  per-environment directory. Check the upload-artifact path.");
+  process.exit(1);
+}
 
 const run = (cmd, cmdArgs, cwd) => spawnSync(cmd, cmdArgs, { cwd, encoding: "utf8" });
 

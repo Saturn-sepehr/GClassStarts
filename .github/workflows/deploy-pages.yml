@@ -97,11 +97,17 @@ jobs:
         working-directory: .
         run: node scripts/build-pages.mjs --env=${{ matrix.env }} --out=stage
 
+      # Upload the whole stage/ directory, NOT stage/<env>. upload-artifact
+      # strips the uploaded directory itself, so stage/<env> would put the
+      # environment's *contents* at the artifact root; merging 15 of those
+      # together collapses every env onto the same index.html/assets/.
+      # Uploading stage/ keeps each env as a subdirectory, which survives the
+      # merge and is what build-pages.mjs --assemble expects.
       - name: Upload staged output
         uses: actions/upload-artifact@v4
         with:
           name: site-${{ matrix.env }}
-          path: stage/${{ matrix.env }}
+          path: stage
           if-no-files-found: error
           retention-days: 1
 
