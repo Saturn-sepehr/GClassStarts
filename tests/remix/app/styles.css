@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://remix.run/
+
+   Every colour below is that site's own token, not an approximation.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #2dacf9;
+  --color-branddark: #1458e1;
+  --color-accent: #7ce95a;
+  --color-warn: #ac1fa3;
+  --color-ok: #ffdf5f;
+
+  --color-page: #121212;
+  --color-panel: #1c1c1c;
+  --color-panel2: #262626;
+  --color-ink: #f7f7f7;
+  --color-muted: #a4a4a4;
+  --color-line: #383838;
+  --color-code: #1c1c1c;
+  --color-codeink: #8ecdff;
+
+  --font-display: Inter, -apple-system, ui-sans-serif, system-ui, sans-serif;
+  --font-body: Inter, -apple-system, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-page);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-page);
+}

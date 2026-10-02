@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://www.solidjs.com/
+
+   Every colour below is that site's own token, not an approximation.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #2c4f7c;
+  --color-branddark: #1d3557;
+  --color-accent: #005cc5;
+  --color-warn: #c05621;
+  --color-ok: #22863a;
+
+  --color-page: #ffffff;
+  --color-panel: #f4f6f9;
+  --color-panel2: #e8ecf2;
+  --color-ink: #111827;
+  --color-muted: #6b7280;
+  --color-line: #e2e6ec;
+  --color-code: #111827;
+  --color-codeink: #c9d1d9;
+
+  --font-display: Gordita, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-body: Gordita, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-page);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-page);
+}

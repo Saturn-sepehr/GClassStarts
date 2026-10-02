@@ -1,0 +1,167 @@
+name: deploy pages
+
+# Builds all 15 environments for GitHub Pages and publishes them as one site:
+#
+#   https://saturn-sepehr.github.io/GClassStarts/<env>/
+#
+# GitHub Pages serves a project repo at github.io/<repo-name>/, so every
+# environment is configured with base = /GClassStarts/<env> and staged into
+# public/<env>/. One artifact, one deployment, fifteen sub-paths.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it mid-upload.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: build all environments
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: tests/${{ matrix.env }}
+
+    strategy:
+      # Report every failure instead of stopping at the first one.
+      fail-fast: false
+      matrix:
+        env:
+          - vanilla
+          - vite
+          - react
+          - vue
+          - preact
+          - solid
+          - lit
+          - svelte
+          - astro
+          - next
+          - nuxt
+          - sveltekit
+          - remix
+          - qwik
+          - angular
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tests/${{ matrix.env }}/package-lock.json
+
+      - name: Verify the pinned version
+        run: |
+          node -e '
+            const v = require("./package.json").dependencies["gclass-anims"];
+            if (v !== "1.0.0-beta.23") {
+              console.error(`expected the pin 1.0.0-beta.23, found ${v}`);
+              process.exit(1);
+            }
+            console.log("pin:", v);
+          '
+
+      - name: Install
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      - name: Assert the published version resolved
+        run: |
+          ACTUAL=$(node -p "require('./node_modules/gclass-anims/package.json').version")
+          echo "resolved gclass-anims@$ACTUAL"
+          test "$ACTUAL" = "1.0.0-beta.23"
+
+      - name: Build
+        run: npm run build
+
+      # Stage into stage/<env>/ rather than uploading the raw build directory.
+      # upload-artifact strips the common ancestor of the uploaded paths, so
+      # uploading dist/ directly would drop the environment name and every leg
+      # would collide on merge. Staging keeps one directory per environment.
+      - name: Stage this environment
+        run: node scripts/build-pages.mjs --env=${{ matrix.env }} --out=stage
+
+      - name: Upload staged output
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-${{ matrix.env }}
+          path: stage/${{ matrix.env }}
+          if-no-files-found: error
+          retention-days: 1
+
+  assemble:
+    name: assemble single Pages tree
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Download every staged environment
+        uses: actions/download-artifact@v4
+        with:
+          pattern: site-*
+          merge-multiple: true
+          path: stage
+
+      # --assemble moves each stage/<env>/ into public/<env>/ and applies the
+      # Qwik /assets/ rewrite, so public/ is a ready-to-serve tree.
+      - name: Assemble public/
+        run: node scripts/build-pages.mjs --assemble
+
+      - name: Confirm nothing escaped its subdirectory
+        run: |
+          node --input-type=module -e '
+            import { readdirSync, readFileSync, existsSync } from "node:fs";
+            const root = "public";
+            let bad = 0;
+            for (const env of readdirSync(root)) {
+              const f = `${root}/${env}/index.html`;
+              if (!existsSync(f)) { console.log(`  ${env}: MISSING index.html`); bad++; continue; }
+              const html = readFileSync(f, "utf8");
+              const escapes = [...html.matchAll(/(?:src|href)="(\/[^"]*)"/g)]
+                .map((m) => m[1])
+                .filter((p) => !p.startsWith("/GClassStarts/"));
+              if (escapes.length) {
+                console.log(`  ${env}: ${[...new Set(escapes)].join(" ")}`);
+                bad++;
+              }
+            }
+            if (bad) { console.error(`\n${bad} environment(s) reference paths outside their subdirectory`); process.exit(1); }
+            console.log("  all environments clean");
+          '
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    name: deploy to GitHub Pages
+    needs: assemble
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

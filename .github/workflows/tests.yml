@@ -1,0 +1,81 @@
+name: tests
+
+# Proves that the published gclass-anims tarball installs, resolves and
+# compiles in every documented environment. Each job installs from npm and
+# runs that environment's own build script.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: ${{ matrix.env }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      # Report every failure rather than stopping at the first one.
+      fail-fast: false
+      matrix:
+        env:
+          - vanilla
+          - vite
+          - react
+          - vue
+          - preact
+          - solid
+          - lit
+          - svelte
+          - astro
+          - next
+          - nuxt
+          - sveltekit
+          - remix
+          - qwik
+          - angular
+
+    defaults:
+      run:
+        working-directory: tests/${{ matrix.env }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tests/${{ matrix.env }}/package-lock.json
+
+      - name: Verify the pinned version
+        run: |
+          node -e '
+            const v = require("./package.json").dependencies["gclass-anims"];
+            if (v !== "1.0.0-beta.23") {
+              console.error(`expected the pin 1.0.0-beta.23, found ${v}`);
+              process.exit(1);
+            }
+            console.log("pin:", v);
+          '
+
+      - name: Install
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      - name: Assert the published version resolved
+        run: |
+          ACTUAL=$(node -p "require('./node_modules/gclass-anims/package.json').version")
+          echo "resolved gclass-anims@$ACTUAL"
+          test "$ACTUAL" = "1.0.0-beta.23"
+
+      - name: Build
+        run: npm run build

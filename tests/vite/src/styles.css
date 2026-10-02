@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://vite.dev/
+
+   Every colour below is that site's own token, not an approximation.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #646cff;
+  --color-branddark: #5300e0;
+  --color-accent: #bd34fe;
+  --color-warn: #bd34fe;
+  --color-ok: #42b883;
+
+  --color-page: #14121a;
+  --color-panel: #1c1a26;
+  --color-panel2: #262433;
+  --color-ink: #f6f6f7;
+  --color-muted: #a6a6b8;
+  --color-line: #2f2c40;
+  --color-code: #1c1a26;
+  --color-codeink: #bbd1ff;
+
+  --font-display: "APK Protocol", Inter, -apple-system, ui-sans-serif, system-ui, sans-serif;
+  --font-body: "APK Protocol", Inter, -apple-system, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "KH Teka Mono", ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-page);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-page);
+}

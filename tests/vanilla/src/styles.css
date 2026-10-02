@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://www.javascript.com/
+
+   Every colour below is that site's own token, not an approximation.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #ec008c;
+  --color-branddark: #b8006f;
+  --color-accent: #ff1675;
+  --color-warn: #f7a614;
+  --color-ok: #40ffbf;
+
+  --color-page: #130f25;
+  --color-panel: #1e1a35;
+  --color-panel2: #2a2450;
+  --color-ink: #ffffff;
+  --color-muted: #a9a3c7;
+  --color-line: #332c5c;
+  --color-code: #1a1630;
+  --color-codeink: #ffd7f0;
+
+  --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: Consolas, ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-page);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-page);
+}

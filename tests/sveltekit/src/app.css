@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://svelte.dev/docs/kit
+
+   Every colour below is that site's own token, not an approximation.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #ff3e00;
+  --color-branddark: #cc3300;
+  --color-accent: #ff6b3d;
+  --color-warn: #ff3e00;
+  --color-ok: #40b143;
+
+  --color-page: #ffffff;
+  --color-panel: #f7f7f9;
+  --color-panel2: #ededf0;
+  --color-ink: #1b1b1f;
+  --color-muted: #5f5f68;
+  --color-line: #e4e4e8;
+  --color-code: #1b1b1f;
+  --color-codeink: #ffb59b;
+
+  --font-display: "Svelte Display", Inter, -apple-system, ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Svelte Display", Inter, -apple-system, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-page);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-page);
+}

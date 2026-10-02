@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://preactjs.com/
+
+   Every colour below is that site's own token, not an approximation.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #673ab8;
+  --color-branddark: #4a2c85;
+  --color-accent: #ae80ff;
+  --color-warn: #f43678;
+  --color-ok: #ffd600;
+
+  --color-page: #ffffff;
+  --color-panel: #f4f4f8;
+  --color-panel2: #e8e6f0;
+  --color-ink: #1b1b1f;
+  --color-muted: #5f5f6e;
+  --color-line: #e2e0ec;
+  --color-code: #38235c;
+  --color-codeink: #dacef0;
+
+  --font-display: "Source Sans Pro", -apple-system, ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Source Sans Pro", -apple-system, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Source Code Pro", ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-page);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-page);
+}

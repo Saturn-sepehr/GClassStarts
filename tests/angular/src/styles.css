@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://angular.dev/
+
+   Every colour below is that site's own token, not an approximation.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #a800d6;
+  --color-branddark: #6911d2;
+  --color-accent: #f627e3;
+  --color-warn: #ff5c39;
+  --color-ok: #dd0031;
+
+  --color-page: #ffffff;
+  --color-panel: #f5f5f7;
+  --color-panel2: #ececf0;
+  --color-ink: #1b1b1f;
+  --color-muted: #55555f;
+  --color-line: #e0e0e6;
+  --color-code: #1b1b1f;
+  --color-codeink: #e8d9ff;
+
+  --font-display: "Inter Tight", Inter, Roboto, sans-serif;
+  --font-body: "Inter Tight", Inter, Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-page);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-page);
+}
+
+@source "./**/*.{html,ts}";

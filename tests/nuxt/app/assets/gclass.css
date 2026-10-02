@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://nuxt.com/
+
+   Every colour below is that site's own token, not an approximation.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #00dc82;
+  --color-branddark: #020420;
+  --color-accent: #8ed6fb;
+  --color-warn: #f93920;
+  --color-ok: #00dc82;
+
+  --color-page: #020420;
+  --color-panel: #0a0a38;
+  --color-panel2: #12124d;
+  --color-ink: #effdf5;
+  --color-muted: #8b93b8;
+  --color-line: #1c1c5c;
+  --color-code: #0a0a38;
+  --color-codeink: #8ed6fb;
+
+  --font-display: Inter, -apple-system, ui-sans-serif, system-ui, sans-serif;
+  --font-body: Inter, -apple-system, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-page);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-page);
+}

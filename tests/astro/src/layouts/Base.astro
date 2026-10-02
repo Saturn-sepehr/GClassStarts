@@ -1,0 +1,49 @@
+---
+import "../styles.css";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>gclass-anims — Astro</title>
+  </head>
+  <body>
+    <slot />
+    <script>
+import "../copy.js";
+      import { initAnimations } from "gclass-anims";
+
+      initAnimations();
+      
+      const COPY = (e) => {
+        const btn = e.target.closest("[data-copy]");
+        if (!btn) return;
+        const code = btn.parentElement.querySelector("code");
+        if (!code) return;
+        navigator.clipboard.writeText(code.innerText).then(
+          () => {
+            btn.textContent = "Copied";
+            btn.classList.add("text-ok", "border-ok");
+            setTimeout(() => {
+              btn.textContent = "Copy";
+              btn.classList.remove("text-ok", "border-ok");
+            }, 1400);
+          },
+          () => {
+            btn.textContent = "Failed";
+            setTimeout(() => (btn.textContent = "Copy"), 1400);
+          },
+        );
+      };
+      
+      if (!window.__gclassCopy) {
+        window.__gclassCopy = true;
+        document.addEventListener("click", COPY);
+      }
+      
+      // View Transitions swap the DOM without a reload
+      document.addEventListener("astro:after-swap", () => initAnimations());
+    </script>
+  </body>
+</html>

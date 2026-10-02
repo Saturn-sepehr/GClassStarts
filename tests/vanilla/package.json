@@ -1,0 +1,19 @@
+{
+  "name": "gclass-tests-vanilla",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "gclass-anims with no bundler - resolved through a browser import map",
+  "scripts": {
+    "dev": "tailwindcss -i ./src/styles.css -o ./dist/styles.css --watch & npx --yes serve . -l 5173",
+    "build": "tailwindcss -i ./src/styles.css -o ./dist/styles.css && node verify.mjs",
+    "preview": "npx --yes serve . -l 4173"
+  },
+  "dependencies": {
+    "gclass-anims": "1.0.0-beta.23"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "gclass-tests-qwik",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "gclass-anims in a Qwik City app",
+  "scripts": {
+    "dev": "vite --mode ssr",
+    "build": "npm run build.client && npm run build.server",
+    "build.client": "vite build",
+    "build.server": "vite build -c adapters/static/vite.config.ts",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@builder.io/qwik": "^1.20.1",
+    "@builder.io/qwik-city": "^1.20.1",
+    "gclass-anims": "1.0.0-beta.23"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^26.6.4",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.6",
+    "vite-tsconfig-paths": "^6.1.1"
+  }
+}

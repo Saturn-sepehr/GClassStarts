@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://lit.dev/
+
+   Every colour below is that site's own token, not an approximation.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #324fff;
+  --color-branddark: #005cc5;
+  --color-accent: #334eff;
+  --color-warn: #f78c6c;
+  --color-ok: #00c853;
+
+  --color-page: #ffffff;
+  --color-panel: #f4f4f4;
+  --color-panel2: #eaeaef;
+  --color-ink: #1d192b;
+  --color-muted: #625b71;
+  --color-line: #e4e4e4;
+  --color-code: #1d192b;
+  --color-codeink: #c792ea;
+
+  --font-display: Manrope, -apple-system, ui-sans-serif, system-ui, sans-serif;
+  --font-body: Manrope, -apple-system, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Roboto Mono", ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-page);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-page);
+}
+
+gclass-app{display:block}

@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://vuejs.org/
+
+   Every colour below is that site's own token, not an approximation.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #42b883;
+  --color-branddark: #35495e;
+  --color-accent: #42d392;
+  --color-warn: #f7a614;
+  --color-ok: #00dc82;
+
+  --color-page: #ffffff;
+  --color-panel: #f6f7f9;
+  --color-panel2: #eef1f4;
+  --color-ink: #35495e;
+  --color-muted: #6b7a8d;
+  --color-line: #e2e6ec;
+  --color-code: #292d3e;
+  --color-codeink: #a6accd;
+
+  --font-display: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-page);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-page);
+}
