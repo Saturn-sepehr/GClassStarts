@@ -21,20 +21,20 @@
       <h1 class="mt-3 font-display text-5xl font-bold leading-[1.1] tracking-tight sm:text-6xl">
         gclass-anims <span class="text-accent">for Vite</span>
       </h1>
-      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-muted">A Tailwind-style utility layer on top of GSAP. Vite is a bundler, not a framework — import it from your entry.</p>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-muted">Vite is a bundler, not a framework — gclass-anims is framework-agnostic and works with any Vite template. Import and call initAnimations() once from your entry module.</p>
       <a href="#install" class="mt-8 inline-block rounded-full bg-brand px-6 py-3 text-sm font-bold text-page transition-opacity hover:opacity-90">Get started</a>
     </section>
 
     <section id="install" class="scroll-mt-24 py-10">
       <h2 class="font-display text-3xl font-bold tracking-tight">Install</h2>
-      <p class="mt-3 text-muted">GSAP is a regular dependency and is installed automatically — nothing is bundled or redistributed.</p>
+      <p class="mt-3 text-muted">GClass ships as the npm package gclass-anims. GSAP is a regular dependency and is installed automatically — nothing is bundled or redistributed.</p>
       <div class="mt-5"><pre class="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-codeink"><code>npm install gclass-anims</code><button type="button" data-copy class="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
     </section>
 
     <section id="quick-start" class="scroll-mt-24 py-10">
       <h2 class="font-display text-3xl font-bold tracking-tight">Quick start</h2>
-      <p class="mt-3 text-muted">Initialise once, then drive everything with class names.</p>
-      <h3 class="mt-7 font-display text-lg font-bold">Import it from the entry module</h3>
+      <p class="mt-3 text-muted">Use the same initAnimations() call as the standalone framework guide, just imported from the Vite entry or the framework root component. For example, Vite + React:</p>
+      <h3 class="mt-7 font-display text-lg font-bold">Usage — Vanilla Vite entry</h3>
       <div class="mt-4"><pre class="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-codeink"><code>// main.js — the Vite entry
 import { initAnimations } from 'gclass-anims'
 
@@ -42,12 +42,12 @@ initAnimations()
 
 // index.html then just uses classes:
 // &lt;div class="appear scroll spawn-up"&gt;hello vite&lt;/div&gt;</code><button type="button" data-copy class="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
-      <p class="mt-4 border-l-2 border-brand pl-4 text-sm text-muted">Vite is a bundler rather than a framework, so the same import works with any template — vanilla, React, Vue, Svelte or Solid.</p>
+      <p class="mt-4 border-l-2 border-brand pl-4 text-sm text-muted">Works with any bundler (Vite, Webpack, Turbopack, esbuild). The package ships dual ESM + CJS (package.json:6 main ./dist/gclass.cjs, :7 module ./dist/gclass.esm.js, :10 exports import/require) built by vite.lib.config.js (formats es + cjs, external gsap). It is tree-shakable with sideEffects: false and prepublishOnly: build.</p>
     </section>
 
     <section id="anatomy" class="scroll-mt-24 py-10">
       <h2 class="font-display text-3xl font-bold tracking-tight">Class anatomy</h2>
-      <p class="mt-3 text-muted">Every class is a <strong class="text-ink">behaviour</strong>, a <strong class="text-ink">trigger</strong>, or a <strong class="text-ink">tunable</strong>. Combine freely — order does not matter.</p>
+      <p class="mt-3 text-muted">Class anatomy: <strong class="text-ink">behaviour</strong> (.spawn-up) + <strong class="text-ink">trigger</strong> (.scroll, .appear) + <strong class="text-ink">tunables</strong> (.time-1, .ease-back, .priority-2). Combine freely — order in class does not matter.</p>
       <div class="mt-5"><pre class="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-codeink"><code>// behaviour + trigger + tunables
 &lt;div class="appear scroll spawn-up"&gt;…&lt;/div&gt;
 &lt;div class="appear scroll order ease-expo time-1 priority-2"&gt;…&lt;/div&gt;
@@ -58,7 +58,7 @@ initAnimations()
 
     <section id="notes" class="scroll-mt-24 py-10">
       <h2 class="font-display text-3xl font-bold tracking-tight">Notes</h2>
-      <ul class="mt-6 space-y-4"><li class="rounded-lg border border-line bg-panel p-5"><strong class="text-ink">Bundler-agnostic.</strong> Dual ESM + CJS with sideEffects: false, so it tree-shakes. Any bundler — Vite, Rollup, esbuild — resolves the same import.</li><li class="rounded-lg border border-line bg-panel p-5"><strong class="text-ink">Tailwind sits alongside.</strong> The Tailwind Vite plugin and gclass-anims compose without conflict; utility classes coexist in the same markup.</li><li class="rounded-lg border border-line bg-panel p-5"><strong class="text-ink">HMR friendly.</strong> CSS changes hot-replace through the plugin, and the engine picks up new class names on the next initAnimations() call.</li></ul>
+      <ul class="mt-6 space-y-4"><li class="rounded-lg border border-line bg-panel p-5"><strong class="text-ink">Any bundler.</strong> If you use another bundler, the same import { initAnimations } entry works — for CJS use require('gclass-anims') or require('gclass-anims/dist/gclass.cjs'). Vite-specific guidance here is just for the dev server / HMR setup. Any ES-module or CJS environment should be compatible.</li><li class="rounded-lg border border-line bg-panel p-5"><strong class="text-ink">GSAP stays external.</strong> ESM is dist/gclass.esm.js and CJS is dist/gclass.cjs via vite.lib.config.js — GSAP is external, not bundled. The build is tree-shakable with sideEffects: false and prepublishOnly: build.</li><li class="rounded-lg border border-line bg-panel p-5"><strong class="text-ink">Requirements.</strong> gsap ^3.15 is installed automatically as a dependency (package.json:52 gsap ^3.15.0). Node >=16 is required for build (package.json:56 engines). A modern browser with ES module support is expected — CJS via require() is also available.</li></ul>
     </section>
 
     <footer class="border-t border-line pt-8 text-sm text-muted">

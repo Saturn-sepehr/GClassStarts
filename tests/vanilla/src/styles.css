@@ -1,44 +1,269 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Design language copied from https://www.javascript.com/
+   Design language copied from https://developer.mozilla.org/en-US/
 
-   Every colour below is that site's own token, not an approximation.
+   Every colour below is one of MDN's own tokens, lifted from the stylesheet they
+   serve as /static/client/styles-global.*.css — not an approximation. The ramp is
+   a single grey scale with a 05/10/20/40/60/80/90 progression, and every surface
+   on the page is one rung of it:
+
+     gray-05 #18191b  --color-background-page        page surface
+     gray-10 #212426  --color-background-primary     full-bleed bands
+     gray-20 #2d3034  --color-background-secondary   cards, code blocks
+     gray-40 #51565d  --color-border-primary         every border
+     gray-60 #c3c7cb  --color-text-secondary         body copy
+     gray-80 #edeef0  --color-text-primary           code
+     gray-90 #f7f7f8  light-mode page
+
+   MDN also ships blue/purple/yellow/green ramps for accents; the 80 rung is the
+   one that reads on a dark surface, so that is what the accents use.
    ───────────────────────────────────────────────────────────────────────────── */
 
 @theme {
-  --color-brand: #ec008c;
-  --color-branddark: #b8006f;
-  --color-accent: #ff1675;
-  --color-warn: #f7a614;
-  --color-ok: #40ffbf;
-
-  --color-page: #130f25;
-  --color-panel: #1e1a35;
-  --color-panel2: #2a2450;
+  --color-page: #18191b;
+  --color-band: #212426;
+  --color-panel: #18191b;
+  --color-panel2: #212426;
   --color-ink: #ffffff;
-  --color-muted: #a9a3c7;
-  --color-line: #332c5c;
-  --color-code: #1a1630;
-  --color-codeink: #ffd7f0;
+  --color-muted: #c3c7cb;
+  --color-line: #51565d;
+  --color-code: #18191b;
+  --color-codeink: #edeef0;
 
-  --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-mono: Consolas, ui-monospace, monospace;
+  --color-band: #212426
+
+  --color-brand: #a4cefe;
+  --color-branddark: #0a5dbd;
+  --color-accent: #d8b8ff;
+  --color-warn: #fae49e;
+  --color-ok: #70eba3;
+
+  --font-family-text: "Inter", sans-serif;
+
+  --font-display: var(--font-family-text);
+  --font-body: var(--font-family-text);
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* MDN's names, kept verbatim so its stylesheet rules map across unchanged.
+   These live in :root, not @theme — Tailwind reserves the --font-size-… and
+   --font-family-… namespaces for generating text-… and font-… utilities, and
+   drops any entry no markup happens to reference.
+
+   Careful: a comment terminator anywhere in the text above closes this comment
+   early. The remainder is then parsed as a bogus selector prelude, ":root" is
+   swallowed with it, and every variable below silently resolves to nothing. */
+:root {
+  --font-size-small: 0.8rem;
+  --font-size-normal: 1rem;
+  --font-size-medium: 1.25rem;
+  --font-size-large: 1.5rem;
+  --font-size-larger: 2rem;
+  --font-size-largest: 2.5rem;
+  --font-line-normal: 1.5;
+
+  --font-weight-normal: 400;
+  --font-weight-bold: 600;
+
+  /* MDN's semantic surface tokens, dark-scheme rung only. */
+  --color-background-page: #18191b;
+  --color-background-primary: #212426;
+  --color-background-secondary: #2d3034;
+  --color-text-primary: #fff;
+  --color-text-secondary: #c3c7cb;
+  --color-border-primary: #51565d;
+  --color-link-normal: #a4cefe;
+
+  /* MDN's layout variables, verbatim. The side padding grows with the viewport
+     so the content column settles at 48rem and stays centred however wide the
+     window gets; the 1fr gutters either side of it absorb the remainder. */
+  --layout-side-padding-min: 1rem;
+  --layout-side-padding: max(var(--layout-side-padding-min), calc(50vw - 720px + 1rem));
+  --layout-content-min: 31rem;
+  --layout-content-max: 48rem;
+
+  --radius-normal: 0.25rem;
+  --radius-full: 9999px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Layout
+
+   MDN writes these against Yari, its layout runtime. `.homepage` is a grid over
+   `--layout-no-sidebar-extended`, which is
+
+     [extended-full-start] var(--layout-side-padding)
+     [full-start] 1fr
+     [content-start] minmax(0, var(--layout-content-max))
+     [content-end] 1fr
+     [full-end] var(--layout-side-padding) [extended-full-end]
+
+   Note that the side columns are 1fr, not a fixed 19.5rem. They happen to
+   resolve to 312px at a 1440px viewport, which reads like a maximum — but widen
+   the window and a capped track stops growing while the leftover width piles up
+   on one side, which pushes the whole page off centre.
+
+   The point of the named lines is that one rule aligns every part of the page:
+   a `band-*` element spans extended-full (edge to edge, carrying the background)
+   while its `.doc-col` child sits on `content`, the same 48rem measure the hero
+   copy occupies. The hero is the one exception — its header deliberately runs
+   from `content` out to extended-full-end so the mandala can bleed off-screen.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Every band establishes this grid itself, rather than inheriting it from a
+   single wrapper. `main` is one grid so its sections share the named lines, but
+   each section is a full-bleed background that has to place its own copy — so
+   the template is declared on the band as well as on `.homepage`. */
+.homepage,
+.band-primary,
+.band-page,
+#content {
+  display: grid;
+  grid-template-columns:
+    [extended-full-start] var(--layout-side-padding)
+    [full-start] 1fr
+    [content-start] minmax(0, var(--layout-content-max))
+    [content-end] 1fr
+    [full-end] var(--layout-side-padding)
+    [extended-full-end];
+}
+
+.homepage > *,
+.doc-col {
+  grid-column: content;
+}
+
+.homepage-header {
+  column-gap: 1rem;
+  display: grid;
+  /* Escape the `content` column so the mandala can bleed to the viewport edge. */
+  grid-column-end: extended-full-end;
+  grid-template-areas:
+    "copy mandala"
+    "search mandala";
+}
+
+.homepage-header__copy {
+  grid-area: copy;
+  padding-top: 1rem;
+}
+
+.homepage-header__search {
+  grid-area: search;
+  padding-bottom: 1rem;
+}
+
+/* Clipped to a 20rem band: the mandala draws a 35rem circle and only its middle
+   is ever visible, which is what gives the hero its edge-to-edge texture. */
+.homepage-header__mandala {
+  grid-area: mandala;
+  max-height: 20rem;
+  overflow: hidden;
+}
+
+.homepage-header__mandala .mandala svg {
+  --height: 35rem;
+  display: block;
+  height: var(--height);
+  margin-top: calc(var(--height) * -1 / 4);
+}
+
+.mandala svg {
+  font-size: var(--font-size-large);
+  font-weight: 300;
+  user-select: none;
+}
+
+.mandala svg > text {
+  fill: var(--color-border-primary);
+}
+
+.mandala textpath[href="#circle1"] { font-size: 1.5rem; }
+.mandala textpath[href="#circle2"] { font-size: 1.3rem; }
+.mandala textpath[href="#circle3"] { font-size: 1.2rem; }
+.mandala textpath[href="#circle4"] { font-size: 1.1rem; }
+.mandala textpath[href="#circle5"] { font-size: var(--font-size-normal); }
+
+/* ── Surfaces ───────────────────────────────────────────────────────────────── */
+
+/* Full-bleed runs. The background rides on these; the copy never does. */
+.band-primary,
+.band-page,
+#content {
+  grid-column: extended-full;
+}
+
+.band-primary {
+  background-color: var(--color-background-primary);
+}
+
+.band-page {
+  background-color: var(--color-background-page);
+}
+
+.homepage--dark {
+  color: var(--color-text-primary);
+  background-color: var(--color-background-primary);
+  color-scheme: dark;
+}
+
+/* The 48rem content measure, shared by every section and the hero copy. */
+.doc-col {
+  grid-column: content;
+}
+
+/* ── Hero ───────────────────────────────────────────────────────────────────── */
+
+.homepage-hero {
+  font-size: var(--font-size-large);
+}
+
+.homepage-hero h1 {
+  font-size: var(--font-size-largest);
+  font-weight: 400;
+  margin-top: 0;
+}
+
+/* The blinking cursor MDN renders after the headline. */
+.homepage-hero h1::after {
+  color: var(--color-link-normal);
+  content: "_";
+}
+
+.homepage-hero a {
+  color: var(--color-link-normal);
+  text-decoration: underline;
+}
+
+.homepage-hero a:is(:focus, :hover) {
+  text-decoration: none;
+}
+
+/* Browsers bold <strong> at 700. MDN's bold is 600 — the difference is visible
+   at body size, and 700 is the single heaviest thing on the page otherwise. */
+strong {
+  font-weight: var(--font-weight-bold);
 }
 
 html {
   scroll-behavior: smooth;
+  /* MDN pairs this with the 50vw maths above: reserving the scrollbar keeps the
+     content column from jumping sideways as the page grows past one screen. */
+  scrollbar-gutter: stable;
 }
 
 body {
   font-family: var(--font-body);
-  background: var(--color-page);
-  color: var(--color-ink);
+  font-size: var(--font-size-normal);
+  line-height: var(--font-line-normal);
+  background: var(--color-background-page);
+  color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: var(--color-accent);
-  color: var(--color-page);
+  background: var(--color-brand);
+  color: var(--color-background-page);
 }

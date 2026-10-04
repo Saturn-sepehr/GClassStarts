@@ -2,25 +2,34 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Design language copied from https://react.dev/
+   Design language copied from https://react.dev/ (dark mode)
 
-   Every colour below is that site's own token, not an approximation.
+   Text, card, border and link values are that site's own tokens, lifted from
+   its dark-mode utility classes — primary #f6f7f9, secondary #ebecf0,
+   tertiary #99a1b3, card/border #343a46, wash #23272f, link #58c4dc.
+   Note the hierarchy runs bright-to-dim: emphasis (--color-ink) is LIGHTER
+   than body prose (--color-muted), the reverse of the usual convention.
+
+   --color-warn and --color-ok are NOT from react.dev — they exist only to
+   colour the copy button's success/failure state, which that site has no
+   equivalent of.
    ───────────────────────────────────────────────────────────────────────────── */
 
 @theme {
   --color-brand: #58c4dc;
-  --color-branddark: #000000;
+  --color-branddark: #087ea4;
   --color-accent: #58c4dc;
   --color-warn: #f59e0b;
   --color-ok: #95bf47;
 
   --color-page: #23272f;
-  --color-page2: #191b21;
+  --color-page2: #16181d;
   --color-panel: #16181d;
-  --color-panel2: #16181d;
-  --color-ink: #959daf;
+  --color-panel2: #343a46;
+  --color-ink: #f6f7f9;
   --color-muted: #ebecf0;
-  --color-line: #2b2f36;
+  --color-dim: #99a1b3;
+  --color-line: #343a46;
   --color-code: #16181d;
   --color-codeink: #58c4dc;
 

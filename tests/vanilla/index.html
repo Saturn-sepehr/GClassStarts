@@ -16,75 +16,354 @@
       }
     </script>
   </head>
-
-  <!--
-    Two HTML rules this file depends on (React/Next habits break both):
-
-    1. The attribute is `class`, never `className`. `className` is JSX only — in
-       a .html file it is an unknown attribute and applies nothing.
-
-    2. <div> is NOT self-closing. `<div />` parses as an OPEN tag; the slash is
-       whitespace, so the element is never closed and everything after it
-       becomes a nested child. Always write </div>. Only void elements
-       (<img>, <br>, <input>, <meta>) may self-close.
-  -->
   <body>
 <div class="gc-bar scroll-progress" />
 
-      <header class="sticky top-0 z-40 border-b border-line bg-page/90 backdrop-blur">
-    <div class="mx-auto flex max-w-4xl items-center gap-6 px-6 py-4">
-      <span class="font-display text-lg font-bold"><span class="text-brand">Vanilla JS</span> + gclass-anims</span>
-      <nav class="ml-auto hidden gap-5 text-sm font-medium text-muted sm:flex"><a class="hover:text-brand" href="#install">Install</a><a class="hover:text-brand" href="#quick-start">Quick start</a><a class="hover:text-brand" href="#anatomy">Class anatomy</a><a class="hover:text-brand" href="#notes">Notes</a></nav>
+<header class="sticky top-0 expand-down ease-expo z-40 border-b border-line bg-page">
+    <div class="grid spawn-down priority-1 items-center gap-4 py-3 [grid-template-columns:min-content_1fr_min-content] [justify-items:center] [padding-inline:var(--layout-side-padding)]">
+      <span class="flex shrink-0 items-center gap-2"><span ><svg width="32px" height="32px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="nonzero" clip-rule="nonzero" d="M0 1.75C0 0.783501 0.783502 0 1.75 0H14.25C15.2165 0 16 0.783502 16 1.75V3.75C16 4.16421 15.6642 4.5 15.25 4.5C14.8358 4.5 14.5 4.16421 14.5 3.75V1.75C14.5 1.61193 14.3881 1.5 14.25 1.5H1.75C1.61193 1.5 1.5 1.61193 1.5 1.75V14.25C1.5 14.3881 1.61193 14.5 1.75 14.5H15.25C15.6642 14.5 16 14.8358 16 15.25C16 15.6642 15.6642 16 15.25 16H1.75C0.783502 16 0 15.2165 0 14.25V1.75ZM8.25 5.75C8.66421 5.75 9 6.08579 9 6.5V10.5C9 11.5048 8.72399 12.2584 8.15514 12.7324C7.61223 13.1848 6.95384 13.25 6.5 13.25C6.08579 13.25 5.75 12.9142 5.75 12.5C5.75 12.0858 6.08579 11.75 6.5 11.75C6.84617 11.75 7.06277 11.6902 7.19486 11.5801C7.301 11.4916 7.5 11.2452 7.5 10.5V6.5C7.5 6.08579 7.83578 5.75 8.25 5.75ZM11.2757 6.58011C11.6944 6.08164 12.3507 5.75 13.25 5.75C14.0849 5.75 14.7148 6.03567 15.1394 6.48481C15.4239 6.78583 15.4105 7.26052 15.1095 7.54505C14.8085 7.82958 14.3338 7.81621 14.0493 7.51519C13.9394 7.39898 13.7204 7.25 13.25 7.25C12.7493 7.25 12.5306 7.41836 12.4243 7.54489C12.2934 7.70065 12.25 7.896 12.25 8C12.25 8.104 12.2934 8.29935 12.4243 8.45511C12.5306 8.58164 12.7493 8.75 13.25 8.75C13.3257 8.75 13.3988 8.76121 13.4676 8.78207C14.1307 8.87646 14.6319 9.17251 14.9743 9.58011C15.3684 10.0493 15.5 10.604 15.5 11C15.5 11.396 15.3684 11.9507 14.9743 12.4199C14.5556 12.9184 13.8993 13.25 13 13.25C12.1651 13.25 11.5352 12.9643 11.1106 12.5152C10.8261 12.2142 10.8395 11.7395 11.1405 11.4549C11.4415 11.1704 11.9162 11.1838 12.2007 11.4848C12.3106 11.601 12.5296 11.75 13 11.75C13.5007 11.75 13.7194 11.5816 13.8257 11.4551C13.9566 11.2993 14 11.104 14 11C14 10.896 13.9566 10.7007 13.8257 10.5449C13.7194 10.4184 13.5007 10.25 13 10.25C12.9243 10.25 12.8512 10.2388 12.7824 10.2179C12.1193 10.1235 11.6181 9.82749 11.2757 9.41989C10.8816 8.95065 10.75 8.396 10.75 8C10.75 7.604 10.8816 7.04935 11.2757 6.58011Z" fill="#a4cefe"></path> </g></svg></span> + <svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 54 54"
+     width="32px"
+     height="32px"
+     role="img"
+     aria-label="GClass logo">
+  <path fill="#a4cefe" d="M14.64 0 L8.30 23.87 L12.85 25.44 C12.86 25.41 12.88 25.38 12.89 25.36 C13.76 23.58 15.03 22.07 16.62 20.94 L16.62 20.93 C17.14 20.56 17.69 20.25 18.27 19.99 Z M22.70 21.60 C21.06 21.60 19.60 22.05 18.32 22.96 C17.07 23.85 16.09 25.01 15.39 26.45 C14.69 27.86 14.34 29.31 14.34 30.80 C14.34 32.30 14.67 33.72 15.31 35.07 C15.98 36.40 16.91 37.47 18.12 38.29 C19.34 39.12 20.74 39.53 22.31 39.53 C24.16 40.42 25.74 39.93 27.03 38.91 C28.34 37.88 29.24 36.55 29.73 34.93 L30.04 34.88 C30.30 34.79 30.52 34.64 30.69 34.43 C30.87 34.21 30.96 33.94 30.96 33.65 C30.96 33.00 30.68 32.59 30.12 32.42 C29.17 32.12 28.20 31.97 27.21 31.97 C26.51 31.97 25.82 32.01 25.14 32.10 C24.47 32.19 23.99 32.29 23.70 32.42 C23.07 32.68 22.75 33.11 22.75 33.70 C22.75 34.10 22.88 34.42 23.12 34.67 C23.38 34.90 23.69 35.01 24.04 35.01 C24.21 35.01 24.45 34.97 24.74 34.88 C25.46 34.70 26.11 34.60 26.71 34.56 L27.10 34.56 C26.70 35.59 26.08 36.40 25.24 36.97 C24.40 37.53 23.42 37.81 22.31 37.81 C21.17 37.81 20.19 37.50 19.37 36.89 C18.57 36.26 17.96 35.48 17.56 34.53 C17.16 33.59 16.96 32.64 16.96 31.70 C16.96 30.90 17.16 29.98 17.56 28.95 C17.96 27.92 18.59 27.03 19.45 26.28 C20.32 25.51 21.40 25.13 22.70 25.13 C23.94 25.13 24.93 25.41 25.66 25.99 C26.40 26.55 26.92 27.25 27.24 28.09 C27.45 28.64 27.87 28.92 28.49 28.92 C28.88 28.92 29.18 28.82 29.41 28.61 C29.64 28.38 29.75 28.08 29.75 27.72 C29.75 27.23 29.49 26.56 28.97 25.73 C28.44 24.89 27.65 24.14 26.58 23.50 C25.53 22.83 24.24 22.50 22.70 22.50 Z M35.84 23.02 L32.05 26.32 C32.18 26.74 32.25 27.19 32.25 27.72 C32.25 28.57 31.89 29.59 31.23 30.29 C31.81 30.55 32.42 30.86 32.82 31.44 C33.23 32.05 33.41 32.72 33.45 33.33 L53.47 40.22 Z M15.73 40.51 L0 54.19 L23.71 47.53 L22.82 42.92 C22.65 42.93 22.48 42.93 22.31 42.93 C20.31 42.93 18.36 42.37 16.73 41.28 C16.38 41.05 16.05 40.79 15.73 40.51 Z"/>
+</svg></span>
+      <nav class="flex items-center gap-5 text-sm ease-expo font-medium"><a class="hover:text-blue-300 hover:bg-blue-900 click-expand amount-11 p-5" href="#install">Install</a><a class="click-expand amount-11 p-5 hover:text-amber-300 hover:bg-amber-900" href="#quick-start">Quick start</a><a class="click-expand amount-11 p-5 hover:text-emerald-300 hover:bg-emerald-900" href="#anatomy">Class anatomy</a><a class="click-expand amount-11 p-5 hover:text-red-300 hover:bg-red-900" href="#notes">Notes</a></nav>
+      <a href="https://saturn-sepehr.github.io/GClass/documentation/quick-start/" aria-label="Return to the GClass documentation"><svg width="32" height="32" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>Session-Leave</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Session-Leave"> <rect id="Rectangle" fill-rule="nonzero" x="0" y="0" width="24" height="24"> </rect> <line x1="9" y1="12" x2="19" y2="12" id="Path" stroke="#ffffff" stroke-width="2" stroke-linecap="round"> </line> <path d="M16,8 L18.5858,10.5858 C19.3668,11.3668 19.3668,12.6332 18.5858,13.4142 L16,16" id="Path" stroke="#ffffff" stroke-width="2" stroke-linecap="round"> </path> <path d="M16,4 L6,4 C4.89543,4 4,4.89543 4,6 L4,18 C4,19.1046 4.89543,20 6,20 L16,20" id="Path" stroke="#ffffff" stroke-width="2" stroke-linecap="round"> </path> </g> </g> </g></svg></a>
     </div>
   </header>
 
-  <main class="mx-auto max-w-4xl px-6 pb-24">
-    <section class="py-16">
-      <p class="font-mono text-sm text-brand">https://www.javascript.com/</p>
-      <h1 class="mt-3 font-display text-5xl font-bold leading-[1.1] tracking-tight sm:text-6xl">
-        gclass-anims <span class="text-accent">for Vanilla JS</span>
-      </h1>
-      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-muted">A Tailwind-style utility layer on top of GSAP. No framework, no build step, no config — add a class name to your markup.</p>
-      <a href="#install" class="mt-8 inline-block rounded-full bg-brand px-6 py-3 text-sm font-bold text-page transition-opacity hover:opacity-90">Get started</a>
+  <main class="homepage">
+    <div id="content" class="homepage priority-1 scroll curtain-horizontal homepage--dark">
+      <div class="homepage-header">
+        <div class="homepage-header__copy">
+          <section class="homepage-hero">
+            <h1 class="priority-2 scroll spawn-text-spawn-left letter">gclass-anims <span class="text-brand">for Vanilla JavaScript</span></h1>
+            <p class="max-w-[38rem] priority-2 scroll typewriter-split">Framework-agnostic, but this is the zero-framework path. Install the package, import <code class="font-mono text-[0.9em]">initAnimations</code> once the DOM is ready, then drive everything with class names — no per-element JS or config.</p>
+            <p class="mt-6 font-mono [font-size:var(--font-size-small)] priority-2 scroll typewriter">Not affiliated with or endorsed by MDN. <a href="https://developer.mozilla.org/en-US/">Official website</a></p>
+          </section>
+        </div>
+       
+        <div class="homepage-header__search flex priority-2 scroll spawn-down ease-expo justify-center mt-5">
+          <a href="#install" class="inline-block rounded-full click-expand amount-12 bg-panel2 ring-1 ring-line text-white px-8 py-4 text-sm font-medium text-page transition-opacity hover:opacity-90">Get started</a>
+        </div>
+        <div class="homepage-header__mandala">
+<div class="mandala" aria-hidden="true">
+<svg
+viewBox="50 0 575 575"
+fill="none"
+xmlns="http://www.w3.org/2000/svg"
+class="mandala"
+>
+
+<defs>
+<path
+d="M337.5,337.5 m-320,0 a320,320 0 1,1 640,0 a320,320 0 1,1 -640,0"
+id="circle1"
+></path>
+<path
+d="M337.5,337.5 m-280,0 a280,280 0 1,1 560,0 a280,280 0 1,1 -560,0"
+id="circle2"
+></path>
+<path
+d="M337.5,337.5 m-240,0 a240,240 0 1,1 480,0 a240,240 0 1,1 -480,0"
+id="circle3"
+></path>
+<path
+d="M337.5,337.5 m-200,0 a200,200 0 1,1 400,0 a200,200 0 1,1 -400,0"
+id="circle4"
+></path>
+<path
+d="M337.5,337.5 m-160,0 a160,160 0 1,1 320,0 a160,160 0 1,1 -320,0"
+id="circle5"
+></path>
+</defs>
+<text dy="70" textLength="2010">
+<textPath textLength="2010" href="#circle1">
+&nbsp;&nbsp;&nbsp;/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+&nbsp;&nbsp;&nbsp;/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+&nbsp;&nbsp;&nbsp;/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+&nbsp;&nbsp;&nbsp;/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+&nbsp;&nbsp;&nbsp;/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+&nbsp;&nbsp;&nbsp;/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+&nbsp;&nbsp;&nbsp;/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+/
+<tspan>/</tspan>
+</textPath>
+</text>
+<text dy="70" textLength="1760">
+<textPath textLength="1760" href="#circle2">
+&nbsp;&nbsp;+
+<tspan>+</tspan>
++
+<tspan>+</tspan>
++
+<tspan>+</tspan>
+&nbsp;&nbsp;+
+<tspan>+</tspan>
++
+<tspan>+</tspan>
++
+<tspan>+</tspan>
+&nbsp;&nbsp;+
+<tspan>+</tspan>
++
+<tspan>+</tspan>
++
+<tspan>+</tspan>
+&nbsp;&nbsp;+
+<tspan>+</tspan>
++
+<tspan>+</tspan>
++
+<tspan>+</tspan>
+&nbsp;&nbsp;+
+<tspan>+</tspan>
++
+<tspan>+</tspan>
++
+<tspan>+</tspan>
+&nbsp;&nbsp;+
+<tspan>+</tspan>
++
+<tspan>+</tspan>
++
+<tspan>+</tspan>
+&nbsp;&nbsp;+
+<tspan>+</tspan>
++
+<tspan>+</tspan>
++
+<tspan>+</tspan>
+</textPath>
+</text>
+<text dy="70" textLength="1507">
+<textPath textLength="1507" href="#circle3">
+<tspan>&#123;</tspan>
+&#123;
+<tspan>&#123;</tspan>
+&#123;&nbsp;
+<tspan>&#125;</tspan>
+&#125;
+<tspan>&#125;</tspan>
+&#125;&nbsp;&nbsp;
+<tspan>&#123;</tspan>
+&#123;
+<tspan>&#123;</tspan>
+&#123;&nbsp;
+<tspan>&#125;</tspan>
+&#125;
+<tspan>&#125;</tspan>
+&#125;&nbsp;&nbsp;
+<tspan>&#123;</tspan>
+&#123;
+<tspan>&#123;</tspan>
+&#123;&nbsp;
+<tspan>&#125;</tspan>
+&#125;
+<tspan>&#125;</tspan>
+&#125;&nbsp;&nbsp;
+<tspan>&#123;</tspan>
+&#123;
+<tspan>&#123;</tspan>
+&#123;&nbsp;
+<tspan>&#125;</tspan>
+&#125;
+<tspan>&#125;</tspan>
+&#125;&nbsp;&nbsp;
+<tspan>&#123;</tspan>
+&#123;
+<tspan>&#123;</tspan>
+&#123;&nbsp;
+<tspan>&#125;</tspan>
+&#125;
+<tspan>&#125;</tspan>
+&#125;&nbsp;&nbsp;
+<tspan>&#123;</tspan>
+&#123;
+<tspan>&#123;</tspan>
+&#123;&nbsp;
+<tspan>&#125;</tspan>
+&#125;
+<tspan>&#125;</tspan>
+&#125;&nbsp;&nbsp;
+</textPath>
+</text>
+<text dy="70" textLength="1257">
+<textPath textLength="1257" href="#circle4">
+&nbsp;&nbsp;&nbsp;../../ &nbsp;&nbsp;&nbsp;../../
+&nbsp;&nbsp;&nbsp;../../ &nbsp;&nbsp;&nbsp;../../
+&nbsp;&nbsp;&nbsp;../../ &nbsp;&nbsp;&nbsp;../../
+&nbsp;&nbsp;&nbsp;../../
+</textPath>
+</text>
+<text dy="70" textLength="1005">
+<textPath textLength="1005" href="#circle5">
+<tspan>&lt;&gt;</tspan>
+&lt;/&gt;
+<tspan>&lt;&gt;</tspan>
+&lt;/&gt;
+<tspan>&lt;&gt;</tspan>
+&lt;/&gt;
+<tspan>&lt;&gt;</tspan>
+&lt;/&gt;
+<tspan>&lt;&gt;</tspan>
+&lt;/&gt;
+<tspan>&lt;&gt;</tspan>
+&lt;/&gt;
+<tspan>&lt;&gt;</tspan>
+&lt;/&gt;
+<tspan>&lt;&gt;</tspan>
+&lt;/&gt;
+<tspan>&lt;&gt;</tspan>
+&lt;/&gt;
+<tspan>&lt;&gt;</tspan>
+&lt;/&gt;
+<tspan>&lt;&gt;</tspan>
+&lt;/&gt;
+<tspan>&lt;&gt;</tspan>
+&lt;/&gt;
+<tspan>&lt;&gt;</tspan>
+&lt;/&gt;
+<tspan>&lt;&gt;</tspan>
+&lt;/&gt;
+<tspan>&lt;&gt;</tspan>
+&lt;/&gt;
+<tspan>&lt;&gt;</tspan>
+&lt;/&gt;
+</textPath>
+</text>
+</svg>
+</div>
+        </div>
+      </div>
+    </div>
+
+    <section id="install" class="band-page scroll-mt-20 py-16">
+      <div class="doc-col">
+        <h2 class="font-display text-3xl font-medium tracking-tight scroll spawn-text-spawn-down letter ease-expo text-ink">Install</h2>
+        <p class="mt-3 text-muted scroll typewriter">GClass ships as the npm package gclass-anims. GSAP is a regular dependency and is installed automatically — nothing is bundled or redistributed.</p>
+        <div class="mt-4 scroll spawn-down ease-expo"><pre class="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-codeink"><code class="scroll typewriter">npm install gclass-anims</code><button type="button" data-copy class="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
+      </div>
     </section>
 
-    <section id="install" class="scroll-mt-24 py-10">
-      <h2 class="font-display text-3xl font-bold tracking-tight">Install</h2>
-      <p class="mt-3 text-muted">GSAP is a regular dependency and is installed automatically — nothing is bundled or redistributed.</p>
-      <div class="mt-5"><pre class="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-codeink"><code>npm install gclass-anims</code><button type="button" data-copy class="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
-    </section>
-
-    <section id="quick-start" class="scroll-mt-24 py-10">
-      <h2 class="font-display text-3xl font-bold tracking-tight">Quick start</h2>
-      <p class="mt-3 text-muted">Initialise once, then drive everything with class names.</p>
-      <h3 class="mt-7 font-display text-lg font-bold">Load it as a module</h3>
-      <div class="mt-4"><pre class="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-codeink"><code>&lt;script type="module"&gt;
+    <section id="quick-start" class="band-page scroll-mt-20 py-16">
+      <div class="doc-col">
+        <h2 class="font-display text-3xl font-medium tracking-tight text-ink scroll spawn-text-spawn-down ease-expo letter">Quick start</h2>
+        <p class="mt-3 scroll typewriter text-muted">Import initAnimations once your DOM is ready. From then on, everything is class-driven: add a utility class to an element and it animates — no per-element JS, no config files.</p>
+        <h3 class="mt-8 font-display text-xl font-medium scroll typewriter text-ink">Usage</h3>
+        <div class="mt-4 scroll spawn-down"><pre class="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-codeink"><code class="scroll typewriter">&lt;script type="module"&gt;
   import { initAnimations } from 'gclass-anims'
 
   // the DOM is parsed by the time a module script runs
   initAnimations()
 &lt;/script&gt;</code><button type="button" data-copy class="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
-      <p class="mt-4 border-l-2 border-brand pl-4 text-sm text-muted">A module script is deferred, so the DOM already exists when it runs. Without a bundler, resolve the bare specifier with an import map.</p>
+        <p class="mt-6 border-l-2 border-brand pl-4 scroll typewriter curtain-vertical text-muted">Dual build: ESM is dist/gclass.esm.js (package.json:10 exports import) and CJS is dist/gclass.cjs (package.json:13 exports require). Both are built by vite.lib.config.js with gsap external and sideEffects: false for tree-shaking.</p>
+      </div>
     </section>
 
-    <section id="anatomy" class="scroll-mt-24 py-10">
-      <h2 class="font-display text-3xl font-bold tracking-tight">Class anatomy</h2>
-      <p class="mt-3 text-muted">Every class is a <strong class="text-ink">behaviour</strong>, a <strong class="text-ink">trigger</strong>, or a <strong class="text-ink">tunable</strong>. Combine freely — order does not matter.</p>
-      <div class="mt-5"><pre class="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-codeink"><code>// behaviour + trigger + tunables
+    <section id="anatomy" class="band-page scroll-mt-20 py-16">
+      <div class="doc-col">
+        <h2 class="font-display text-3xl font-medium tracking-tight text-ink scroll spawn-text-spawn-down letter ease-expo">Class anatomy</h2>
+        <p class="mt-3 text-muted typewriter-split letter scroll">Class anatomy: <strong class="text-ink">behaviour</strong> (.spawn-up) + <strong class="text-ink">trigger</strong> (.scroll, .appear) + <strong class="text-ink">tunables</strong> (.time-1, .ease-back, .priority-2). Combine freely — order in class does not matter.</p>
+        <div class="mt-4"><pre class="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-codeink"><code>// behaviour + trigger + tunables
 &lt;div class="appear scroll spawn-up"&gt;…&lt;/div&gt;
 &lt;div class="appear scroll order ease-expo time-1 priority-2"&gt;…&lt;/div&gt;
 &lt;div class="float"&gt;loops forever&lt;/div&gt;
 &lt;button class="magnet click-expand"&gt;magnet + click&lt;/button&gt;</code><button type="button" data-copy class="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
-      <div class="mt-6 grid gap-4 sm:grid-cols-3"><div class="rounded-lg border border-line bg-panel p-4"><h4 class="font-display font-bold text-brand">Behaviour</h4><p class="mt-1 font-mono text-[12px] text-muted">spawn-up, float, marquee, magnet</p></div><div class="rounded-lg border border-line bg-panel p-4"><h4 class="font-display font-bold text-brand">Trigger</h4><p class="mt-1 font-mono text-[12px] text-muted">appear, scroll, preserve</p></div><div class="rounded-lg border border-line bg-panel p-4"><h4 class="font-display font-bold text-brand">Tunables</h4><p class="mt-1 font-mono text-[12px] text-muted">order, ease-expo, time-1, priority-2</p></div></div>
+        <div class="mt-6 grid gap-4 sm:grid-cols-3"><div class="rounded-lg border border-line bg-panel p-4"><h4 class="font-display font-medium text-white">Behaviour</h4><p class="mt-1 font-mono text-[12px] text-muted">spawn-up, float, marquee, magnet</p></div><div class="rounded-lg border border-line bg-panel p-4"><h4 class="font-display font-medium text-white">Trigger</h4><p class="mt-1 font-mono text-[12px] text-muted">appear, scroll, preserve</p></div><div class="rounded-lg border border-line bg-panel p-4"><h4 class="font-display font-medium text-white">Tunables</h4><p class="mt-1 font-mono text-[12px] text-muted">order, ease-expo, time-1, priority-2</p></div></div>
+      </div>
     </section>
 
-    <section id="notes" class="scroll-mt-24 py-10">
-      <h2 class="font-display text-3xl font-bold tracking-tight">Notes</h2>
-      <ul class="mt-6 space-y-4"><li class="rounded-lg border border-line bg-panel p-5"><strong class="text-ink">No build step required.</strong> gclass-anims ships dual ESM and CJS and never touches your build config. Serve the directory and it runs.</li><li class="rounded-lg border border-line bg-panel p-5"><strong class="text-ink">Drive it with class names.</strong> Every feature is a utility class on an element. There is no per-element JavaScript and no config file.</li><li class="rounded-lg border border-line bg-panel p-5"><strong class="text-ink">Dynamic content is fine.</strong> A MutationObserver picks up .appear elements as they are inserted, so framework-free widgets that inject markup keep working.</li></ul>
+    <section id="notes" class="band-primary scroll curtain-horizontal scroll-mt-20 py-16">
+      <div class="doc-col">
+        <h2 class="font-display text-3xl font-medium tracking-tight scroll spawn-text-spawn-down letter ease-expo text-ink">Notes</h2>
+        <ul class="mt-6 space-y-4"><li class="rounded-lg border scroll spawn-down order ease-expo border-line bg-panel p-5"><strong class="text-ink">What&#39;s next.</strong> See Installation for requirements and Quick start for the class anatomy (.appear / .scroll + behaviour + tunables). Framework-specific guides — React, Vue, Svelte, Next.js, Vite — are scaffolded alongside this page.</li>
+         <li class="rounded-lg border border-line bg-panel p-5 order scroll spawn-down ease-expo"><strong class="text-ink">Dual ESM + CJS.</strong> The package ships dual ESM + CJS and is framework-agnostic. It never touches your build config: every feature is driven by class names you put on markup.</li>
+        <li class="rounded-lg border border-line bg-panel p-5 scroll order spawn-down ease-expo"><strong class="text-ink">GSAP stays external.</strong> ESM is dist/gclass.esm.js and CJS is dist/gclass.cjs via vite.lib.config.js — GSAP is external, not bundled. The build is tree-shakable with sideEffects: false and prepublishOnly: build.</li></ul>
+      </div>
     </section>
 
-    <footer class="border-t border-line pt-8 text-sm text-muted">
-      <p>Colours and type sampled from <a class="text-brand hover:underline" href="https://www.javascript.com/">https://www.javascript.com/</a>. This page is Vanilla JS's own build output, running gclass-anims 1.0.0-beta.23 from npm.</p>
+    <footer class="band-primary border-t border-line py-8 text-sm scroll curtain-horizontal text-muted">
+      <div class="doc-col">
+        <p>Colours and type sampled from <a class="text-brand hover:underline" href="https://developer.mozilla.org/en-US/">https://developer.mozilla.org/en-US/</a>.</p>
+      </div>
     </footer>
   </main>
 

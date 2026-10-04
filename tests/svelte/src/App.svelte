@@ -53,34 +53,34 @@ if (!window.__gclassCopy) {
       <h1 class="mt-3 font-display text-5xl font-bold leading-[1.1] tracking-tight sm:text-6xl">
         gclass-anims <span class="text-accent">for Svelte</span>
       </h1>
-      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-muted">A Tailwind-style utility layer on top of GSAP. No actions, no directives — just class names.</p>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-muted">Framework-agnostic — call initAnimations() inside onMount so it runs only in the browser; the engine then watches .appear and .scroll elements as the component tree mounts.</p>
       <a href="#install" class="mt-8 inline-block rounded-full bg-brand px-6 py-3 text-sm font-bold text-page transition-opacity hover:opacity-90">Get started</a>
     </section>
 
     <section id="install" class="scroll-mt-24 py-10">
       <h2 class="font-display text-3xl font-bold tracking-tight">Install</h2>
-      <p class="mt-3 text-muted">GSAP is a regular dependency and is installed automatically — nothing is bundled or redistributed.</p>
+      <p class="mt-3 text-muted">GClass ships as the npm package gclass-anims. GSAP is a regular dependency and is installed automatically — nothing is bundled or redistributed.</p>
       <div class="mt-5"><pre class="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-codeink"><code>{ install }</code><button type="button" data-copy class="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
     </section>
 
     <section id="quick-start" class="scroll-mt-24 py-10">
       <h2 class="font-display text-3xl font-bold tracking-tight">Quick start</h2>
-      <p class="mt-3 text-muted">Initialise once, then drive everything with class names.</p>
-      <h3 class="mt-7 font-display text-lg font-bold">Call it in onMount</h3>
+      <p class="mt-3 text-muted">Import initAnimations once your DOM is ready. From then on, everything is class-driven: add a utility class to an element and it animates — no per-element JS, no config files.</p>
+      <h3 class="mt-7 font-display text-lg font-bold">Usage — Svelte component</h3>
       <div class="mt-4"><pre class="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-codeink"><code>{ hook }</code><button type="button" data-copy class="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
-      <p class="mt-4 border-l-2 border-brand pl-4 text-sm text-muted">onMount keeps the call in the browser, which is where GSAP needs to be. Svelte 5's mount() or onMount both work.</p>
+      <p class="mt-4 border-l-2 border-brand pl-4 text-sm text-muted">Add utility classes to markup — no Svelte actions or directives required. See quick-start-js for vanilla parity.</p>
     </section>
 
     <section id="anatomy" class="scroll-mt-24 py-10">
       <h2 class="font-display text-3xl font-bold tracking-tight">Class anatomy</h2>
-      <p class="mt-3 text-muted">Every class is a <strong class="text-ink">behaviour</strong>, a <strong class="text-ink">trigger</strong>, or a <strong class="text-ink">tunable</strong>. Combine freely — order does not matter.</p>
+      <p class="mt-3 text-muted">Class anatomy: <strong class="text-ink">behaviour</strong> (.spawn-up) + <strong class="text-ink">trigger</strong> (.scroll, .appear) + <strong class="text-ink">tunables</strong> (.time-1, .ease-back, .priority-2). Combine freely — order in class does not matter.</p>
       <div class="mt-5"><pre class="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-codeink"><code>{ anatomy }</code><button type="button" data-copy class="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
       <div class="mt-6 grid gap-4 sm:grid-cols-3"><div class="rounded-lg border border-line bg-panel p-4"><h4 class="font-display font-bold text-brand">Behaviour</h4><p class="mt-1 font-mono text-[12px] text-muted">spawn-up, float, marquee, magnet</p></div><div class="rounded-lg border border-line bg-panel p-4"><h4 class="font-display font-bold text-brand">Trigger</h4><p class="mt-1 font-mono text-[12px] text-muted">appear, scroll, preserve</p></div><div class="rounded-lg border border-line bg-panel p-4"><h4 class="font-display font-bold text-brand">Tunables</h4><p class="mt-1 font-mono text-[12px] text-muted">order, ease-expo, time-1, priority-2</p></div></div>
     </section>
 
     <section id="notes" class="scroll-mt-24 py-10">
       <h2 class="font-display text-3xl font-bold tracking-tight">Notes</h2>
-      <ul class="mt-6 space-y-4"><li class="rounded-lg border border-line bg-panel p-5"><strong class="text-ink">Nothing to import per element.</strong> Utility classes go in the markup. No action, no directive, no snippet required.</li><li class="rounded-lg border border-line bg-panel p-5"><strong class="text-ink">callouts and snippets are static.</strong> If a block is rendered but never animated, check that it is inside a client-side mount and not behind SSR-only markup.</li></ul>
+      <ul class="mt-6 space-y-4"><li class="rounded-lg border border-line bg-panel p-5"><strong class="text-ink">What's next.</strong> Add utility classes to markup — no Svelte actions or directives required. SvelteKit layouts persist across routes, so re-init with afterNavigate as well.</li><li class="rounded-lg border border-line bg-panel p-5"><strong class="text-ink">Dual ESM + CJS.</strong> The package ships dual ESM + CJS and is framework-agnostic. It never touches your build config: every feature is driven by class names you put on markup.</li></ul>
     </section>
 
     <footer class="border-t border-line pt-8 text-sm text-muted">

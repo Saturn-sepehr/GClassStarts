@@ -1,4 +1,7 @@
-import "./styles.css";
+// No bundler here, so there is no `import "./styles.css"` — a bare ESM import of
+// a stylesheet is fetched as a module, rejected on MIME type, and takes the whole
+// module graph (including initAnimations below) down with it. Tailwind is built by
+// @tailwindcss/cli and linked from index.html instead.
 import { initAnimations } from "gclass-anims";
 import "./copy.js";
 
@@ -31,4 +34,3 @@ if (!window.__gclassCopy) {
   document.addEventListener("click", COPY);
 }
 
-console.log("gclass-anims 1.0.0-beta.23 initialised (vanilla)");

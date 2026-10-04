@@ -10,34 +10,10 @@ export default function App() {
   // An empty dependency array runs it once after mount. A MutationObserver then
   // discovers .appear and .scroll elements as they render, so nothing else
   // needs wiring.
+  //
+  // Copy-to-clipboard lives in ./copy.js, installed once on import.
   useEffect(() => {
     initAnimations();
-
-const COPY = (e) => {
-  const btn = e.target.closest("[data-copy]");
-  if (!btn) return;
-  const code = btn.parentElement.querySelector("code");
-  if (!code) return;
-  navigator.clipboard.writeText(code.innerText).then(
-    () => {
-      btn.textContent = "Copied";
-      btn.classList.add("text-ok", "border-ok");
-      setTimeout(() => {
-        btn.textContent = "Copy";
-        btn.classList.remove("text-ok", "border-ok");
-      }, 1400);
-    },
-    () => {
-      btn.textContent = "Failed";
-      setTimeout(() => (btn.textContent = "Copy"), 1400);
-    },
-  );
-};
-
-if (!window.__gclassCopy) {
-  window.__gclassCopy = true;
-  document.addEventListener("click", COPY);
-}
   }, []);
 
   return (
@@ -54,7 +30,7 @@ if (!window.__gclassCopy) {
      aria-label="GClass logo">
   <path fill="#58c4dc" d="M14.64 0 L8.30 23.87 L12.85 25.44 C12.86 25.41 12.88 25.38 12.89 25.36 C13.76 23.58 15.03 22.07 16.62 20.94 L16.62 20.93 C17.14 20.56 17.69 20.25 18.27 19.99 Z M22.70 21.60 C21.06 21.60 19.60 22.05 18.32 22.96 C17.07 23.85 16.09 25.01 15.39 26.45 C14.69 27.86 14.34 29.31 14.34 30.80 C14.34 32.30 14.67 33.72 15.31 35.07 C15.98 36.40 16.91 37.47 18.12 38.29 C19.34 39.12 20.74 39.53 22.31 39.53 C24.16 40.42 25.74 39.93 27.03 38.91 C28.34 37.88 29.24 36.55 29.73 34.93 L30.04 34.88 C30.30 34.79 30.52 34.64 30.69 34.43 C30.87 34.21 30.96 33.94 30.96 33.65 C30.96 33.00 30.68 32.59 30.12 32.42 C29.17 32.12 28.20 31.97 27.21 31.97 C26.51 31.97 25.82 32.01 25.14 32.10 C24.47 32.19 23.99 32.29 23.70 32.42 C23.07 32.68 22.75 33.11 22.75 33.70 C22.75 34.10 22.88 34.42 23.12 34.67 C23.38 34.90 23.69 35.01 24.04 35.01 C24.21 35.01 24.45 34.97 24.74 34.88 C25.46 34.70 26.11 34.60 26.71 34.56 L27.10 34.56 C26.70 35.59 26.08 36.40 25.24 36.97 C24.40 37.53 23.42 37.81 22.31 37.81 C21.17 37.81 20.19 37.50 19.37 36.89 C18.57 36.26 17.96 35.48 17.56 34.53 C17.16 33.59 16.96 32.64 16.96 31.70 C16.96 30.90 17.16 29.98 17.56 28.95 C17.96 27.92 18.59 27.03 19.45 26.28 C20.32 25.51 21.40 25.13 22.70 25.13 C23.94 25.13 24.93 25.41 25.66 25.99 C26.40 26.55 26.92 27.25 27.24 28.09 C27.45 28.64 27.87 28.92 28.49 28.92 C28.88 28.92 29.18 28.82 29.41 28.61 C29.64 28.38 29.75 28.08 29.75 27.72 C29.75 27.23 29.49 26.56 28.97 25.73 C28.44 24.89 27.65 24.14 26.58 23.50 C25.53 22.83 24.24 22.50 22.70 22.50 Z M35.84 23.02 L32.05 26.32 C32.18 26.74 32.25 27.19 32.25 27.72 C32.25 28.57 31.89 29.59 31.23 30.29 C31.81 30.55 32.42 30.86 32.82 31.44 C33.23 32.05 33.41 32.72 33.45 33.33 L53.47 40.22 Z M15.73 40.51 L0 54.19 L23.71 47.53 L22.82 42.92 C22.65 42.93 22.48 42.93 22.31 42.93 C20.31 42.93 18.36 42.37 16.73 41.28 C16.38 41.05 16.05 40.79 15.73 40.51 Z"/>
 </svg></span>
-      <nav className="ml-auto hidden gap-5 text-sm font-medium text-muted sm:flex"><a className="hover:text-brand order spawn-down click-hover amount-2" href="#install">Install</a><a className="hover:text-brand order spawn-down click-hover amount-2" href="#quick-start">Quick start</a><a className="hover:text-brand order spawn-down click-hover amount-2" href="#anatomy ">Class anatomy</a><a className="hover:text-brand order spawn-down click-hover amount-2" href="#notes">Notes</a><a className="order spawn-down hover:text-brand click-hover amount-2" href="https://saturn-sepehr.github.io/GClass/documentation/quick-start/">Return to docs</a></nav>
+      <nav className="ml-auto hidden gap-5 text-sm font-medium text-muted sm:flex"><a className="hover:text-brand order spawn-down click-hover amount-2" href="#install">Install</a><a className="hover:text-brand order spawn-down click-hover amount-2" href="#quick-start">Quick start</a><a className="hover:text-brand order spawn-down click-hover amount-2" href="#anatomy">Class anatomy</a><a className="hover:text-brand order spawn-down click-hover amount-2" href="#notes">Notes</a><a className="order spawn-down hover:text-brand click-hover amount-2" href="https://saturn-sepehr.github.io/GClass/documentation/quick-start/">Return to docs</a></nav>
     </div>
   </header>
 
@@ -63,11 +39,11 @@ if (!window.__gclassCopy) {
 
    
     <section className="py-16">
-      <a className="font-mono text-sm text-brand underline scroll typewriter" href="https://react.dev/">react.dev</a>
+      <p>not affiliated with or endorsed by React</p><a className="font-mono text-sm text-brand underline scroll typewriter" href="https://react.dev/">Official react website</a>
       <h1 className="mt-3 scroll letter spawn-text-spawn-down font-display text-5xl font-bold leading-[1.1] tracking-tight sm:text-6xl">
         gclass-anims <span className="text-accent">for React</span>
       </h1>
-      <p className="mt-6 text-lg leading-relaxed scroll typewriter time-2 text-muted">A Tailwind-style utility layer on top of GSAP. Class-driven, so there are no per-element effects, no wrapper components and no config file — just add a class name to your JSX.</p>
+      <p className="mt-6 text-lg leading-relaxed scroll typewriter time-2 text-muted">The library is framework-agnostic — you only need to call initAnimations() once after mount and let the MutationObserver pick up .appear / .scroll elements as they render.</p>
       <a href="#install" className="mt-8 scroll spawn-down click-hover compatibility inline-block rounded-full bg-brand px-6 py-3 text-sm font-bold text-page">Get started</a>
     </section>
      </div>
@@ -76,29 +52,29 @@ if (!window.__gclassCopy) {
 
     <section id="install" className="scroll-mt-24 py-10">
       <h2 className="font-display text-3xl font-bold tracking-tight scroll letter spawn-text-spawn-down">Install</h2>
-      <p className="mt-3 text-muted scroll typewriter">GSAP is a regular dependency and is installed automatically — nothing is bundled or redistributed.</p>
+      <p className="mt-3 text-muted scroll typewriter">GClass ships as the npm package gclass-anims. GSAP is a regular dependency and is installed automatically — nothing is bundled or redistributed.</p>
       <div className="mt-5"><pre className="group relative overflow-x-auto scroll spawn-down text-left rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-codeink"><code className="scroll typewriter">{"npm install gclass-anims"}</code><button type="button" data-copy className="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
     </section>
 
     <section id="quick-start" className="scroll-mt-24 py-10">
-      <h2 className="font-display text-3xl font-bold tracking-tight">Quick start</h2>
-      <p className="mt-3 text-muted">Initialise once, then drive everything with class names.</p>
-      <h3 className="mt-7 font-display text-lg font-bold">Call initAnimations() once, after mount</h3>
+      <h2 className="font-display text-3xl font-bold tracking-tight scroll letter spawn-text-spawn-down">Quick start</h2>
+      <p className="mt-3 text-muted">Import initAnimations once your DOM is ready. From then on, everything is class-driven: add a utility class to an element and it animates — no per-element JS, no config files.</p>
+      <h3 className="mt-7 font-display text-lg font-bold">Usage — Client component / SPA root</h3>
       <div className="mt-4"><pre className="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-left text-codeink"><code>{"import { useEffect } from 'react'\nimport { initAnimations } from 'gclass-anims'\n\nexport default function App() {\n  useEffect(() => {\n    initAnimations()\n  }, [])\n\n  return <div className=\"appear scroll spawn-up\">hello react</div>\n}"}</code><button type="button" data-copy className="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
-      <p className="mt-4 border-l-2 border-brand pl-4 text-sm text-muted">An empty dependency array runs it once after mount. The engine then installs a MutationObserver, so components that mount later are discovered on their own.</p>
+      <p className="mt-4 border-l-2 border-brand pl-4 text-sm text-muted">Call initAnimations() on every pathname change so new routes re-wire (see the docs site's Shared/animInit.js:6).</p>
     </section>
 
     <section id="anatomy" className="scroll-mt-24 py-10">
-      <h2 className="font-display text-3xl font-bold tracking-tight">Class anatomy</h2>
-      <p className="mt-3 text-muted">Every class is a <strong className="text-ink">behaviour</strong>, a <strong className="text-ink">trigger</strong>, or a <strong className="text-ink">tunable</strong>. Combine freely — order does not matter.</p>
-      <div className="mt-5"><pre className="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-left text-codeink"><code>{"// behaviour + trigger + tunables\n<div class=\"appear scroll spawn-up\">\u2026</div>\n<div class=\"appear scroll order ease-expo time-1 priority-2\">\u2026</div>\n<div class=\"float\">loops forever</div>\n<button class=\"magnet click-expand\">magnet + click</button>"}</code><button type="button" data-copy className="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
-      <div className="mt-6 grid gap-4 sm:grid-cols-3"><div className="rounded-lg border border-line bg-panel p-4"><h4 className="font-display font-bold text-brand ">Behaviour</h4><p className="mt-1 font-mono text-[12px] text-muted">spawn-up, float, marquee, magnet</p></div><div className="rounded-lg border border-line bg-panel p-4"><h4 className="font-display font-bold text-brand">Trigger</h4><p className="mt-1 font-mono text-[12px] text-muted">appear, scroll, preserve</p></div><div className="rounded-lg border border-line bg-panel p-4"><h4 className="font-display font-bold text-brand">Tunables</h4><p className="mt-1 font-mono text-[12px] text-muted">order, ease-expo, time-1, priority-2</p></div></div>
+      <h2 className="font-display text-3xl font-bold tracking-tight scroll letter spawn-text-spawn-down">Class anatomy</h2>
+      <p className="mt-3 text-muted scroll typewriter-split letter">Class anatomy: <strong className="text-ink">behaviour</strong> (.spawn-up) + <strong className="text-ink">trigger</strong> (.scroll, .appear) + <strong className="text-ink">tunables</strong> (.time-1, .ease-back, .priority-2). Combine freely — order in class does not matter.</p>
+      <div className="mt-5 scroll spawn-down"><pre className="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-left text-codeink"><code className="scroll typewriter">{"// behaviour + trigger + tunables\n<div class=\"appear scroll spawn-up\">\u2026</div>\n<div class=\"appear scroll order ease-expo time-1 priority-2\">\u2026</div>\n<div class=\"float\">loops forever</div>\n<button class=\"magnet click-expand\">magnet + click</button>"}</code><button type="button" data-copy className="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
+      <div className="mt-6 grid gap-4 sm:grid-cols-3"><div className="scroll priority-2  spawn-down order rounded-lg border border-line bg-panel p-4"><h4 className="font-display font-bold text-brand">Behaviour</h4><p className="mt-1 font-mono text-[12px] text-muted">spawn-up, float, marquee, magnet</p></div><div className="scroll spawn-down order rounded-lg border priority-2  border-line bg-panel p-4"><h4 className="font-display font-bold text-brand">Trigger</h4><p className="mt-1 font-mono text-[12px] text-muted">appear, scroll, preserve</p></div><div className="scroll spawn-down order priority-2 rounded-lg border border-line bg-panel p-4"><h4 className="font-display font-bold text-brand">Tunables</h4><p className="mt-1 font-mono text-[12px] text-muted">order, ease-expo, time-1, priority-2</p></div></div>
     </section>
 </div>
 </div>
     <section id="notes" className="scroll-mt-24 py-10">
-      <h2 className="font-display text-3xl font-bold tracking-tight">Notes</h2>
-      <ul className="mt-6 space-y-4"><li className="rounded-lg border border-line bg-panel p-5"><strong className="text-ink">Strict Mode is fine.</strong> useEffect runs twice in development and the engine handles it — .appear elements simply replay their entrance on the second pass.</li><li className="rounded-lg border border-line bg-panel p-5"><strong className="text-ink">Client-side routing.</strong> Route changes swap the DOM without a reload, so call initAnimations() again on navigation. Wrap persistent shells in preserve so they are skipped.</li><li className="rounded-lg border border-line bg-panel p-5"><strong className="text-ink">Reduced motion.</strong> The engine honours prefers-reduced-motion, and toggleAnimations() gives you a manual off switch to offer.</li></ul>
+      <h2 className="font-display text-3xl font-bold tracking-tight scroll letter spawn-text-spawn-down ">Notes</h2>
+      <ul className="mt-6 space-y-4"><li className="spawn-down order priority-3 rounded-lg border border-line bg-panel p-5"><strong className="text-ink">What's next.</strong> Once wired, add classes like .spawn-up, .float, .magnet directly to JSX className. No wrapper components needed. See quick-start-js for vanilla parity and Toggle & reduced motion for toggleAnimations().</li><li className="rounded-lg scroll spawn-down order priority-3  border border-line bg-panel p-5"><strong className="text-ink">GSAP stays external.</strong> ESM is dist/gclass.esm.js and CJS is dist/gclass.cjs via vite.lib.config.js — GSAP is external, not bundled. The build is tree-shakable with sideEffects: false and prepublishOnly: build.</li><li className="rounded-lg border border-line scroll spawn-down order priority-3   bg-panel p-5"><strong className="text-ink">Dynamic content.</strong> The engine watches the DOM for .appear elements and plays their entrance each time they mount, so markup injected later keeps working.</li></ul>
     </section>
 
   

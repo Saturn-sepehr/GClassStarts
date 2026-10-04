@@ -54,7 +54,7 @@ tunables, per the docs:
 
 ## Tailwind
 
-Every environment also has **Tailwind v4** wired up, so you can compare gclas| Defects found | **[FINDINGS.txt](./FINDINGS.txt)** |s
+Every environment also has **Tailwind v4** wired up, so you can compare gclass's
 utility classes against a real utility framework in each one.
 
 | Path | Environments | Integration |
