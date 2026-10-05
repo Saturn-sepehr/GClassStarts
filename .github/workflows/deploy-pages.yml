@@ -6,7 +6,7 @@ name: deploy pages
 #
 # GitHub Pages serves a project repo at github.io/<repo-name>/, so every
 # environment is configured with base = /GClassStarts/<env> and staged into
-# public/<env>/. One artifact, one deployment, fifteen sub-paths.
+# public/<env>/. One artifact, one deployment, eighteen sub-paths.
 
 on:
   push:
@@ -39,6 +39,8 @@ jobs:
         env:
           - vanilla
           - jquery
+          - alpine
+          - backbone
           - react
           - vue
           - preact
@@ -49,6 +51,7 @@ jobs:
           - next
           - nuxt
           - sveltekit
+          - ember
           - remix
           - qwik
           - angular

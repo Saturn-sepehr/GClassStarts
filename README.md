@@ -21,6 +21,8 @@ The only reason this exists is to test all frameworks properly and spice up the 
 |---|---|---|
 | `vanilla` | none — browser import map | `initAnimations()` from the entry module |
 | `jquery` | vite 8, jQuery 4 | `$(function () { initAnimations() })` |
+| `alpine` | vite 8, Alpine 3 | `document.addEventListener('alpine:init', …)` |
+| `backbone` | vite 8, Backbone 1.6 | `initAnimations()` on `DOMContentLoaded`, then `view.render()` |
 | `react` | vite 8, React 19 (StrictMode) | `useEffect(() => initAnimations(), [])` |
 | `vue` | vite 8, Vue 3 | `onMounted` |
 | `preact` | vite 8, Preact 11 | `useEffect` + `popstate` re-init |
@@ -31,14 +33,15 @@ The only reason this exists is to test all frameworks properly and spice up the 
 | `next` | Next 16 App Router | client component keyed on `usePathname` |
 | `nuxt` | Nuxt 4 | `.client` plugin + `route.fullPath` watcher |
 | `sveltekit` | SvelteKit 3 | `onMount` + `afterNavigate` |
+| `ember` | Ember 7.3 (Embroider + Vite) | `initAnimations()` in a component constructor |
 | `remix` | Remix 2.17 | `useEffect` on `location.pathname` |
 | `qwik` | Qwik 1.20 City | `useVisibleTask$` (not `useTask$`) |
 | `angular` | Angular 22, zoneless | `ngAfterViewInit` + `isPlatformBrowser` |
 
-The toolchains are deliberately **not** interchangeable — Qwik peers
-`vite >=5 <8`, Remix peers `vite ^5 || ^6` and `typescript ^5`, Angular peers
-`typescript >=6 <6.1`, SvelteKit 3 peers `vite ^8`. A matrix has to cover all of
-them.
+The toolchains are deliberately **not** interchangeable — Ember brings its own
+Embroider + Vite pipeline, Qwik peers `vite >=5 <8`, Remix peers
+`vite ^5 || ^6` and `typescript ^5`, Angular peers `typescript >=6 <6.1`,
+SvelteKit 3 peers `vite ^8`. A matrix has to cover all of them.
 
 Every page renders the same documented class anatomy — behaviour + trigger +
 tunables, per the docs:
@@ -59,9 +62,9 @@ utility classes against a real utility framework in each one.
 
 | Path | Environments | Integration |
 |---|---|---|
-| Vite plugin | jquery, react, vue, preact, solid, lit, svelte, sveltekit, qwik, remix | `@tailwindcss/vite` |
+| Vite plugin | jquery, alpine, backbone, react, vue, preact, solid, lit, svelte, sveltekit, qwik, remix | `@tailwindcss/vite` |
 | Nested Vite config | astro, nuxt | `vite.plugins` in `astro.config.mjs` / `nuxt.config.ts` |
-| PostCSS | next, angular | `@tailwindcss/postcss` + `postcss.config.mjs` / `.postcssrc.json` |
+| PostCSS | next, ember, angular | `@tailwindcss/postcss` + `postcss.config.mjs` / `.postcssrc.json` |
 | CLI | vanilla | `@tailwindcss/cli` as the CSS build step — still **no JS bundler** |
 
 In every case it is a CSS-first setup: `@import "tailwindcss";` at the top of the
@@ -76,7 +79,7 @@ same property on the same element, the demo rule wins. Wrap the demo CSS in
 ## Running it
 
 ```bash
-npm test                     # install + build all 15
+npm test                     # install + build all 18
 node scripts/verify-all.mjs --filter=vue
 node scripts/verify-all.mjs --skip-install   # reuse node_modules
 ```
@@ -87,7 +90,7 @@ Output:
 jquery      pass
 react       pass
 ...
-14/15 environments passed
+17/18 environments passed
 ```
 
 ## CI
@@ -100,7 +103,7 @@ under test.
 
 ## What this does and does not prove
 
-**Proven:** the published tarball installs, resolves, imports and compiles in 15
+**Proven:** the published tarball installs, resolves, imports and compiles in 18
 environments — including SSR and SSG toolchains where Next, Nuxt, SvelteKit,
 Astro, Qwik and Remix all prerender or emit server bundles successfully.
 
@@ -115,7 +118,7 @@ Also unexercised here: Safari/Firefox rendering, and the `.preserve`,
 
 ## Deploying to GitHub Pages
 
-One Pages site, fifteen sub-paths:
+One Pages site, eighteen sub-paths:
 
 ```
 https://saturn-sepehr.github.io/GClassStarts/<env>/
@@ -129,7 +132,7 @@ environment is configured with `base = /GClassStarts/<env>` and staged into
 The workflow cannot do that part for you.
 
 ```bash
-npm run pages:build      # build all 15 and stage public/
+npm run pages:build      # build all 18 and stage public/
 npm run pages:assemble   # re-stage from an existing stage/ (CI does this)
 ```
 
@@ -142,11 +145,12 @@ to static output:
 
 | Environment | Configuration |
 |---|---|
-| jquery, react, vue, preact, solid, lit, svelte | `base` in `vite.config.js` |
+| jquery, alpine, backbone, react, vue, preact, solid, lit, svelte | `base` in `vite.config.js` |
 | astro | `base` in `astro.config.mjs` |
 | next | `output: 'export'`, `basePath`, `trailingSlash` |
 | nuxt | `nuxt generate` + `app.baseURL` |
 | sveltekit | `paths.base` — kit 3 reads `kit.paths.base`, not a Vite `base` |
+| ember | Vite `base` + `rootURL` in `config/environment.js`, hash routing |
 | qwik | static adapter + `basePathname` |
 | angular | `baseHref` + `deployUrl` |
 | remix | SPA mode (`ssr: false`) — Remix 2 has no static export |

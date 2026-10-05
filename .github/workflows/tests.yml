@@ -29,6 +29,8 @@ jobs:
         env:
           - vanilla
           - jquery
+          - alpine
+          - backbone
           - react
           - vue
           - preact
@@ -39,6 +41,7 @@ jobs:
           - next
           - nuxt
           - sveltekit
+          - ember
           - remix
           - qwik
           - angular

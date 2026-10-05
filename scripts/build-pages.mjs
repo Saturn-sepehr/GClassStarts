@@ -42,6 +42,12 @@ const outDir = join(repoRoot, outArg);
  */
 const LAYOUT = {
   jquery:    { from: "dist", index: "index.html" },
+  alpine:    { from: "dist", index: "index.html" },
+  backbone:  { from: "dist", index: "index.html" },
+  // Ember builds through Embroider + Vite, but its stylesheet is imported from
+  // app/app.js rather than linked in index.html - the virtual app.css is a
+  // verbatim copy that skips the PostCSS/Tailwind pipeline. See vite.config.mjs.
+  ember:     { from: "dist", index: "index.html" },
   react:     { from: "dist", index: "index.html" },
   vue:       { from: "dist", index: "index.html" },
   preact:    { from: "dist", index: "index.html" },
