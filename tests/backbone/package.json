@@ -1,15 +1,16 @@
 {
-  "name": "gclass-tests-vite",
+  "name": "gclass-tests-backbone",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "gclass-anims in a plain Vite app",
+  "description": "gclass-anims in a Backbone.js app",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "backbone": "^1.6.1",
     "gclass-anims": "1.0.0-beta.23"
   },
   "devDependencies": {

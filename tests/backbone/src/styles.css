@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://backbonejs.org/
+
+   Backbone's docs are a narrow column of near-plain text on a light grey page,
+   so this one is deliberately plain too - the restraint is the resemblance.
+
+   Values are that site's own, read out of the inline <style> block it serves
+   rather than approximated:
+
+     #f4f4f4  the body background
+     #444     link colour (a, a:visited), darkening to #000 on hover
+     #bbb     the pre border, and the sidebar's right rule
+     #ccc     table row rules, sidebar box-shadow
+     #ddd     the inline-code (tt) border
+     #4162a8  the "punch" button face - the site's one saturated accent
+     #1f2937  body text, near-black but not #000
+
+   --color-warn and --color-ok are NOT from backbonejs.org - they exist only to
+   colour the copy button's success/failure state, which that site has no
+   equivalent of.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #4162a8;
+  --color-branddark: #38538c;
+  --color-accent: #4162a8;
+  --color-warn: #a15c00;
+  --color-ok: #2f6f3e;
+
+  --color-page: #f4f4f4;
+  --color-panel: #ffffff;
+  --color-panel2: #ebebeb;
+  --color-ink: #1f2937;
+  --color-muted: #444444;
+  --color-dim: #767676;
+  --color-line: #bbb;
+  --color-code: #ffffff;
+  --color-codeink: #1f2937;
+
+  --font-display: "Helvetica Neue", Helvetica, Arial, -apple-system, ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Helvetica Neue", Helvetica, Arial, -apple-system, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: Monaco, Consolas, "Lucida Console", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-size: 14px;
+  line-height: 22px;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: #ffffff;
+}
+
+pre {
+  text-align: left;
+}

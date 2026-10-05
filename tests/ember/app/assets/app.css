@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://emberjs.com/
+
+   Ember's site is a light page built on a dark type scale with one warm red
+   accent, so this one stays light - the red is the give-away.
+
+   Values are that site's own tokens rather than approximations: #e04e39 is the
+   red used for the Ember mark and the "Get Started" button, and the neutral
+   ramp below is the greys its stylesheet uses for body copy, borders and
+   surfaces (#1c1e21 ink, #545454 muted, #e0e0e0 rules).
+
+   --color-warn and --color-ok are NOT from emberjs.com - they exist only to
+   colour the copy button's success/failure state, which that site has no
+   equivalent of.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #e04e39;
+  --color-branddark: #b93b29;
+  --color-accent: #e04e39;
+  --color-warn: #b26a00;
+  --color-ok: #1f7a45;
+
+  --color-page: #ffffff;
+  --color-panel: #f7f7f7;
+  --color-panel2: #eeeeee;
+  --color-ink: #1c1e21;
+  --color-muted: #545454;
+  --color-dim: #767676;
+  --color-line: #e0e0e0;
+  --color-code: #f7f7f7;
+  --color-codeink: #1c1e21;
+
+  --font-display: "Helvetica Neue", Helvetica, Arial, -apple-system, ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Helvetica Neue", Helvetica, Arial, -apple-system, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-page);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: #ffffff;
+}
+
+pre {
+  text-align: left;
+}

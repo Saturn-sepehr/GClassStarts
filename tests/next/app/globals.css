@@ -3,44 +3,240 @@
 /* ─────────────────────────────────────────────────────────────────────────────
    Design language copied from https://nextjs.org/
 
-   Every colour below is that site's own token, not an approximation.
+   Every colour, shadow and radius below is that site's own token, lifted from
+   the :root / .dark blocks of its shipped stylesheet — not approximated.
+
+   Only the dark theme is kept. Values live in `-value` triples exactly as
+   nextjs.org does it (hue, saturation, lightness) so every colour resolves
+   through one hsla() call, which keeps a light theme a pure copy-paste away.
    ───────────────────────────────────────────────────────────────────────────── */
 
-@theme {
-  --color-brand: #000000;
-  --color-branddark: #000000;
-  --color-accent: #0070f3;
-  --color-warn: #f59e0b;
-  --color-ok: #95bf47;
+:root {
+  /* neutrals */
+  --ds-gray-100-value: 0, 0%, 10%;
+  --ds-gray-200-value: 0, 0%, 12%;
+  --ds-gray-300-value: 0, 0%, 16%;
+  --ds-gray-400-value: 0, 0%, 18%;
+  --ds-gray-500-value: 0, 0%, 27%;
+  --ds-gray-600-value: 0, 0%, 53%;
+  --ds-gray-700-value: 0, 0%, 56%;
+  --ds-gray-800-value: 0, 0%, 49%;
+  --ds-gray-900-value: 0, 0%, 63%;
+  --ds-gray-1000-value: 0, 0%, 93%;
 
-  --color-page: #ffffff;
-  --color-panel: #fafafa;
-  --color-panel2: #f2f2f2;
-  --color-ink: #0a0a0a;
-  --color-muted: #666666;
-  --color-line: #eaeaea;
-  --color-code: #f2f2f2;
-  --color-codeink: #0a0a0a;
+  /* blue */
+  --ds-blue-600-value: 206, 100%, 50%;
+  --ds-blue-700-value: 212, 100%, 48%;
+  --ds-blue-800-value: 212, 100%, 41%;
+  --ds-blue-900-value: 210, 100%, 66%;
+  --ds-blue-1000-value: 206, 100%, 96%;
 
-  --font-display: Geist, -apple-system, ui-sans-serif, system-ui, sans-serif;
-  --font-body: Geist, -apple-system, ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, monospace;
+  /* red */
+  --ds-red-800-value: 358, 69%, 52%;
+  --ds-red-900-value: 358, 100%, 69%;
+
+  /* amber */
+  --ds-amber-700-value: 39, 100%, 57%;
+
+  /* green */
+  --ds-green-800-value: 132, 43%, 39%;
+
+  /* translucent overlays — white in dark, black in light */
+  --ds-gray-alpha-100: #ffffff0f;
+  --ds-gray-alpha-200: #ffffff17;
+  --ds-gray-alpha-300: #ffffff21;
+  --ds-gray-alpha-400: #ffffff24;
+  --ds-gray-alpha-500: #ffffff3d;
+  --ds-gray-alpha-600: #ffffff82;
+  --ds-gray-alpha-700: #ffffff8a;
+  --ds-gray-alpha-800: #ffffff78;
+  --ds-gray-alpha-900: #ffffff9c;
+  --ds-gray-alpha-1000: #ffffffeb;
+
+  /* surfaces */
+  --ds-background-100-value: 0, 0%, 4%;
+  --ds-background-200-value: 0, 0%, 0%;
+
+  --ds-black: #000000;
+  --ds-white: #ffffff;
+  --ds-contrast-fg: #fff;
+
+  /* legacy geist palette, dark values */
+  --geist-foreground: #fff;
+  --geist-background: #000;
+  --accents-1: #111;
+  --accents-2: #333;
+  --accents-3: #444;
+  --accents-4: #666;
+  --accents-5: #888;
+  --accents-6: #999;
+  --accents-7: #eaeaea;
+  --accents-8: #fafafa;
+  --geist-link-color: var(--ds-blue-900);
+  --geist-success: #0070f3;
+  --geist-error: red;
+  --geist-warning: #f5a623;
+  --geist-cyan: #50e3c2;
+  --geist-violet: #7928ca;
+  --geist-selection: var(--ds-gray-1000);
+  --geist-selection-text-color: var(--ds-gray-100);
+  --geist-radius: 6px;
+  --geist-marketing-radius: 8px;
+  --color-next-blue: #0057ff;
+  --color-next-blue-hover: color-mix(in oklab, var(--color-next-blue), white 10%);
+
+  /* elevation */
+  --ds-shadow-background-border: 0 0 0 1px var(--ds-background-200);
+  --ds-shadow-border-base: 0 0 0 1px #ffffff25;
+  --ds-shadow-2xs: 0px 1px 1px #00000029;
+  --ds-shadow-xs: 0px 1px 2px #00000029;
+  --ds-shadow-small: 0px 1px 2px #00000029;
+  --ds-shadow-border: var(--ds-shadow-border-base),
+    var(--ds-shadow-background-border);
+  --ds-shadow-medium: 0px 2px 2px #00000052, 0px 8px 8px -8px #00000029;
+  --ds-shadow-large: 0px 2px 2px #0000000a, 0px 8px 16px -4px #0000000a;
+  --ds-shadow-xl: 0px 1px 1px #00000005, 0px 4px 8px -4px #0000000a,
+    0px 16px 24px -8px #0000000f;
+  --ds-shadow-2xl: 0px 1px 1px #00000005, 0px 8px 16px -4px #0000000a,
+    0px 24px 32px -8px #0000000f;
+  --ds-focus-color: var(--ds-blue-900);
+  --ds-focus-ring: 0 0 0 2px var(--ds-background-100),
+    0 0 0 4px var(--ds-focus-color);
+}
+
+:root {
+  --ds-gray-100: hsla(var(--ds-gray-100-value), 1);
+  --ds-gray-200: hsla(var(--ds-gray-200-value), 1);
+  --ds-gray-300: hsla(var(--ds-gray-300-value), 1);
+  --ds-gray-400: hsla(var(--ds-gray-400-value), 1);
+  --ds-gray-500: hsla(var(--ds-gray-500-value), 1);
+  --ds-gray-600: hsla(var(--ds-gray-600-value), 1);
+  --ds-gray-700: hsla(var(--ds-gray-700-value), 1);
+  --ds-gray-800: hsla(var(--ds-gray-800-value), 1);
+  --ds-gray-900: hsla(var(--ds-gray-900-value), 1);
+  --ds-gray-1000: hsla(var(--ds-gray-1000-value), 1);
+  --ds-blue-600: hsla(var(--ds-blue-600-value), 1);
+  --ds-blue-700: hsla(var(--ds-blue-700-value), 1);
+  --ds-blue-800: hsla(var(--ds-blue-800-value), 1);
+  --ds-blue-900: hsla(var(--ds-blue-900-value), 1);
+  --ds-blue-1000: hsla(var(--ds-blue-1000-value), 1);
+  --ds-red-800: hsla(var(--ds-red-800-value), 1);
+  --ds-red-900: hsla(var(--ds-red-900-value), 1);
+  --ds-amber-700: hsla(var(--ds-amber-700-value), 1);
+  --ds-green-800: hsla(var(--ds-green-800-value), 1);
+  --ds-background-100: hsla(var(--ds-background-100-value), 1);
+  --ds-background-200: hsla(var(--ds-background-200-value), 1);
+}
+
+/* ── semantic aliases used by the page ──────────────────────────────────────
+   Same names the markup already used, now pointing at nextjs.org tokens. */
+
+@theme inline {
+  --color-page: var(--ds-background-200);
+  --color-panel: var(--ds-gray-100);
+  --color-panel2: var(--ds-gray-200);
+  --color-ink: var(--ds-gray-1000);
+  --color-muted: var(--ds-gray-900);
+  --color-faint: var(--ds-gray-600);
+  --color-line: var(--ds-gray-alpha-400);
+
+  --color-brand: var(--ds-gray-1000);
+  --color-branddark: var(--ds-gray-900);
+  --color-accent: var(--color-next-blue);
+  --color-warn: var(--geist-warning);
+  --color-ok: var(--ds-green-800);
+  --color-danger: var(--geist-error);
+
+  --color-code: var(--ds-background-100);
+  --color-codeink: var(--ds-gray-1000);
+
+  --color-background-100: var(--ds-background-100);
+  --color-background-200: var(--ds-background-200);
+
+  /* type scale nextjs.org uses on its marketing pages */
+  --text-heading-64: 64px;
+  --text-heading-64--line-height: 64px;
+  --text-heading-64--letter-spacing: -0.05em;
+  --text-heading-32: 32px;
+  --text-heading-32--line-height: 40px;
+  --text-heading-32--letter-spacing: -0.04em;
+  --text-copy-20: 20px;
+  --text-copy-20--line-height: 30px;
+  --text-copy-20--letter-spacing: -0.01em;
+
+  --color-gray-100: var(--ds-gray-100);
+  --color-gray-200: var(--ds-gray-200);
+  --color-gray-300: var(--ds-gray-300);
+  --color-gray-400: var(--ds-gray-400);
+  --color-gray-500: var(--ds-gray-500);
+  --color-gray-600: var(--ds-gray-600);
+  --color-gray-700: var(--ds-gray-700);
+  --color-gray-800: var(--ds-gray-800);
+  --color-gray-900: var(--ds-gray-900);
+  --color-gray-1000: var(--ds-gray-1000);
+  --color-blue-700: var(--ds-blue-700);
+  --color-blue-900: var(--ds-blue-900);
+
+  --font-display: var(--font-geist-sans), -apple-system, ui-sans-serif,
+    system-ui, sans-serif;
+  --font-body: var(--font-geist-sans), -apple-system, ui-sans-serif,
+    system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
+    Monaco, Consolas, monospace;
 }
 
 html {
   scroll-behavior: smooth;
+  color-scheme: dark;
 }
 
 body {
   font-family: var(--font-body);
   background: var(--color-page);
   color: var(--color-ink);
+  max-width: 1920px;
+  margin-inline: auto;
   -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: contain;
+  line-height: 1.65;
 }
 
 ::selection {
-  background: var(--color-accent);
-  color: var(--color-page);
+  background: var(--geist-selection);
+  color: var(--geist-selection-text-color);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Hero grid — the dashed rules and circles behind nextjs.org's headline.
+
+   Each rule is 1px wide with a 1px 5px dash tile built from a hard-stop
+   gradient (colour to 50%, transparent after), which is how nextjs.org
+   renders them. Two of the four sit at 0.3 opacity to give the layout depth.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.hero-grid-line {
+  position: absolute;
+  width: 1px;
+  background-image: linear-gradient(
+    rgba(255, 255, 255, 0.45),
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 0,
+    transparent
+  );
+  background-size: 1px 5px;
+  pointer-events: none;
+}
+
+.hero-grid-circle {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
 }
 
 @source "./**/*.{js,jsx,ts,tsx}";

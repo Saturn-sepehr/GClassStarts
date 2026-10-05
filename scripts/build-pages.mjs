@@ -41,7 +41,7 @@ const outDir = join(repoRoot, outArg);
  * `from` is relative to tests/<env>/.
  */
 const LAYOUT = {
-  vite:      { from: "dist", index: "index.html" },
+  jquery:    { from: "dist", index: "index.html" },
   react:     { from: "dist", index: "index.html" },
   vue:       { from: "dist", index: "index.html" },
   preact:    { from: "dist", index: "index.html" },

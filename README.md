@@ -20,7 +20,7 @@ The only reason this exists is to test all frameworks properly and spice up the 
 | Environment | Toolchain | Init hook used |
 |---|---|---|
 | `vanilla` | none — browser import map | `initAnimations()` from the entry module |
-| `vite` | vite 8 | `initAnimations()` from the entry module |
+| `jquery` | vite 8, jQuery 4 | `$(function () { initAnimations() })` |
 | `react` | vite 8, React 19 (StrictMode) | `useEffect(() => initAnimations(), [])` |
 | `vue` | vite 8, Vue 3 | `onMounted` |
 | `preact` | vite 8, Preact 11 | `useEffect` + `popstate` re-init |
@@ -59,7 +59,7 @@ utility classes against a real utility framework in each one.
 
 | Path | Environments | Integration |
 |---|---|---|
-| Vite plugin | vite, react, vue, preact, solid, lit, svelte, sveltekit, qwik, remix | `@tailwindcss/vite` |
+| Vite plugin | jquery, react, vue, preact, solid, lit, svelte, sveltekit, qwik, remix | `@tailwindcss/vite` |
 | Nested Vite config | astro, nuxt | `vite.plugins` in `astro.config.mjs` / `nuxt.config.ts` |
 | PostCSS | next, angular | `@tailwindcss/postcss` + `postcss.config.mjs` / `.postcssrc.json` |
 | CLI | vanilla | `@tailwindcss/cli` as the CSS build step — still **no JS bundler** |
@@ -84,7 +84,7 @@ node scripts/verify-all.mjs --skip-install   # reuse node_modules
 Output:
 
 ```
-vite        pass
+jquery      pass
 react       pass
 ...
 14/15 environments passed
@@ -142,7 +142,7 @@ to static output:
 
 | Environment | Configuration |
 |---|---|
-| vite, react, vue, preact, solid, lit, svelte | `base` in `vite.config.js` |
+| jquery, react, vue, preact, solid, lit, svelte | `base` in `vite.config.js` |
 | astro | `base` in `astro.config.mjs` |
 | next | `output: 'export'`, `basePath`, `trailingSlash` |
 | nuxt | `nuxt generate` + `app.baseURL` |

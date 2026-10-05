@@ -38,7 +38,7 @@ jobs:
       matrix:
         env:
           - vanilla
-          - vite
+          - jquery
           - react
           - vue
           - preact

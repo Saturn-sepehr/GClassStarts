@@ -79,6 +79,9 @@ export default function App() {
 
   
   </main>
+  <footer>
+    <p className="mb-10">All colours sampled from <a href="https://react.dev/" className="underline text-brand">https://react.dev/</a></p>
+  </footer>
     </div>
   );
 }

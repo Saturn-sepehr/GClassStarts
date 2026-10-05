@@ -1,0 +1,357 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://jquery.com/
+
+   Every value is jQuery's own, read out of the stylesheet it serves —
+   wp-content/themes/jquery/css/base.css — with the line numbers cited so each
+   one can be checked against the original.
+
+   The page is built in the order the real one stacks, and each layer is named
+   for its selector there:
+
+     #banner             the announcement strip. Small, centred, on white.
+     #global-nav         the #232323 strip: project marks on the left, utility
+                         links on the right, split into cells by paired 1px
+                         light/dark rules (:909-946)
+     #container          background #0769ad, max-width 1240px, centred,
+                         0 20px padding (:785-790). This is why jQuery has
+                         always read as a blue page with a dark strip on top —
+                         the blue is not an accent, it is the page.
+     nav#main            a translucent black panel sitting ON that blue:
+                         rgba(0,0,0,.18), 10px 10px 0 0 corners, 1px side
+                         rules, a 1px rgba(250,250,250,.14) top rule and a
+                         0 0 5px rgba(1,1,1,.7) shadow (:1198-1250)
+     #banner-secondary   the dark tile band. Its background IS
+                         ../images/dark-grey-tile.png (:1573) — the texture is
+                         not invented, it is the site's own asset
+     #content            white, two columns, with h2.block section bars
+
+   Colour, from the theme's own "Brand Colors for General Use" list (:1107-1117):
+
+     #0769ad  primary-blue     the container field, the jQuery mark
+     #7acef4  secondary-blue   accent blue inside the dark bands
+     #131b28  navy-blue        deepest brand tone
+     #b24926  secondary-orange the link colour, and the focus border
+     #ececec                   the h2.block section bar
+     #232323                   the global nav charcoal
+     #f8f8ff                   the code block field
+
+   Type — the split is deliberate and it is in the theme (:777, :174-177):
+
+     body      15px/22.5px "Helvetica Neue", HelveticaNeue, Helvetica, Arial
+     headings  Cairo bold, marked !important so nothing overrides it.
+               #content h2 24px/24px #333, #content h3 20px/20px #666 (:1503,
+               :1510); h2.block 20px on a #ececec bar with a 0 1px 0 #fff
+               text-shadow (:1517-1520)
+
+   Shape is modest on purpose. A border-radius census over the whole theme gives
+   5px (the code blocks, :3065), 4px (the sub-nav hover cells), 3px, and 2px —
+   the one deliberately round thing being nav#main's 10px top corners. There are
+   no large radii and no container drop shadows on the real page.
+
+   --color-warn and --color-ok are NOT from jquery.com — they exist only to
+   colour the copy button's success/failure state, which that site has no
+   equivalent of.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #0769ad;
+  --color-branddark: #05507f;
+  --color-accent: #b24926;
+  --color-warn: #b24926;
+  --color-ok: #3eb249;
+
+  /* The blue field the whole page sits in. */
+  --color-page: #0769ad;
+  --color-blue2: #7acef4;
+  --color-navy: #131b28;
+
+  --color-charcoal: #232323;
+  --color-bannerbar: #ececec;
+
+  /* The white content column. */
+  --color-panel: #ffffff;
+  --color-panel2: #f5f5f5;
+  --color-ink: #333333;
+  --color-muted: #666666;
+  --color-dim: #999999;
+  --color-line: #cccccc;
+  --color-code: #f8f8ff;
+  --color-codeink: #333333;
+  --color-buttonsurface: #d18f4f;
+
+  --font-display: Cairo, "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;
+  --font-body: "Helvetica Neue", HelveticaNeue, Helvetica, Arial, sans-serif;
+  --font-mono: Consolas, Menlo, ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* base.css:777 verbatim — 15px on a 22.5px line. */
+body {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 22.5px;
+  background: var(--color-page);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* base.css:83 — a pale cyan highlight, not the brand blue. */
+::selection {
+  background: #b4efff;
+  color: #000000;
+}
+
+pre {
+  text-align: left;
+}
+
+/* ── Chrome ────────────────────────────────────────────────────────────────── */
+
+/* #banner — the announcement strip. White, small, centred. */
+.banner {
+  background: #ffffff;
+  color: var(--color-ink);
+  font-size: 13px;
+  line-height: 17px;
+  padding: 4px 20px;
+  text-align: center;
+}
+
+.banner a {
+  color: var(--color-accent);
+}
+
+/* #global-nav — the charcoal strip. Two stacked gradients rather than a flat
+   fill: rgb(75,75,75)→#232323, then a transparent→rgb(20,20,20) wash across
+   the bottom 8% to seat it. Fixed 34px height, as on the real site. */
+.global-nav {
+  background: var(--color-charcoal);
+  background-image:
+    linear-gradient(to bottom, transparent 92%, rgb(20, 20, 20)),
+    linear-gradient(to bottom, rgb(75, 75, 75), var(--color-charcoal));
+}
+
+/* The cells are split by a light edge on one side and a dark one on the other,
+   so the strip reads as segmented rather than as a plain bar. */
+.global-nav li {
+  border-left: 1px solid rgb(255 255 255 / 0.0977);
+  border-right: 1px solid rgb(0 0 0 / 0.3477);
+}
+
+.global-nav .mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 34px;
+}
+
+.global-nav .mark.on {
+  background: #0b4c78;
+  box-shadow: inset 0 0 5px rgb(0 0 0 / 0.6);
+}
+
+.global-nav a {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  text-shadow: 0 0 2px #000000;
+}
+
+/* ── nav#main — the panel that sits on the blue ───────────────────────────── */
+
+/* base.css:1198-1205. Translucent black over #0769ad, so the panel is a
+   darker blue rather than a separate colour; 10px top corners only, because it
+   meets the content column below it. */
+.main-nav {
+  background-color: rgb(0 0 0 / 0.18);
+  border-radius: 10px 10px 0 0;
+  border-right: 1px solid rgb(2 2 2 / 0.28);
+  border-left: 1px solid rgb(2 2 2 / 0.28);
+  border-top: 1px solid rgb(250 250 250 / 0.14);
+  box-shadow: 0 0 5px rgb(1 1 1 / 0.7);
+}
+
+.main-nav a {
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 32px;
+  padding: 0 10px;
+  text-decoration: none;
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 0.76);
+}
+
+/* base.css:1235-1243 — the hover/current cell is an inset well. */
+.main-nav a:hover,
+.main-nav a.current {
+  border-radius: 4px;
+  border: 1px solid rgb(0 0 0 / 0.25);
+  box-shadow:
+    inset 0 0 5px rgb(0 0 0 / 0.4),
+    rgb(255 255 255 / 0.1) 0 1px 0;
+}
+
+/* The search field in the panel's right half. base.css:456-473 — 8px 12px
+   padding, and the focus state is a #b24926 border. */
+.main-search {
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 15px;
+  color: var(--color-ink);
+}
+
+.main-search:focus {
+  outline: none;
+  border: 1px solid var(--color-accent);
+}
+
+/* ── #banner-secondary — the dark tile band ───────────────────────────────── */
+
+/* base.css:1572-1576. The band's background IS jquery.com's own
+   dark-grey-tile.png; nothing about the texture is invented here. Text inside
+   is white with a soft black shadow (:1578-1583), and body copy is #ccc (:1595). */
+.tile-band {
+  background-image: url("./dark-grey-tile.png");
+  background-repeat: repeat;
+
+}
+
+.tile-band h2 {
+  color: #ffffff;
+  text-shadow: 0 0 4px rgb(0 0 0 / 0.85);
+}
+
+.tile-band p {
+  color: #cccccc;
+}
+
+.tile-band .feature {
+  color: var(--color-blue2);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+}
+
+/* ── #content — the white column ──────────────────────────────────────────── */
+
+/* #content h2.block / h1.block — the grey section bars. base.css:1517-1520:
+   10px 2% padding on #ececec, with a 1px white text-shadow below the text. */
+.block {
+  
+  padding: 10px 2%;
+  text-shadow: 0 1px 0 #ffffff;
+}
+
+/* base.css:1503-1512 — #content h2 24px/24px #333, h3 20px/20px #666. */
+.page h1,
+.page h2,
+.page h3,
+.page .block {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.page h1 {
+  font-size: 2em;
+  line-height: 1.2;
+}
+
+.page h2 {
+  font-size: 24px;
+  line-height: 24px;
+  color: var(--color-ink);
+}
+
+.page h3 {
+  font-size: 20px;
+  line-height: 20px;
+  color: var(--color-muted);
+}
+
+/* Links are the theme's #b24926 and they are underlined. */
+.page a {
+ 
+}
+
+.page ul.resources {
+  list-style: disc;
+  padding-left: 20px;
+}
+
+.page ul.resources li {
+  margin-bottom: 6px;
+}
+
+/* ── Components ────────────────────────────────────────────────────────────── */
+
+/* jquery.com's button, verbatim (base.css:1647-1682): 5px radius, 1px #999
+   border, white text over a #000 text-shadow, and the four-way inset white
+   highlight that gives it the raised plastic look. */
+.btn {
+  border-radius: 5px;
+  border: 1px solid #999999;
+  box-shadow:
+    0 0 5px rgb(0 0 0 / 0.28),
+    inset 0 1px 0 rgb(255 255 255 / 0.45),
+    inset 0 -1px 0 rgb(255 255 255 / 0.45),
+    inset 1px 0 0 rgb(255 255 255 / 0.45),
+    inset -1px 1px 0 rgb(255 255 255 / 0.45);
+  color: #ffffff;
+  text-shadow: 0 -1px 1px rgb(0 0 0 / 0.35);
+  background-color: var(--color-buttonsurface);
+  font-family: var(--font-display);
+  font-weight: 700;
+  transition: all 0.2s;
+  
+}
+
+.btn:hover {
+  border-color: var(--color-accent);
+  background-color: #cc8540;
+}
+
+/* ── Code blocks ───────────────────────────────────────────────────────────── */
+
+/* base.css:2805 (background #f8f8ff, 0.5em padding), :3065 (5px radius) and
+   :3061 (the gutter's 2px #999 right rule). The gutter is a real table column
+   there, so it is one here too — the numbers are text, not decoration. */
+.code-block {
+  background: var(--color-code);
+  border-radius: 5px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.code-block .gutter {
+  border-right: 2px solid #999999;
+  color: var(--color-dim);
+  text-align: right;
+  padding: 0 0.5em 0 1em;
+  user-select: none;
+}
+
+.code-block .code {
+  padding: 0 0.5em;
+  color: var(--color-codeink);
+  white-space: pre;
+}
+
+/* A couple of token colours so the sample reads like the syntaxhighlighter
+   output on the real page rather than as one flat block. */
+.tok-str {
+  color: #d14;
+}
+
+.tok-fn {
+  color: #333333;
+}

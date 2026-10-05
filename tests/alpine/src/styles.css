@@ -1,0 +1,70 @@
+@import url("https://fonts.googleapis.com/css2?family=Karla:wght@400;600;800&display=swap");
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://alpinejs.dev/
+
+   Alpine's site is a light page built around a heavy 4px charcoal border and
+   one teal accent, so this one stays light - the 4px borders are the give-away.
+
+   The values below are that site's own, taken from the markup and inline CSS
+   it serves rather than approximated:
+
+     #48a9c1  the teal the directive names are highlighted in
+     #c9f3fd  ::selection background, declared in its inline <style>
+     #1f2937  gray-800 - the nav, the button, the hero backdrop
+     #374151  gray-700 - the button hover
+     #e5e7eb  gray-200 - the sponsor card borders, footer top rule
+
+   --color-warn and --color-ok are NOT from alpinejs.dev - they exist only to
+   colour the copy button's success/failure state, which that site has no
+   equivalent of.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #48a9c1;
+  --color-branddark: #2b7d90;
+  --color-accent: #48a9c1;
+  --color-warn: #b45309;
+  --color-ok: #047857;
+
+  --color-page: #ffffff;
+  --color-panel: #f9fafb;
+  --color-panel2: #f3f4f6;
+  --color-ink: #1f2937;
+  --color-ink2: #374151;
+  --color-muted: #4b5563;
+  --color-dim: #6b7280;
+  --color-line: #e5e7eb;
+  --color-code: #f9fafb;
+  --color-codeink: #1f2937;
+
+  --font-display: "Karla", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-body: "Karla", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "MonoLisa", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-page);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: #c9f3fd;
+  color: var(--color-ink);
+}
+
+/* Alpine's own guard: hide x-cloak content until it initialises. */
+[x-cloak] {
+  display: none;
+}
+
+pre {
+  text-align: left;
+}

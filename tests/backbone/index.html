@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>gclass-anims &mdash; Backbone.js</title>
+  </head>
+  <body>
+<div class="gc-bar scroll-progress" />
+
+<header class="sticky top-0 z-40 expand-down ease-expo border-b border-line bg-page">
+  <div class="mx-auto flex max-w-4xl items-center gap-4 px-6 py-4">
+    <span class="flex shrink-0 items-center gap-2">
+      <svg width="32px" height="32px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Backbone.js logo"><path fill="#1f2937" d="M12 1.6 2.2 7v10L12 22.4 21.8 17V7L12 1.6zm0 2.31 8.06 4.48v8.74L12 21.6l-8.06-4.47V8.39L12 3.91z"/><path fill="#4162a8" d="M12 6.4 6.6 9.5v6.2L12 18.8l5.4-3.1V9.5L12 6.4z"/></svg>
+      +
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54 54" width="32px" height="32px" role="img" aria-label="GClass logo">
+  <path fill="#4162a8" d="M14.64 0 L8.30 23.87 L12.85 25.44 C12.86 25.41 12.88 25.38 12.89 25.36 C13.76 23.58 15.03 22.07 16.62 20.94 L16.62 20.93 C17.14 20.56 17.69 20.25 18.27 19.99 Z M22.70 21.60 C21.06 21.60 19.60 22.05 18.32 22.96 C17.07 23.85 16.09 25.01 15.39 26.45 C14.69 27.86 14.34 29.31 14.34 30.80 C14.34 32.30 14.67 33.72 15.31 35.07 C15.98 36.40 16.91 37.47 18.12 38.29 C19.34 39.12 20.74 39.53 22.31 39.53 C24.16 40.42 25.74 39.93 27.03 38.91 C28.34 37.88 29.24 36.55 29.73 34.93 L30.04 34.88 C30.30 34.79 30.52 34.64 30.69 34.43 C30.87 34.21 30.96 33.94 30.96 33.65 C30.96 33.00 30.68 32.59 30.12 32.42 C29.17 32.12 28.20 31.97 27.21 31.97 C26.51 31.97 25.82 32.01 25.14 32.10 C24.47 32.19 23.99 32.29 23.70 32.42 C23.07 32.68 22.75 33.11 22.75 33.70 C22.75 34.10 22.88 34.42 23.12 34.67 C23.38 34.90 23.69 35.01 24.04 35.01 C24.21 35.01 24.45 34.97 24.74 34.88 C25.46 34.70 26.11 34.60 26.71 34.56 L27.10 34.56 C26.70 35.59 26.08 36.40 25.24 36.97 C24.40 37.53 23.42 37.81 22.31 37.81 C21.17 37.81 20.19 37.50 19.37 36.89 C18.57 36.26 17.96 35.48 17.56 34.53 C17.16 33.59 16.96 32.64 16.96 31.70 C16.96 30.90 17.16 29.98 17.56 28.95 C17.96 27.92 18.59 27.03 19.45 26.28 C20.32 25.51 21.40 25.13 22.70 25.13 C23.94 25.13 24.93 25.41 25.66 25.99 C26.40 26.55 26.92 27.25 27.24 28.09 C27.45 28.64 27.87 28.92 28.49 28.92 C28.88 28.92 29.18 28.82 29.41 28.61 C29.64 28.38 29.75 28.08 29.75 27.72 C29.75 27.23 29.49 26.56 28.97 25.73 C28.44 24.89 27.65 24.14 26.58 23.50 C25.53 22.83 24.24 22.50 22.70 22.50 Z M35.84 23.02 L32.05 26.32 C32.18 26.74 32.25 27.19 32.25 27.72 C32.25 28.57 31.89 29.59 31.23 30.29 C31.81 30.55 32.42 30.86 32.82 31.44 C33.23 32.05 33.41 32.72 33.45 33.33 L53.47 40.22 Z M15.73 40.51 L0 54.19 L23.71 47.53 L22.82 42.92 C22.65 42.93 22.48 42.93 22.31 42.93 C20.31 42.93 18.36 42.37 16.73 41.28 C16.38 41.05 16.05 40.79 15.73 40.51 Z"/>
+</svg>
+    </span>
+    <nav class="ml-auto hidden items-center gap-5 text-sm font-medium text-muted sm:flex">
+      <a class="hover:text-brand click-hover amount-2" href="#install">Install</a>
+      <a class="hover:text-brand click-hover amount-2" href="#quick-start">Quick start</a>
+      <a class="hover:text-brand click-hover amount-2" href="#anatomy">Class anatomy</a>
+      <a class="hover:text-brand click-hover amount-2" href="#notes">Notes</a>
+    </nav>
+    <a class="shrink-0 text-sm font-bold text-brand hover:underline" href="https://saturn-sepehr.github.io/GClass/documentation/quick-start/" aria-label="Return to the GClass documentation">return to docs</a>
+  </div>
+</header>
+
+<main class="mx-auto max-w-4xl px-6 pb-24">
+  <section class="py-16">
+    <p class="font-mono text-sm text-muted">not affiliated with or endorsed by the Backbone.js team</p>
+    <p class="font-mono text-sm text-brand underline"><a href="https://backbonejs.org/">Official Backbone.js website</a></p>
+    <h1 class="mt-3 font-display text-5xl font-bold leading-[1.1] tracking-tight scroll letter spawn-text-spawn-down">
+      gclass-anims <span class="text-brand">for Backbone.js</span>
+    </h1>
+    <p class="mt-6 max-w-2xl text-lg leading-relaxed text-muted scroll typewriter time-2">
+      Backbone splits data from UI: models own state, views re-render when it
+      changes. gclass-anims animates whatever the view produced. Call
+      <code class="font-mono">initAnimations()</code> once on ready - every
+      <code class="font-mono">view.render()</code> after that is picked up
+      automatically.
+    </p>
+    <a href="#install" class="mt-8 inline-block rounded-md bg-brand px-8 py-3 text-sm font-bold text-white transition-colors hover:bg-branddark click-expand compatibility amount-4">Get started</a>
+  </section>
+
+  <section id="install" class="scroll-mt-24 py-10">
+    <h2 class="font-display text-3xl font-bold tracking-tight scroll letter spawn-text-spawn-down">Install</h2>
+    <p class="mt-3 text-muted scroll typewriter">GClass ships as the npm package gclass-anims. GSAP is a regular dependency and is installed automatically - nothing is bundled or redistributed. Backbone is a peer of this page, not a dependency of the library.</p>
+    <div class="mt-5"><pre class="group relative overflow-x-auto scroll spawn-down text-left rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-codeink"><code>npm install gclass-anims backbone</code><button type="button" data-copy class="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
+  </section>
+
+  <section id="quick-start" class="scroll-mt-24 py-10">
+    <h2 class="font-display text-3xl font-bold tracking-tight scroll letter spawn-text-spawn-down">Quick start</h2>
+    <p class="mt-3 text-muted scroll typewriter">Import initAnimations once your DOM is ready. From then on, everything is class-driven: add a utility class to an element and it animates - no per-element JS, no config files.</p>
+
+    <h3 class="mt-7 font-display text-lg font-bold">Usage - on document ready</h3>
+    <div class="mt-4"><pre class="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-left text-codeink"><code>// main.js
+import Backbone from 'backbone'
+import { initAnimations } from 'gclass-anims'
+
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  initAnimations()
+
+  new AppView({ el: '#app' }).render()
+})</code><button type="button" data-copy class="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
+
+    <h3 class="mt-7 font-display text-lg font-bold">Live - a Backbone.View rendering a collection</h3>
+    <p class="mt-3 text-muted scroll typewriter">The button calls <code class="font-mono">collection.add()</code>, which fires the collection's <code class="font-mono">"add"</code> event, which re-renders the view. Every row that render inserts carries <code class="font-mono">.appear</code> and animates - no re-initialising.</p>
+    <div class="mt-5 flex flex-wrap items-center gap-3">
+      <button type="button" id="add-row" class="rounded-md bg-brand px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-branddark click-hover amount-2">Add a model to the collection</button>
+      <button type="button" id="reset-rows" class="rounded-md border border-line px-4 py-2 text-sm font-bold text-muted transition-colors hover:border-brand hover:text-brand click-hover amount-2">Reset collection</button>
+      <span id="row-count" class="font-mono text-xs text-muted">0 models</span>
+    </div>
+    <div id="rows" class="mt-4 grid gap-2"></div>
+
+    <div class="mt-4"><pre class="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-left text-codeink"><code>const RowView = Backbone.View.extend({
+  tagName: 'li',
+  className: 'appear spawn-up time-1 rounded-lg border border-line bg-panel p-4 font-mono text-[13px]',
+
+  render() {
+    this.$el.text(`row ${this.model.get('n')} - rendered by Backbone.View`)
+    return this
+  },
+})
+
+// collection "add" -&gt; view re-renders -&gt; MutationObserver picks the row up
+this.listenTo(this.collection, 'add', () =&gt; this.render())</code><button type="button" data-copy class="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
+  </section>
+
+  <section id="anatomy" class="scroll-mt-24 py-10">
+    <h2 class="font-display text-3xl font-bold tracking-tight scroll letter spawn-text-spawn-down">Class anatomy</h2>
+    <p class="mt-3 text-muted scroll typewriter-split letter">Class anatomy: <strong class="text-ink">behaviour</strong> (.spawn-up) + <strong class="text-ink">trigger</strong> (.scroll, .appear) + <strong class="text-ink">tunables</strong> (.time-1, .ease-back, .priority-2). Combine freely - order in class does not matter.</p>
+    <div class="mt-5 scroll spawn-down"><pre class="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-left text-codeink"><code>// behaviour + trigger + tunables
+&lt;div class="appear scroll spawn-up"&gt;…&lt;/div&gt;
+&lt;div class="appear scroll order ease-expo time-1 priority-2"&gt;…&lt;/div&gt;
+&lt;div class="float"&gt;loops forever&lt;/div&gt;
+&lt;button class="magnet click-expand"&gt;magnet + click&lt;/button&gt;</code><button type="button" data-copy class="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
+    <div class="mt-6 grid gap-4 sm:grid-cols-3">
+      <div class="rounded-lg border border-line bg-panel p-4 scroll spawn-down order priority-2"><h3 class="font-display font-bold text-brand">Behaviour</h3><p class="mt-1 font-mono text-[12px] text-muted">spawn-up, float, marquee, magnet</p></div>
+      <div class="rounded-lg border border-line bg-panel p-4 scroll spawn-down order priority-2"><h3 class="font-display font-bold text-brand">Trigger</h3><p class="mt-1 font-mono text-[12px] text-muted">appear, scroll, preserve</p></div>
+      <div class="rounded-lg border border-line bg-panel p-4 scroll spawn-down order priority-2"><h3 class="font-display font-bold text-brand">Tunables</h3><p class="mt-1 font-mono text-[12px] text-muted">order, ease-expo, time-1, priority-2</p></div>
+    </div>
+  </section>
+
+  <section id="notes" class="scroll-mt-24 py-10">
+    <h2 class="font-display text-3xl font-bold tracking-tight scroll letter spawn-text-spawn-down">Notes</h2>
+    <ul class="mt-6 space-y-4">
+      <li class="rounded-lg border border-line bg-panel p-5 scroll spawn-down order priority-3"><strong class="text-ink">One ready call.</strong> <code class="font-mono">initAnimations()</code> runs once, before the first render. Re-renders replace innerHTML, and the engine treats every new node as a fresh mount - which is exactly what a Backbone view does.</li>
+      <li class="rounded-lg border border-line bg-panel p-5 scroll spawn-down order priority-3"><strong class="text-ink">Re-renders replay.</strong> A <code class="font-mono">render()</code> that swaps a subtree rebuilds the elements, so <code class="font-mono">.appear</code> plays again and <code class="font-mono">.scroll</code> re-measures. Put <code class="font-mono">.preserve</code> on anything that should survive a re-render - the header and nav.</li>
+      <li class="rounded-lg border border-line bg-panel p-5 scroll spawn-down order priority-3"><strong class="text-ink">GSAP stays external.</strong> ESM is <code class="font-mono">dist/gclass.esm.js</code> and CJS is <code class="font-mono">dist/gclass.cjs</code> via <code class="font-mono">vite.lib.config.js</code> - GSAP is external, not bundled. The build is tree-shakable with <code class="font-mono">sideEffects: false</code>.</li>
+    </ul>
+  </section>
+
+  <footer class="border-t border-line pt-8 text-sm text-muted">
+    <p>Not affiliated with or endorsed by the Backbone.js team. Colours and type sampled from <a class="text-brand hover:underline" href="https://backbonejs.org/">https://backbonejs.org/</a>. Running gclass-anims 1.0.0-beta.23 from npm with Backbone <span id="backbone-version"></span>.</p>
+  </footer>
+</main>
+
+<script type="module" src="/src/main.js"></script>
+  </body>
+</html>

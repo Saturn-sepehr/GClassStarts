@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>gclass-anims &mdash; jQuery</title>
+  </head>
+  <body>
+
+<!-- Note: written as <div></div>, never <div />. This is plain HTML, and the
+     parser does not honour self-closing syntax on a div - a <div /> silently
+     never closes and swallows the rest of the document into itself. -->
+<div class="gc-bar scroll-progress bg-blue2 "></div>
+
+<!-- #banner — the announcement strip -->
+<div class="banner expand-down ease-expo">
+  Not affiliated with or endorsed by jQuery &mdash;
+  <a href="https://jquery.com/">Official jQuery website</a>
+</div>
+
+<!-- #global-nav — the charcoal strip: project marks left, utility links right -->
+<nav class="global-nav expand-down ease-expo priority-2">
+  <ul class="mx-auto flex h-[34px] max-w-[1240px] list-none items-stretch px-5">
+   
+    <li><a class="flex h-[34px] items-center px-4" href="https://saturn-sepehr.github.io/GClass/documentation/quick-start/">Return to docs</a></li>
+  </ul>
+</nav>
+
+<!-- #container — the blue field, capped at 1240px -->
+<div class="mx-auto max-w-[1240px] px-5 pb-12">
+  <div class="page">
+
+    <!-- The logo lockup, top-left of the blue as on jquery.com -->
+    <div class="py-6 pl-2 spawn-left ease-expo">
+      <svg width="440" height="124" viewBox="0 0 167.72614 47.389816" version="1.1" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="jQuery and GClass"><g transform="translate(-7.5707513,-61.166843)"><path style="fill:#f9f9f9;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers" d="m 89.200146,93.330475 c -3.358351,-0.433528 -5.021093,-1.491417 -6.158283,-3.918095 -0.597842,-1.27575 -0.667739,-1.702068 -0.642189,-3.916895 0.04957,-4.297666 1.636729,-8.720505 4.094364,-11.409547 3.963707,-4.336928 11.783671,-4.852662 15.540172,-1.024888 2.81519,2.868608 2.93081,6.247818 0.44149,12.904174 -0.60782,1.62529 -1.05085,3.009344 -0.98452,3.075675 0.0663,0.06633 0.65647,0.144174 1.31141,0.172985 1.10251,0.0485 1.18516,0.09687 1.11453,0.652325 -0.0868,0.682268 -0.45806,2.015347 -0.84202,3.023145 l -0.2604,0.683466 -6.121046,-0.03259 C 93.327077,93.522319 89.955,93.427918 89.200146,93.330475 Z m 7.35629,-4.540239 c 0.156281,-0.156284 2.116582,-6.870462 2.389071,-8.182766 0.379256,-1.826485 -0.01088,-3.211645 -1.254982,-4.455748 -1.514248,-1.51425 -3.774062,-1.591789 -6.189327,-0.212373 -2.102911,1.201021 -3.391254,4.095451 -3.704955,8.323649 -0.230375,3.105102 0.578387,4.219011 3.343275,4.604705 1.241663,0.173207 5.223182,0.116269 5.416918,-0.07747 z"/><path style="fill:#f9f9f9;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers" d="m 68.514312,100.85993 c -1.047578,-0.12325 -1.033864,0.0938 -0.185631,-2.937775 0.412379,-1.473827 0.42926,-1.49284 1.448776,-1.631831 1.884251,-0.256879 2.682893,-1.430565 3.401753,-4.999218 0.4225,-2.097436 1.67232,-7.510282 2.127261,-9.212955 l 0.249023,-0.932 h 2.351489 c 1.293318,0 2.351487,0.06467 2.351487,0.143713 0,0.365729 -1.863614,8.797513 -2.632411,11.910156 -1.291944,5.230714 -2.193313,6.765731 -4.296836,7.31746 -1.16905,0.30662 -3.631051,0.48173 -4.814911,0.34245 z"/><path style="fill:#f9f9f9;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers" d="m 75.881574,79.220016 c 0.07161,-0.239213 0.316426,-1.189853 0.544031,-2.112534 l 0.413827,-1.677599 h 2.330852 c 1.342758,0 2.330852,0.102362 2.330852,0.24147 0,0.132807 -0.18501,1.083447 -0.411133,2.112534 l -0.411136,1.871064 H 78.21512 c -2.230337,0 -2.451412,-0.04121 -2.333546,-0.434935 z"/><path style="fill:#f9f9f9;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers" d="m 109.11807,93.037835 c -1.30033,-0.373972 -1.94886,-0.905007 -2.50286,-2.049404 -0.80929,-1.671772 -0.66818,-3.716081 0.68794,-9.966547 l 1.1863,-5.467734 2.31709,-0.07185 2.3171,-0.07185 -0.17835,0.693182 c -0.42191,1.639861 -2.11651,10.677499 -2.10931,11.249404 0.004,0.345281 0.1767,0.85146 0.38302,1.124846 0.32984,0.437092 0.66583,0.497068 2.78458,0.497068 h 2.40947 l 1.61898,-6.771801 1.61898,-6.771799 2.17467,-7.94e-4 c 1.19607,-5.29e-4 2.17467,0.05938 2.17467,0.132861 0,0.07347 -0.8388,4.054358 -1.864,8.846404 -1.02521,4.792046 -1.864,8.758169 -1.864,8.813607 0,0.214971 -10.3609,0.04252 -11.15428,-0.185653 z"/><path style="fill:#f9f9f9;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers" d="m 129.21955,93.301863 c -2.46751,-0.31759 -3.64767,-0.860793 -4.42496,-2.036707 -0.62024,-0.938339 -0.66866,-1.199356 -0.65226,-3.515897 0.0301,-4.257503 1.4249,-8.216617 3.57593,-10.150573 2.00387,-1.801648 3.49146,-2.272207 7.21755,-2.283063 3.35317,-0.0098 4.39346,0.293942 5.62914,1.643407 0.84274,0.920345 1.15087,2.991231 0.83088,5.584155 -0.45453,3.682982 0.35901,3.253134 -6.36839,3.364828 -4.79636,0.07963 -5.87486,0.162049 -6.06549,0.463497 -0.39494,0.624528 -0.26668,1.198483 0.444,1.986844 0.62497,0.693285 0.88555,0.780872 3.04453,1.023331 1.29859,0.145836 3.51503,0.215874 4.92543,0.155644 2.50031,-0.106778 2.56126,-0.09654 2.43998,0.409654 -0.0684,0.285544 -0.26616,1.218169 -0.43943,2.072503 l -0.31503,1.553334 -4.11321,-0.03151 c -2.26226,-0.01733 -4.84017,-0.125082 -5.72867,-0.239443 z m 7.85625,-11.707789 c -0.35346,-1.767297 -1.27742,-2.440387 -3.3367,-2.430732 -1.69437,0.0079 -3.21174,0.772052 -3.65904,1.842595 -0.1999,0.478417 -0.36345,0.98528 -0.36345,1.126363 0,0.165026 1.34073,0.256517 3.75907,0.256517 h 3.75907 z"/><path style="fill:#f9f9f9;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers" d="m 142.25911,92.774506 c 0.0715,-0.31274 0.74823,-3.565422 1.50382,-7.228178 1.81387,-8.792874 2.025,-9.661856 2.4062,-9.903651 0.17792,-0.11285 3.09687,-0.206896 6.48656,-0.208989 l 6.16306,-0.0038 0.56741,0.612235 c 0.31207,0.33673 0.7053,1.09165 0.87384,1.677599 0.16854,0.585952 0.36277,1.261086 0.43161,1.500299 0.11652,0.404857 -0.25377,0.434935 -5.35457,0.434935 h -5.47975 l -0.15301,0.609616 c -0.0842,0.335288 -0.78742,3.382928 -1.56283,6.772534 l -1.40983,6.162918 -2.30126,0.07155 c -2.28529,0.07106 -2.30037,0.0676 -2.17125,-0.497068 z"/><path style="fill:#f9f9f9;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers" d="m 157.41518,92.516553 c 0.68353,-3.182188 0.67719,-3.255962 -0.7175,-8.353345 -0.35009,-1.279525 -0.63653,-2.481808 -0.63653,-2.671734 0,-0.271631 0.52833,-0.345323 2.47576,-0.345323 h 2.47575 l 0.27039,1.056267 c 0.40339,1.575869 0.4702,1.721871 0.71792,1.568778 0.12487,-0.07718 1.99899,-2.600558 4.16469,-5.607505 l 3.93763,-5.467178 2.70216,-2.49e-4 c 2.12885,-1.96e-4 2.64935,0.06567 2.45322,0.310417 -0.13692,0.170868 -2.85874,3.833627 -6.04849,8.13947 -4.67793,6.314752 -5.90816,8.141224 -6.3612,9.444267 -0.30891,0.888508 -0.56455,1.867109 -0.56808,2.174669 -0.006,0.542668 -0.0808,0.559199 -2.52281,0.559199 h -2.5164 z"/><path style="fill:#78cff5;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers" d="m 21.228955,62.888619 c -0.05398,0.0079 -0.127797,0.21143 -0.252698,0.55449 -0.928683,2.55069 0.402801,5.51105 3.047359,6.77426 1.366282,0.65262 3.645964,0.53173 4.929415,-0.26148 1.137561,-0.70305 1.076152,-0.84517 -0.21239,-0.48938 -2.295617,0.63385 -4.977642,-0.39024 -6.428548,-2.45463 -0.571664,-0.81338 -0.765213,-1.41316 -0.880566,-2.728 -0.08775,-1.00024 -0.123675,-1.40683 -0.202572,-1.39526 z m -5.439978,1.57406 c -0.01998,0 -0.292444,0.53099 -0.605131,1.18029 -0.892455,1.85317 -0.818085,4.23664 0.19637,6.29729 1.000744,2.0328 2.762399,3.81856 4.666899,4.73098 1.284205,0.61522 1.786813,0.71452 3.621484,0.71469 2.700133,2.5e-4 4.093671,-0.46805 5.706629,-1.91823 0.689586,-0.62 1.210959,-1.1708 1.158069,-1.2237 -0.05289,-0.05288 -0.588893,0.17647 -1.190625,0.50953 -4.313618,2.38754 -10.408221,0.08616 -12.727389,-4.80591 -0.635603,-1.34075 -0.759966,-1.91071 -0.773596,-3.54139 -0.0089,-1.06898 -0.03273,-1.94355 -0.05271,-1.94355 z m -6.2125408,2.27377 c -0.358673,0.01657 -1.603322,2.81397 -1.8572509,4.23488 -1.036878,5.80201 3.4798567,12.21807 9.7585777,13.86272 1.003152,0.26277 2.339727,0.48344 2.970361,0.49144 2.840617,0.0339 6.046977,-1.15644 7.844482,-2.91248 0.976826,-0.95429 1.871293,-2.22385 1.409217,-1.99988 -0.115792,0.05613 -0.993414,0.48577 -1.950269,0.95447 -1.566336,0.76725 -1.993766,0.86147 -4.290177,0.94877 -2.215015,0.08421 -2.821526,0.01281 -4.609538,-0.54467 -6.264457,-1.95315 -10.3771858,-7.81951 -9.3942588,-13.39969 0.146831,-0.83353 0.220758,-1.56158 0.164848,-1.61748 -0.01313,-0.01313 -0.02835,-0.0189 -0.04599,-0.01808 z"/><path fill="#78cff5" style="stroke-width:0.483886" d="m 48.919789,61.16684 -3.06784,11.550382 2.201684,0.759689 c 0.0048,-0.01462 0.01444,-0.02907 0.01935,-0.03882 0.420982,-0.861321 1.035518,-1.59199 1.804896,-2.138779 v -0.0059 c 0.251621,-0.179048 0.517759,-0.329034 0.798414,-0.454854 z m 3.900125,10.451947 c -0.793574,0 -1.500048,0.217764 -2.119422,0.6581 -0.604858,0.430656 -1.079067,0.991955 -1.417787,1.688747 -0.338722,0.682298 -0.508082,1.38392 -0.508082,2.10491 0,0.725845 0.159678,1.412949 0.46937,2.066201 0.324205,0.643573 0.774218,1.161325 1.359721,1.558112 0.590343,0.401619 1.267782,0.600017 2.027484,0.600017 0.895189,0.430656 1.659731,0.193566 2.283945,-0.300013 0.633891,-0.498393 1.06939,-1.141975 1.306494,-1.925862 l 0.150003,-0.02411 c 0.125807,-0.04352 0.232266,-0.116133 0.314526,-0.217747 0.08711,-0.106438 0.130654,-0.237107 0.130654,-0.377438 0,-0.314531 -0.135482,-0.512921 -0.406464,-0.595168 -0.459692,-0.145213 -0.929062,-0.217765 -1.408109,-0.217765 -0.338722,0 -0.672603,0.01941 -1.001646,0.06293 -0.324205,0.04352 -0.55647,0.092 -0.696797,0.154909 -0.304848,0.125821 -0.459692,0.333873 -0.459692,0.619358 0,0.193567 0.06292,0.3484 0.179046,0.469381 0.125807,0.111378 0.275814,0.164597 0.445175,0.164597 0.08226,0 0.198394,-0.01941 0.338721,-0.06293 0.348398,-0.08705 0.662925,-0.135516 0.953256,-0.1549 h 0.188715 c -0.193554,0.498402 -0.493564,0.890358 -0.900028,1.166173 -0.406465,0.270983 -0.880673,0.406466 -1.417788,0.406466 -0.551631,0 -1.025838,-0.149968 -1.422626,-0.445183 -0.387108,-0.304835 -0.68228,-0.682281 -0.875835,-1.141966 -0.193554,-0.454854 -0.290332,-0.914556 -0.290332,-1.369394 0,-0.387116 0.09678,-0.8323 0.290332,-1.330701 0.193555,-0.498402 0.498403,-0.929058 0.914547,-1.291977 0.42098,-0.372598 0.943577,-0.556469 1.57263,-0.556469 0.600019,0 1.079068,0.135517 1.432303,0.416138 0.358077,0.270983 0.609697,0.609704 0.764542,1.01617 0.101612,0.266136 0.304849,0.401619 0.604857,0.401619 0.188717,0 0.333883,-0.04848 0.445177,-0.149969 0.111286,-0.111377 0.164524,-0.256456 0.164524,-0.430656 0,-0.237098 -0.125807,-0.561299 -0.377432,-0.962935 -0.256459,-0.406466 -0.638729,-0.769368 -1.156488,-1.079068 -0.508079,-0.324202 -1.132294,-0.483875 -1.877479,-0.483875 z m 6.358269,0.68712 -1.83393,1.596837 c 0.06292,0.203221 0.09678,0.420969 0.09678,0.677425 0,0.411315 -0.174199,0.904869 -0.493565,1.243589 0.280654,0.12583 0.575825,0.275832 0.769379,0.556469 0.198393,0.295181 0.285492,0.619383 0.304849,0.914564 l 9.687407,3.333972 z m -9.730957,8.463171 -7.611535,6.619564 11.472949,-3.22267 -0.430659,-2.230722 c -0.08226,0.0059 -0.164524,0.0059 -0.246783,0.0059 -0.967772,0 -1.911351,-0.270984 -2.700087,-0.798406 -0.169352,-0.111193 -0.329041,-0.237115 -0.483885,-0.372598 z"/><text xml:space="preserve" style="font-weight:bold;font-size:26.2095px;font-family:'Comic Neue';-inkscape-font-specification:'Comic Neue, Bold';writing-mode:lr-tb;direction:ltr;fill:#78cff5;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers" x="31.814358" y="80.413132"><tspan x="31.814358" y="80.413132">+</tspan></text><text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.60266px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;writing-mode:lr-tb;direction:ltr;text-anchor:end;fill:#f9f9f9;fill-opacity:1;stroke:#ffffff;stroke-width:0.377878;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers" x="183.28874" y="100.0209" transform="skewX(-14.381233)"><tspan style="stroke:#ffffff;stroke-width:0.377878;stroke-dasharray:none;stroke-opacity:1" x="183.28874" y="100.0209">write less, do more.</tspan><tspan style="stroke:#ffffff;stroke-width:0.377878;stroke-dasharray:none;stroke-opacity:1" x="183.28874" y="108.27422">now with animations.</tspan></text></g></svg>
+    </div>
+
+    <!-- nav#main — the panel that sits on the blue, 10px top corners -->
+    <div class="main-nav flex items-center px-4">
+      <ul class="flex list-none text-white bg-[#05568d] items-center py-2">
+        <li><a class="block" href="#install">Install</a></li>
+        <li><a class="block" href="#quick-start">Quick start</a></li>
+        <li><a class="block" href="#anatomy">Class anatomy</a></li>
+        <li><a class="block" href="#notes">Notes</a></li>
+      </ul>
+
+    </div>
+
+    <!-- #banner-secondary — the dark tile band, the site's own texture -->
+    <div class="tile-band">
+      <div class="flex flex-wrap gap-8 px-5 py-5">
+        <div class="flex-1 basis-48 text-center spawn-down order priority-1">
+
+          <h3 class="feature">gclass-anims for jQuery</h3>
+          <p class="mt-1 text-center text-[15px] leading-[22.5px]"></p>
+        </div>
+        <div class="flex-1 basis-64 spawn-down order priority-4">
+          <a href="#install" class="btn text-white inline-block px-5 py-2 text-center text-lg">Get started</a>
+          <p class="mt-2 text-[15px] leading-[22.5px]">Running gclass-anims from npm with jQuery <span id="jquery-version"></span>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- #content — white, two columns: the documentation and a resources rail -->
+    <div class="flex flex-wrap gap-8 rounded-b-xl shadow-md shadow-black bg-panel p-8">
+      <div class="min-w-0 flex-[3]">
+
+        <h2 class="block scroll letter spawn-text-spawn-down" id="install">Install</h2>
+        <p class="mt-3">GClass ships as the npm package gclass-anims. GSAP is a regular dependency and is installed automatically - nothing is bundled or redistributed.</p>
+        <div class="code-block group relative mt-3 flex overflow-hidden">
+          <div class="gutter shrink-0 py-2"><div>1</div></div>
+          <div class="code min-w-0 flex-1 py-2">npm install gclass-anims</div>
+          <button type="button" data-copy class="absolute right-1 top-1 rounded-[3px] border border-line bg-panel px-2 py-0.5 font-sans text-[11px] text-muted hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button>
+        </div>
+
+        <h2 class="block mt-8 scroll letter spawn-text-spawn-down" id="quick-start">Quick start</h2>
+        <p class="mt-3">Import initAnimations once your DOM is ready. From then on, everything is class-driven: add a utility class to an element and it animates - no per-element JS, no config files.</p>
+
+        <h3 class="mt-5">DOM ready</h3>
+        <p>Call <code class="font-mono">initAnimations()</code> once inside jQuery's ready handler. That is the only hook the page needs.</p>
+        <div class="code-block group relative mt-2 flex overflow-hidden">
+          <div class="gutter shrink-0 py-2"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div></div>
+          <div class="code min-w-0 flex-1 py-2">// main.js
+<span class="tok-fn">import</span> $ <span class="tok-fn">from</span> <span class="tok-str">'jquery'</span>
+<span class="tok-fn">import</span> { initAnimations } <span class="tok-fn">from</span> <span class="tok-str">'gclass-anims'</span>
+
+$(<span class="tok-fn">function</span> () {
+  initAnimations()
+})</div>
+          <button type="button" data-copy class="absolute right-1 top-1 rounded-[3px] border border-line bg-panel px-2 py-0.5 font-sans text-[11px] text-muted hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button>
+        </div>
+        <p class="mt-3">Already using the CDN global? <code class="font-mono">$(document).ready(initAnimations)</code> does the same thing.</p>
+
+        <h2 class="block mt-8 scroll letter spawn-text-spawn-down" id="anatomy">Class anatomy</h2>
+        <p>Three pieces, in any order: <strong>behaviour</strong> (<code class="font-mono">.spawn-up</code>), <strong>trigger</strong> (<code class="font-mono">.scroll</code>, <code class="font-mono">.appear</code>) and <strong>tunables</strong> (<code class="font-mono">.time-1</code>, <code class="font-mono">.ease-back</code>, <code class="font-mono">.priority-2</code>). Order in <code class="font-mono">class</code> does not matter.</p>
+        <div class="code-block group relative mt-3 flex overflow-hidden">
+          <div class="gutter shrink-0 py-2"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div></div>
+          <div class="code min-w-0 flex-1 py-2">&lt;!-- behaviour + trigger + tunables --&gt;
+&lt;div <span class="tok-str">class</span>=<span class="tok-str">"appear scroll spawn-up"</span>&gt;…&lt;/div&gt;
+&lt;div <span class="tok-str">class</span>=<span class="tok-str">"appear scroll order ease-expo time-1 priority-2"</span>&gt;…&lt;/div&gt;
+&lt;div <span class="tok-str">class</span>=<span class="tok-str">"float"</span>&gt;loops forever&lt;/div&gt;
+&lt;button <span class="tok-str">class</span>=<span class="tok-str">"magnet click-expand"</span>&gt;magnet + click&lt;/button&gt;</div>
+          <button type="button" data-copy class="absolute right-1 top-1 rounded-[3px] border border-line bg-panel px-2 py-0.5 font-sans text-[11px] text-muted hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button>
+        </div>
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h2 class="block scroll letter spawn-text-spawn-down" id="notes">Notes</h2>
+        <ul class="resources mt-3">
+          <li class="scroll spawn-down order priority-2"><strong>One ready call.</strong> Mark elements you want to keep across navigations with <code class="font-mono">.preserve</code> - all other <code class="font-mono">.appear</code> / <code class="font-mono">.scroll</code> elements replay when they mount.</li>
+          <li class="scroll spawn-down order priority-3"><strong>jQuery inserts are covered.</strong> A MutationObserver watches the document for insertions, so markup added with <code class="font-mono">.append()</code>, <code class="font-mono">.html()</code> or an Ajax response animates without another <code class="font-mono">initAnimations()</code> call.</li>
+          <li class="scroll spawn-down order priority-4"><strong>GSAP stays external.</strong> ESM is <code class="font-mono">dist/gclass.esm.js</code> and CJS is <code class="font-mono">dist/gclass.cjs</code> - GSAP is external, not bundled, and the build is tree-shakable with <code class="font-mono">sideEffects: false</code>.</li>
+        </ul>
+
+        <h2 class="block mt-8 scroll letter spawn-text-spawn-down">Resources</h2>
+        <ul class="resources mt-3">
+          <li><a href="https://saturn-sepehr.github.io/GClass/documentation/quick-start/">GClass documentation</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="mt-8 bg-charcoal">
+  <div class="mx-auto max-w-[1240px] px-5 py-10 text-xs leading-[130%] text-[#aaa]">
+    <p>
+      Not affiliated with or endorsed by jQuery. Layout, colours and type copied from
+      <a class="text-accent hover:underline" href="https://jquery.com/">https://jquery.com/</a>,
+      including its dark-grey-tile texture.
+    </p>
+  </div>
+</footer>
+
+<script type="module" src="/src/main.js"></script>
+  </body>
+</html>
