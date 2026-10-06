@@ -10,7 +10,7 @@
     "preview": "npx --yes serve . -l 4173"
   },
   "dependencies": {
-    "gclass-anims": "1.0.0-beta.23"
+    "gclass-anims": "1.0.0-beta.24"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",

@@ -1,0 +1,21 @@
+{
+  "name": "gclass-tests-stencil",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "gclass-anims in a Stencil app",
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/styles/tailwind.css -o ./src/styles.css",
+    "dev": "npm run build:css && stencil serve",
+    "build": "npm run build:css && stencil build",
+    "preview": "npx --yes serve www -l 4173"
+  },
+  "dependencies": {
+    "gclass-anims": "1.0.0-beta.24"
+  },
+  "devDependencies": {
+    "@stencil/core": "^4.45.2",
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}

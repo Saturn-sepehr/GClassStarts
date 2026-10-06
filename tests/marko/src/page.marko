@@ -1,0 +1,263 @@
+<let/rows=[]/>
+<let/nextId=1/>
+
+<main id="content">
+  <!-- .gc-bar — the scroll progress rule. gclass-anims sets no geometry for it,
+       so the two declarations are the page's own. -->
+  <div class="gc-bar scroll-progress" style="position:fixed;top:0;left:0;height:3px;width:100%;z-index:50"></div>
+
+  <!-- The sibling strip: logo left, links right. -->
+  <header class="site-header sticky top-0 z-40 border-b border-line bg-page expand-down ease-expo">
+    <div class="flex items-center justify-between px-[var(--gutter)] py-5">
+      <a class="font-display text-3xl font-bold tracking-tight" href="https://markojs.com/">marko</a>
+      <nav class="site-nav flex flex-wrap items-center gap-5">
+        <a href="#install">Install</a>
+        <a href="#quick-start">Quick start</a>
+        <a href="#anatomy">Class anatomy</a>
+        <a href="#escape-hatch">Escape hatch</a>
+        <a href="#notes">Notes</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- The hero: one gradient-clipped headline, the way every section heading on
+       markojs.com is set. -->
+  <section class="section-blue px-[var(--gutter)] pt-20 pb-16 text-center">
+    <p class="font-mono text-sm text-muted">not affiliated with or endorsed by the Marko team</p>
+    <p class="font-mono text-sm underline"><a class="text-brand" href="https://markojs.com/">Official Marko website</a></p>
+
+    <h1 class="mx-auto mt-6 max-w-4xl text-[3em] font-medium leading-[1.1] tracking-tight scroll letter spawn-text-spawn-down">
+      A declarative <strong class="grad-text">HTML-based</strong> layer for the
+      <strong class="grad-text">HTML you already have</strong>.
+    </h1>
+
+    <p class="mx-auto mt-6 max-w-2xl text-[1.15em] leading-relaxed text-muted scroll typewriter time-2">
+      Marko composes behaviour in markup with signals and tags. gclass-anims
+      composes it with class names. Mount the template, then call
+      <code>initAnimations()</code> once - the two coexist, and everything Marko
+      renders afterwards still animates.
+    </p>
+
+    <div class="mt-10">
+      <a href="#install" class="cta click-expand compatibility amount-4 no-underline">Get started</a>
+    </div>
+  </section>
+
+  <!-- The four-up widget row: square dim-hue blocks over a heading, one per
+       article, on the site's --widget shape. -->
+  <section class="section-green px-[var(--gutter)] py-16">
+    <div class="mx-auto grid max-w-6xl gap-10 sm:grid-cols-2 lg:grid-cols-4">
+      <article class="widget scroll spawn-up order priority-2">
+        <h3 class="mt-4 text-center text-xl font-medium text-[var(--section-color-dark)]">Zero config</h3>
+        <p class="mt-2 text-center text-sm text-muted">Install the package, call one function</p>
+      </article>
+      <article class="widget scroll spawn-up order priority-3">
+        <h3 class="mt-4 text-center text-xl font-medium text-[var(--section-color-dark)]">Class driven</h3>
+        <p class="mt-2 text-center text-sm text-muted">behaviour + trigger + tunables</p>
+      </article>
+      <article class="widget scroll spawn-up order priority-4">
+        <h3 class="mt-4 text-center text-xl font-medium text-[var(--section-color-dark)]">Framework agnostic</h3>
+        <p class="mt-2 text-center text-sm text-muted">it never reads your templates</p>
+      </article>
+      <article class="widget scroll spawn-up order priority-5">
+        <h3 class="mt-4 text-center text-xl font-medium text-[var(--section-color-dark)]">Escape hatch</h3>
+        <p class="mt-2 text-center text-sm text-muted">write GSAP vars inline when needed</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- The alternating half-panels: copy on a notched left panel, code card on
+       the right, then swapped. -->
+  <section class="section-blue px-[var(--gutter)] py-16">
+    <div class="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-2">
+      <div class="notch-left scroll spawn-right section-blue">
+        <h2 class="grad-text text-[2.25em] font-medium">HTML Re&#8209;imagined</h2>
+        <p class="mt-4 text-muted">Just about any valid HTML is valid Marko. gclass-anims takes the same attitude to motion: any element can carry a class, and nothing has to be wired to it.</p>
+        <p class="mt-3 text-muted">The engine watches the document rather than your component tree, which is why one call covers a page the framework re-renders.</p>
+        <a href="#anatomy" class="cta cta--ghost no-underline">Check it out!</a>
+      </div>
+
+      <div class="card scroll spawn-left section-blue p-0">
+        <pre class="m-0 rounded-none"><code>&lt;!-- markup --&gt;
+&lt;div class="appear scroll spawn-up"&gt;…&lt;/div&gt;
+&lt;div class="float"&gt;loops forever&lt;/div&gt;
+&lt;button class="magnet click-expand"&gt;
+  magnet + click
+&lt;/button&gt;</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-yellow px-[var(--gutter)] py-16">
+    <div class="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-2">
+      <div class="card scroll spawn-left section-yellow p-0 order-last lg:order-first">
+        <pre class="m-0 rounded-none"><code>&lt;!-- live, driven by a Marko signal --&gt;
+&lt;button onClick() { add() }&gt;
+  Add a row
+&lt;/button&gt;
+
+&lt;for|row| of=rows&gt;
+  &lt;div class="appear spawn-up time-1"&gt;
+    row ${row}
+  &lt;/div&gt;
+&lt;/for&gt;</code></pre>
+      </div>
+
+      <div class="notch-right scroll spawn-left section-yellow">
+        <h2 class="grad-text text-[2.25em] font-medium">Reactivity, met</h2>
+        <p class="mt-4 text-muted">Mutating a signal re-renders the tagged content. The rows that appear are real DOM insertions, so the gclass engine's MutationObserver picks them up with no re-initialisation.</p>
+        <p class="mt-3 text-muted">Nothing here knows the rows are Marko. The same would be true of a Svelte <code>$state</code>, a Vue <code>ref</code> or a Solid signal.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="c mx-auto px-4 pb-24">
+    <section id="install" class="scroll-mt-24 pt-16">
+      <h2 class="grad-text section-red text-[2.25em] font-medium scroll letter spawn-text-spawn-down">Install</h2>
+      <p class="mt-4 text-muted scroll typewriter">GClass ships as the npm package gclass-anims. GSAP is a regular dependency and is installed automatically - nothing is bundled or redistributed. Marko is a peer of this page, not a dependency of the library.</p>
+      <div class="mt-6 scroll spawn-down">
+        <pre class="group relative overflow-x-auto"><code>npm install gclass-anims marko</code><button type="button" data-copy class="absolute right-4 top-4 rounded-full border border-line bg-panel2 px-3 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:text-brand" aria-label="Copy code">Copy</button></pre>
+      </div>
+    </section>
+
+    <section id="quick-start" class="scroll-mt-24 pt-16">
+      <h2 class="grad-text section-red text-[2.25em] font-medium scroll letter spawn-text-spawn-down">Quick start</h2>
+      <p class="mt-4 text-muted scroll typewriter">Import initAnimations once your DOM is ready. From then on, everything is class-driven: add a utility class to an element and it animates - no per-element JS, no config files.</p>
+
+      <h3 class="mt-10 text-xl font-medium scroll spawn-down">Mount, then init</h3>
+      <p class="mt-3 text-muted scroll typewriter">Marko 6 attaches a template to a DOM node rather than streaming one from a server, so there is no SSR boundary and no hydration flag to wait on. Mount first, then call the engine.</p>
+      <div class="mt-5 scroll spawn-down">
+        <pre class="group relative overflow-x-auto"><code>// main.js
+import Page from './page.marko'
+import { initAnimations } from 'gclass-anims'
+
+Page.mount({}, document.getElementById('app'))
+initAnimations()</code><button type="button" data-copy class="absolute right-4 top-4 rounded-full border border-line bg-panel2 px-3 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:text-brand" aria-label="Copy code">Copy</button></pre>
+      </div>
+
+      <h3 class="mt-10 text-xl font-medium scroll spawn-down">Live - rows from a signal</h3>
+      <p class="mt-3 text-muted scroll typewriter">The button mutates the <code>rows</code> signal. Marko re-renders the <code>&lt;for&gt;</code> body and inserts new nodes, and each one plays its entrance. There is no second <code>initAnimations()</code> call anywhere on this page.</p>
+
+      <div class="mt-6">
+        <div class="flex flex-wrap items-center gap-3">
+          <button type="button" onClick() { rows = [...rows, nextId++] } class="cta click-hover amount-2 no-underline">Add a row</button>
+          <button type="button" onClick() { rows = []; nextId = 1 } class="cta cta--ghost click-hover amount-2 no-underline">Reset</button>
+          <span class="pill">${rows.length} rows</span>
+        </div>
+
+        <div class="mt-6 grid gap-3">
+          <for|row| of=rows>
+            <div class="card appear spawn-up time-1 p-5">
+              <p class="font-mono text-[13px] text-muted">row ${row} — inserted by a Marko signal</p>
+            </div>
+          </for>
+        </div>
+      </div>
+    </section>
+
+    <section id="anatomy" class="scroll-mt-24 pt-16">
+      <h2 class="grad-text section-red text-[2.25em] font-medium scroll letter spawn-text-spawn-down">Class anatomy</h2>
+      <p class="mt-4 text-muted scroll typewriter-split letter">Class anatomy: <strong class="text-ink">behaviour</strong> (<code>.spawn-up</code>) + <strong class="text-ink">trigger</strong> (<code>.scroll</code>, <code>.appear</code>) + <strong class="text-ink">tunables</strong> (<code>.time-1</code>, <code>.ease-back</code>, <code>.priority-2</code>). Combine freely - order in class does not matter.</p>
+      <div class="mt-6 scroll spawn-down">
+        <pre class="group relative overflow-x-auto"><code>&lt;!-- behaviour + trigger + tunables --&gt;
+&lt;div class="appear scroll spawn-up"&gt;…&lt;/div&gt;
+&lt;div class="appear scroll order ease-expo time-1 priority-2"&gt;…&lt;/div&gt;
+&lt;div class="float"&gt;loops forever&lt;/div&gt;
+&lt;button class="magnet click-expand"&gt;magnet + click&lt;/button&gt;</code><button type="button" data-copy class="absolute right-4 top-4 rounded-full border border-line bg-panel2 px-3 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:text-brand" aria-label="Copy code">Copy</button></pre>
+      </div>
+      <div class="mt-8 grid gap-4 sm:grid-cols-3">
+        <div class="card scroll spawn-down order priority-2 p-6">
+          <h3 class="text-lg">Behaviour</h3>
+          <p class="mt-2 font-mono text-[12px] text-muted">spawn-up, float, marquee, magnet</p>
+        </div>
+        <div class="card scroll spawn-down order priority-2 p-6">
+          <h3 class="text-lg">Trigger</h3>
+          <p class="mt-2 font-mono text-[12px] text-muted">appear, scroll, preserve</p>
+        </div>
+        <div class="card scroll spawn-down order priority-2 p-6">
+          <h3 class="text-lg">Tunables</h3>
+          <p class="mt-2 font-mono text-[12px] text-muted">order, ease-expo, time-1, priority-2</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="escape-hatch" class="scroll-mt-24 pt-16">
+      <h2 class="grad-text section-red text-[2.25em] font-medium scroll letter spawn-text-spawn-down">Escape hatch</h2>
+      <p class="mt-4 text-muted scroll typewriter">
+        When the menu of classes has nothing for it, write the GSAP vars inline.
+        <code>.gc-tween-[...]</code> plays <em>from</em> those values
+        <em>to</em> the element's live resting state, so the end value still
+        follows CSS and dark mode. Hover the three cards below.
+      </p>
+
+      <div class="mt-8 grid gap-4 sm:grid-cols-3">
+        <!-- A bare number on a transform axis means px; `hover-` is the trigger
+             prefix, mirroring the css-* grammar. -->
+        <div class="card hover-gc-tween-[y:-18] hover-gc-tween-[scale:1.04] hover:shadow-xl p-8">
+          <p class="font-mono text-[12px] text-muted">hover-gc-tween-[y:-18]</p>
+          <p class="mt-3 text-sm">Lift on hover</p>
+        </div>
+        <div class="card hover-gc-tween-[rotate:-2] hover-gc-tween-[scale:0.96] hover:shadow-xl p-8">
+          <p class="font-mono text-[12px] text-muted">hover-gc-tween-[rotate:-2]</p>
+          <p class="mt-3 text-sm">Tilt on hover</p>
+        </div>
+        <div class="card hover-gc-tween-[blur:2px] hover-gc-tween-[scale:0.98] hover:shadow-xl p-8">
+          <p class="font-mono text-[12px] text-muted">hover-gc-tween-[blur:2px]</p>
+          <p class="mt-3 text-sm">Blur on hover</p>
+        </div>
+      </div>
+
+      <div class="mt-6 scroll spawn-down">
+        <pre class="group relative overflow-x-auto"><code>&lt;!-- one tween: FROM these vars TO the live resting state --&gt;
+&lt;div class="hover-gc-tween-[y:-18] hover-gc-tween-[scale:1.04]"&gt;
+  …
+&lt;/div&gt;
+
+&lt;!-- ordered timeline steps, ascending by the numeric prefix --&gt;
+&lt;div class="gc-tl gc-1-[y:40] gc-2-[opacity:0] gc-3-[scale:0.8]"&gt;
+  …
+&lt;/div&gt;</code><button type="button" data-copy class="absolute right-4 top-4 rounded-full border border-line bg-panel2 px-3 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:text-brand" aria-label="Copy code">Copy</button></pre>
+      </div>
+
+      <div class="alert mt-6 border border-line bg-panel2 p-4 text-sm text-muted">
+        <strong class="text-ink">One bracket group per class.</strong> Tailwind re-lexes bracket
+        contents as standalone candidates, so <code>gc-tween-[y:40]-[y:0]</code> makes Tailwind
+        emit a real <code>.[y:0]</code> rule. Merge separate classes instead, or use numbered
+        steps.
+      </div>
+    </section>
+
+    <section id="notes" class="scroll-mt-24 pt-16">
+      <h2 class="grad-text section-red text-[2.25em] font-medium scroll letter spawn-text-spawn-down">Notes</h2>
+      <ul class="mt-8 grid gap-4">
+        <li class="card scroll spawn-down order priority-3 p-6 text-left">
+          <strong class="text-ink">Mount, do not hydrate.</strong> Marko 6's
+          <code>template.mount()</code> attaches to a live DOM node, so there is no
+          server-render boundary to wait on. Mount first, then
+          <code>initAnimations()</code>.
+        </li>
+        <li class="card scroll spawn-down order priority-3 p-6 text-left">
+          <strong class="text-ink">Signal updates are covered.</strong> A
+          <code>&lt;for&gt;</code> body that re-renders inserts real nodes. The engine's
+          <code>MutationObserver</code> wires each one without a second init call.
+        </li>
+        <li class="card scroll spawn-down order priority-3 p-6 text-left">
+          <strong class="text-ink">GSAP stays external.</strong> ESM is
+          <code>dist/gclass.esm.js</code> and CJS is <code>dist/gclass.cjs</code> - GSAP is
+          external, not bundled, and the build is tree-shakable with
+          <code>sideEffects: false</code>.
+        </li>
+      </ul>
+    </section>
+  </div>
+
+  <footer class="section-blue px-[var(--gutter)] py-16 text-center text-sm text-muted">
+    <p>
+      Not affiliated with or endorsed by the Marko team. Colours and type sampled from
+      <a class="text-brand hover:underline" href="https://markojs.com/">https://markojs.com/</a>,
+      including its <code>:root</code> token block and its per-section
+      <code>--section-color*</code> indirection. Running gclass-anims 1.0.0-beta.24 from npm
+      with Marko 6.
+    </p>
+  </footer>
+</main>

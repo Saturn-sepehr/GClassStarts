@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>gclass-anims &mdash; htmx</title>
+  </head>
+  <body>
+
+<!-- Note: written as <div></div>, never <div />. This is plain HTML, and the
+     parser does not honour self-closing syntax on a div - a <div /> silently
+     never closes and swallows the rest of the document into itself. -->
+<div class="gc-bar scroll-progress"></div>
+
+<!-- .top-nav — the lit gradient strip, 1px #d0d0d0 rule, soft shadow under -->
+<header class="top-nav">
+  <div class="c flex items-center justify-between py-3">
+    <a class="logo" href="https://htmx.org/">htm<b>x</b></a>
+    <nav class="flex flex-wrap items-center gap-5 text-sm">
+      <a class="hover:opacity-60 click-hover amount-2" href="#install">Install</a>
+      <a class="hover:opacity-60 click-hover amount-2" href="#quick-start">Quick start</a>
+      <a class="hover:opacity-60 click-hover amount-2" href="#anatomy">Class anatomy</a>
+      <a class="hover:opacity-60 click-hover amount-2" href="#notes">Notes</a>
+    </nav>
+    <a class="btn primary text-xs no-underline" href="#install">get started</a>
+  </div>
+</header>
+
+<!-- .dark-hero — the one dark band on the site: 240px, topo gradient, 100px logo -->
+<div class="dark-hero">
+  <span class="logo">htm<b class="blue">x</b></span>
+</div>
+
+<div class="content">
+
+  <main class="c py-10">
+
+    <div class="alert scroll spawn-down text-center">
+      <strong>Not affiliated with or endorsed by the htmx team.</strong>
+      <a href="https://htmx.org/">Official htmx website</a>
+    </div>
+
+    <h1 class="mt-8 text-center text-[2.6em] leading-none tracking-tight scroll letter spawn-text-spawn-down">
+      gclass-anims for htmx
+    </h1>
+    <p class="mx-auto mt-6 max-w-[38em] text-center text-[1.15em] leading-relaxed text-muted scroll typewriter time-2">
+      htmx swaps HTML fragments over the wire. gclass-anims animates whatever
+      HTML is on the page, including the fragments. Call
+      <code>initAnimations()</code> once - every <code>hx-get</code>,
+      <code>hx-post</code> and <code>hx-swap</code> after that is picked up
+      automatically, because a swap is just a batch of DOM insertions.
+    </p>
+    <p class="mt-4 text-center">
+      <a href="#install" class="btn primary inline-block no-underline click-expand compatibility amount-4">Get started</a>
+    </p>
+
+    <section id="install" class="scroll-mt-24">
+      <h2 class="scroll letter spawn-text-spawn-down text-[2em]">Install</h2>
+      <p class="mt-3 text-muted scroll typewriter">GClass ships as the npm package gclass-anims. GSAP is a regular dependency and is installed automatically - nothing is bundled or redistributed. htmx is a peer of this page, not a dependency of the library.</p>
+      <div class="mt-5 scroll spawn-down">
+        <pre class="group relative overflow-x-auto p-2 pr-16"><code>npm install gclass-anims htmx.org</code><button type="button" data-copy class="absolute right-2 top-2 rounded-[6px] border border-line bg-panel2 px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:text-brand" aria-label="Copy code">Copy</button></pre>
+      </div>
+    </section>
+
+    <section id="quick-start" class="scroll-mt-24">
+      <h2 class="scroll letter spawn-text-spawn-down text-[2em]">Quick start</h2>
+      <p class="mt-3 text-muted scroll typewriter">Import initAnimations once your DOM is ready. From then on, everything is class-driven: add a utility class to an element and it animates - no per-element JS, no config files.</p>
+
+      <h3>One call, on DOM ready</h3>
+      <div class="mt-4 scroll spawn-down">
+        <pre class="group relative overflow-x-auto p-2 pr-16"><code>// main.js
+import htmx from 'htmx.org'
+import { initAnimations } from 'gclass-anims'
+
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  initAnimations()
+})</code><button type="button" data-copy class="absolute right-2 top-2 rounded-[6px] border border-line bg-panel2 px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:text-brand" aria-label="Copy code">Copy</button></pre>
+      </div>
+
+      <h3>Live - partials swapped in by htmx</h3>
+      <p class="mt-3 text-muted scroll typewriter">Nothing re-initialises after this point. The rows below arrive as an HTML partial over <code>fetch</code>, and each one plays its entrance because the engine watches the DOM for insertions. No <code>htmx:afterSwap</code> handler is involved, and none is needed.</p>
+
+      <!-- The htmx live demo. hx-get names a static partial in this directory
+           (relative, so it resolves the same way under GitHub Pages' subpath);
+           hx-target names the container; hx-swap is innerHTML. -->
+      <div class="mt-5">
+        <div class="flex flex-wrap items-center gap-3">
+          <button type="button"
+                  hx-get="./partials/rows-1.html"
+                  hx-target="#rows"
+                  hx-swap="innerHTML"
+                  class="btn primary text-xs click-hover amount-2">
+            Load rows
+          </button>
+          <button type="button"
+                  hx-get="./partials/rows-2.html"
+                  hx-target="#rows"
+                  hx-swap="innerHTML"
+                  class="btn text-xs click-hover amount-2">
+            Swap in different rows
+          </button>
+          <button type="button"
+                  hx-get="./partials/rows-empty.html"
+                  hx-target="#rows"
+                  hx-swap="innerHTML"
+                  class="btn text-xs click-hover amount-2">
+            Clear
+          </button>
+          <span class="htmx-indicator font-mono text-xs text-muted">loading…</span>
+        </div>
+        <div id="rows" class="mt-4 grid gap-2"></div>
+      </div>
+
+      <div class="mt-4 scroll spawn-down">
+        <pre class="group relative overflow-x-auto p-2 pr-16"><code>&lt;button hx-get="./partials/rows-1.html"
+        hx-target="#rows"
+        hx-swap="innerHTML"&gt;Load rows&lt;/button&gt;
+
+&lt;!-- rows-1.html, fetched and swapped in --&gt;
+&lt;div class="appear spawn-up time-1 card"&gt;row 1&lt;/div&gt;</code><button type="button" data-copy class="absolute right-2 top-2 rounded-[6px] border border-line bg-panel2 px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:text-brand" aria-label="Copy code">Copy</button></pre>
+      </div>
+    </section>
+
+    <section id="anatomy" class="scroll-mt-24">
+      <h2 class="scroll letter spawn-text-spawn-down text-[2em]">Class anatomy</h2>
+      <p class="mt-3 text-muted scroll typewriter-split letter">Class anatomy: <strong class="text-ink">behaviour</strong> (<code>.spawn-up</code>) + <strong class="text-ink">trigger</strong> (<code>.scroll</code>, <code>.appear</code>) + <strong class="text-ink">tunables</strong> (<code>.time-1</code>, <code>.ease-back</code>, <code>.priority-2</code>). Combine freely - order in class does not matter.</p>
+      <div class="mt-5 scroll spawn-down">
+        <pre class="group relative overflow-x-auto p-2 pr-16"><code>&lt;!-- behaviour + trigger + tunables --&gt;
+&lt;div class="appear scroll spawn-up"&gt;…&lt;/div&gt;
+&lt;div class="appear scroll order ease-expo time-1 priority-2"&gt;…&lt;/div&gt;
+&lt;div class="float"&gt;loops forever&lt;/div&gt;
+&lt;button class="magnet click-expand"&gt;magnet + click&lt;/button&gt;</code><button type="button" data-copy class="absolute right-2 top-2 rounded-[6px] border border-line bg-panel2 px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:text-brand" aria-label="Copy code">Copy</button></pre>
+      </div>
+      <div class="mt-6 grid gap-4 sm:grid-cols-3">
+        <div class="card scroll spawn-down order priority-2"><h3 class="text-brand">Behaviour</h3><p class="mt-1 font-mono text-[12px] text-muted">spawn-up, float, marquee, magnet</p></div>
+        <div class="card scroll spawn-down order priority-2"><h3>Trigger</h3><p class="mt-1 font-mono text-[12px] text-muted">appear, scroll, preserve</p></div>
+        <div class="card scroll spawn-down order priority-2"><h3>Tunables</h3><p class="mt-1 font-mono text-[12px] text-muted">order, ease-expo, time-1, priority-2</p></div>
+      </div>
+    </section>
+
+    <section id="notes" class="scroll-mt-24">
+      <h2 class="scroll letter spawn-text-spawn-down text-[2em]">Notes</h2>
+      <ul class="mt-6 grid gap-4">
+        <li class="card scroll spawn-down order priority-3"><strong>No afterSwap hook.</strong> <code>initAnimations()</code> runs once on <code>DOMContentLoaded</code> and every later swap is handled by the engine's <code>MutationObserver</code>. Wiring <code>htmx:afterSwap</code> to re-initialise would be the wrong instinct.</li>
+        <li class="card scroll spawn-down order priority-3"><strong>Partials carry the classes.</strong> The server response is plain HTML, so <code>.appear</code> and <code>.scroll</code> travel with the markup. Nothing in the partial is special beyond the class attribute.</li>
+        <li class="card scroll spawn-down order priority-3"><strong>hx-boost swaps replay.</strong> A boosted navigation replaces the body, so <code>.appear</code> plays again and <code>.scroll</code> re-measures. Put <code>.preserve</code> on anything that should survive a boosted swap.</li>
+        <li class="card scroll spawn-down order priority-3"><strong>GSAP stays external.</strong> ESM is <code>dist/gclass.esm.js</code> and CJS is <code>dist/gclass.cjs</code> - GSAP is external, not bundled, and the build is tree-shakable with <code>sideEffects: false</code>.</li>
+      </ul>
+    </section>
+
+    <footer class="mt-10 border-t border-line pt-6 text-sm text-muted">
+      <p>Not affiliated with or endorsed by the htmx team. Colours and type sampled from <a class="hover:opacity-60" href="https://htmx.org/">https://htmx.org/</a>, including its <code>:root</code> token block and Monokai code surface. Running gclass-anims 1.0.0-beta.24 from npm with htmx.org <span id="htmx-version">2.0.11</span>.</p>
+    </footer>
+  </main>
+</div>
+
+<script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -35,7 +35,7 @@ if (!envs.length) {
 }
 
 // Every environment must pin the exact version under test.
-const EXPECTED = "1.0.0-beta.23";
+const EXPECTED = "1.0.0-beta.24";
 
 const pad = (s, n) => String(s).padEnd(n);
 const results = [];

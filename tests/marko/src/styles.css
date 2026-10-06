@@ -1,0 +1,363 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://markojs.com/
+
+   markojs.com declares its entire palette as `:root` custom properties, so
+   every token below is lifted one-for-one from that :root block in
+   /assets/app-menu-DEelm3tS.css. The site ships light and dark, so each hue
+   has a `-dark` and a `-light` end and the plain name is the one that flips.
+
+     --color-black     #202124   the foreground, and every code block's base
+     --color-white     #fff      the background
+
+     --color-red-dark     #cc0067   --color-red-light     #ff5467
+     --color-green-dark   #00b068   --color-green-light   #7ced64
+     --color-blue-dark    #0073d8   --color-blue-light    #00cffb
+     --color-yellow-dark  #fc5c00   --color-yellow-light  #ffd100
+
+   The site's own convention is that a section picks ONE hue and then defines
+   six local aliases from it (--section-color, -dark, -light, -alt, -dim,
+   -dim-alt). That indirection is the design system: every section band, card
+   and heading reads its colour through --section-color*, never directly. It is
+   reproduced here in .section-green / .section-blue / .section-yellow /
+   .section-red so a band re-tints by swapping one class.
+
+   The two shapes that recur, both lifted from the rules that use them:
+
+     .card    white, border-radius 2rem, 1.5rem padding, 2px solid
+              --section-color-dim, and 0 10px 45px -30px shadow in the dim hue
+     .banner  color-mix(section-color-dark, black 80%), 2rem radius, with a
+              ::before that blurs section-color-dim-alt at opacity .8 and
+              scales to .8 — the glow behind every hero card
+
+   Type is Ubuntu / Ubuntu Mono, named in that site's own `body` and `code`
+   rules, at weights 300/400/500/700 only.
+
+   Shape is 2rem as the default radius throughout, with 2.5rem on the pill
+   links (._cU span a: border-radius 2.5rem, padding .5rem .75ch) and 4em on
+   the browser mockup (._N). There are no sharp corners on this site except the
+   clip-path notch on the alternating half-panels.
+
+   --color-warn and --color-ok are NOT from markojs.com — they exist only to
+   colour the copy button's success/failure state, which that site has no
+   equivalent of.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #0073d8;
+  --color-branddark: #0059a6;
+  --color-brandlight: #00cffb;
+  --color-accent: #cc0067;
+  --color-warn: #b45309;
+  --color-ok: #047857;
+
+  --color-page: #ffffff;
+  --color-panel: #ffffff;
+  --color-panel2: #f5f5f5;
+  --color-ink: #202124;
+  --color-muted: #6e6e6e;
+  --color-dim: #cccccc;
+  --color-line: #e2e2e2;
+  --color-code: #202124;
+  --color-codeink: #ffffff;
+
+  --font-display: "Ubuntu", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Ubuntu", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Ubuntu Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* The site clamps its own gutter with three variables:
+   --root-min-gap 5rem, --root-max-width 80rem, --root-gap
+   calc(max(--root-min-gap, (100dvw - --root-max-width) / 2)). Same arithmetic,
+   renamed so it does not collide with Tailwind's own --root vars. */
+:root {
+  --gutter-min: 1rem;
+  --gutter-max: 80rem;
+  --gutter: calc(max(var(--gutter-min), (100dvw - var(--gutter-max)) / 2));
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  background: var(--color-page);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-brandlight);
+  color: var(--color-ink);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+/* ── the section-colour indirection, copied from the site's own alias block ── */
+
+.section-blue {
+  --section-color-dark: #0073d8;
+  --section-color-light: #00cffb;
+  --section-color: var(--section-color-dark);
+  --section-color-alt: var(--section-color-light);
+  --section-color-dim: #cce3f7;
+  --section-color-dim-alt: #ccf5fe;
+  --section-color-alt-dim: #1a3148;
+}
+
+.section-green {
+  --section-color-dark: #00b068;
+  --section-color-light: #7ced64;
+  --section-color: var(--section-color-dark);
+  --section-color-alt: var(--section-color-light);
+  --section-color-dim: #ccefe1;
+  --section-color-dim-alt: #e5fbe0;
+  --section-color-alt-dim: #1a3e32;
+}
+
+.section-yellow {
+  --section-color-dark: #fc5c00;
+  --section-color-light: #ffd100;
+  --section-color: var(--section-color-dark);
+  --section-color-alt: var(--section-color-light);
+  --section-color-dim: #fedecc;
+  --section-color-dim-alt: #fff6cc;
+  --section-color-alt-dim: #4c2d1d;
+}
+
+.section-red {
+  --section-color-dark: #cc0067;
+  --section-color-light: #ff5467;
+  --section-color: var(--section-color-dark);
+  --section-color-alt: var(--section-color-light);
+  --section-color-dim: #f5cce1;
+  --section-color-dim-alt: #ffdde1;
+  --section-color-alt-dim: #421a31;
+}
+
+/* .card — white, 2rem radius, 1.5rem padding, 2px dim rule. This is ._de / ._df
+   on the real page, and it is the shape every card on this site uses. */
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--color-ink);
+  background-color: var(--color-white);
+  border: 2px solid var(--section-color-dim, var(--color-line));
+  border-radius: 2rem;
+  box-shadow: 0 10px 45px -30px var(--section-color-dim, var(--color-line));
+}
+
+.card h3 {
+  margin-bottom: 0.4rem;
+  color: var(--section-color-dark, var(--color-ink));
+}
+
+/* .banner — the dark tinted panel with the blurred glow behind it. ._cI / ._dd
+   on the real page: color-mix against black, 2rem radius, and a ::before that
+   blurs the light hue at opacity .8 behind the whole panel. */
+.banner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  width: 100%;
+  max-width: 30rem;
+  padding: 2rem 1.5rem;
+  background-color: color-mix(in srgb, var(--section-color-dark, #202124) 15%, var(--color-black, #202124));
+  border: 2px solid var(--section-color-dim, var(--color-line));
+  border-radius: 2rem;
+}
+
+.banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--section-color-dim-alt, var(--color-panel2));
+  filter: blur(50px);
+  opacity: 0.4;
+  transform: scaleY(0.9);
+}
+
+/* .grad-text — background-clip:text over the section hue ramp. This is how the
+   site sets every section heading (._db / ._c8 / ._dp). */
+.grad-text {
+  display: inline-flex;
+  color: transparent;
+  background-clip: text;
+  background-image: linear-gradient(
+    to right,
+    var(--section-color-dark, var(--color-ink)),
+    var(--section-color-light, var(--color-ink))
+  );
+}
+
+/* .cta — the pill button. ._K: white on the hue ramp, 2rem radius, 1rem 4rem
+   padding, weight 500. */
+.cta {
+  display: inline-flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 20rem;
+  margin-top: 1.5rem;
+  padding: 1rem 4rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--color-white);
+  text-decoration: none;
+  background: linear-gradient(
+    to right,
+    var(--section-color-dark, #202124),
+    var(--section-color-light, #666666)
+  );
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+/* .cta--ghost — the quiet variant the site uses for Learn How. ._H is a 1px
+   border, weight 300, no fill. */
+.cta--ghost {
+  color: var(--section-color-dark, var(--color-ink));
+  background: transparent;
+  border: 1px solid currentColor;
+  font-size: 1rem;
+  font-weight: 300;
+  max-width: 14rem;
+}
+
+/* .pill — the rounded chip used for the widget icons. border-radius 2rem. */
+.pill {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 10rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--section-color-dark, var(--color-ink));
+  background: var(--section-color-dim, var(--color-panel2));
+  border-radius: 2rem;
+}
+
+/* .widget — the four-up icon row from the landing section (._dK–._dN): a
+   square SVG block sized with min(10rem, max(6rem, 21dvw)) above a heading. */
+.widget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.widget::before {
+  content: "";
+  display: block;
+  width: min(10rem, max(6rem, 21dvw));
+  height: min(10rem, max(6rem, 21dvw));
+  background-color: var(--section-color-dim, var(--color-panel2));
+  background-repeat: no-repeat;
+}
+
+/* .notch — the clip-path corner cut on the alternating half-panels. Two
+   variants, left and right, from ._dc / ._dD on the real page. 2rem radius
+   with one corner squared off behind a 4rem notch. */
+.notch-left {
+  position: relative;
+  padding: 6rem 4rem 5rem 3rem;
+}
+
+.notch-left::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--section-color-dim, var(--color-panel2));
+  clip-path: polygon(0 0, 4rem 0, 0 4rem, 0 100%, 100% 100%, 100% 0);
+  border-radius: 2rem;
+}
+
+.notch-right {
+  position: relative;
+  padding: 6rem 3rem 5rem 4rem;
+}
+
+.notch-right::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--section-color-dim, var(--color-panel2));
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 4rem), calc(100% - 4rem) 100%, 0 100%, 0 0);
+  border-radius: 2rem;
+}
+
+/* .site-header — flex row, logo left, links right, .1em letter-spacing on the
+   small nav links. */
+.site-nav a {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.site-nav a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.09lh;
+}
+
+/* code / pre — Ubuntu Mono, the site's dark code surface is --color-black. */
+code,
+pre {
+  font-family: var(--font-mono);
+  line-height: 1.5;
+  text-align: left;
+}
+
+code {
+  padding: 0.1em 0.25em;
+  background: var(--color-panel2);
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+}
+
+pre {
+  position: relative;
+  overflow: auto;
+  margin: 0;
+  padding: 1rem;
+  color: var(--color-codeink);
+  background: var(--color-code);
+  border-radius: 2rem;
+}
+
+pre code {
+  padding: 0;
+  background: none;
+  border-radius: 0;
+  font-size: 0.875em;
+}
+
+hr {
+  height: 1px;
+  margin: 3rem 0;
+  border: none;
+  background: var(--color-line);
+}
+
+::selection {
+  background: var(--color-brandlight);
+}

@@ -1,0 +1,293 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto+Mono:wght@400&display=swap");
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://enhance.dev/
+
+   Enhance is the only site in this repo whose design system is *literally* a
+   set of custom properties, and its own stylesheet says so at the top:
+
+     "ENHANCE STYLES — For more information, please see the documentation at
+      https://github.com/enhance-dev/enhance-styles#readme"
+
+   So the tokens below are the system's real ones, lifted from that inline
+   <style> block rather than reverse-engineered from pixels.
+
+   The accent is HSL channels, not a hex — and that is the detail worth keeping:
+
+     --accent-h: 208   --accent-s: 100%   --accent-l: 42.9%   (light)
+     --accent-h: 208   --accent-s: 100%   --accent-l: 62%     (dark)
+
+     hsl(208, 100%, 42.9%) is #00b8ec. The dark mode lifts the lightness to 62%
+     rather than picking a second hue, and the focus ring derives its own colour
+     from the same channels at accent-l + --focus-l (30% light, -30% dark).
+     --error is the same shape: h 0, s 94.5%, l 43.1%.
+
+   The spot colours are a named set, and they are the closest thing Enhance has
+   to a brand palette:
+
+     --blue     #1F74D6     --dark-purple #7327CE    --purple  #AD6EF9
+     --magenta  #E21893     --mid-purple  #9853F7    --princess #F57AFF
+     --green    #2CDD93     --orange      #FF6263    --pale-cyan #d3fbff
+     --denim    #002e47     --halite      #00293F    --indigo   #004163
+     --ateneo   #174069     --inky        #4D7185    --rift     #01040D
+
+   And two scales, both clamped, both 1.25-ratio:
+
+     --text-0 1rem    --text-1 1.25rem   --text-2 1.56rem   --text-3 1.95rem
+     --space-0 1rem   --space-1 1.25rem  --space-2 1.56rem   --space-3 1.95rem
+
+   The naming runs to two negatives in both scales (--text--2 / --space--11) and
+   up to eleven positives. Type is Montserrat; code is Roboto Mono, or the
+   system mono stack as --font-mono. Headings inherit size and weight from the
+   reset — `h1..h6 { font-size: inherit; font-weight: inherit }` — so size is
+   entirely a utility-class decision, which is the whole point of the system.
+
+   Radius is deliberately almost absent: `.radius-none`, `.radius-100`, and
+   `.radius-pill` at 9999px are the entire vocabulary. The docs nav is
+   16rem wide against a 100rem max, and the editorial column is
+   `max(320px - var(--space-0), 87.5vw)`.
+
+   --color-warn and --color-ok are NOT from enhance.dev — the site's own
+   --error channel already fills that role — so they exist only for the copy
+   button's success/failure state, which that site has no equivalent of.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  /* the spot colours, by the names enhance.dev names them */
+  --color-blue: #1f74d6;
+  --color-dark-purple: #7327ce;
+  --color-purple: #ad6ef9;
+  --color-mid-purple: #9853f7;
+  --color-princess: #f57aff;
+  --color-magenta: #e21893;
+  --color-green: #2cdd93;
+  --color-orange: #ff6263;
+  --color-pale-cyan: #d3fbff;
+  --color-denim: #002e47;
+  --color-halite: #00293f;
+  --color-indigo: #004163;
+  --color-ateneo: #174069;
+  --color-inky: #4d7185;
+  --color-rift: #01040d;
+  --color-lily: #e5ebee;
+  --color-smoke: #f3f3f3;
+
+  /* the two names this page's own utilities use. The accent is the real
+     hsl(208, 100%, 42.9%) = #00b8ec, and the channel form is kept below in
+     :root so the focus ring can derive from it the way the real site does. */
+  --color-brand: #00b8ec;
+  --color-brandink: #ffffff;
+  --color-accent: #00b8ec;
+  --color-warn: #b45309;
+  --color-ok: #047857;
+
+  --color-page: #efefef;
+  --color-panel: #ffffff;
+  --color-panel2: #f7f7f7;
+  --color-ink: #222222;
+  --color-body: #222222;
+  --color-muted: #4d7185;
+  --color-dim: #6e6e6e;
+  --color-line: #dddddd;
+  --color-code: #00293f;
+  --color-codeink: #d3fbff;
+
+  --font-display: "Montserrat", system-ui, -apple-system, sans-serif;
+  --font-body: "Montserrat", system-ui, -apple-system, sans-serif;
+  --font-mono: "Roboto Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* The accent as channels, exactly as enhance.dev stores it. Keeping the
+   channels rather than the hex is what lets the focus ring and the error state
+   derive their own colours the way the real system does. */
+:root {
+  --accent-h: 208;
+  --accent-s: 100%;
+  --accent-l: 42.9%;
+  --accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+
+  --error-h: 0;
+  --error-s: 94.5%;
+  --error-l: 43.1%;
+  --error: hsl(var(--error-h), var(--error-s), var(--error-l));
+
+  --focus-l: 30%;
+  --focus-size: 3px;
+  --focus-offset: 0;
+
+  --light: #efefef;
+  --dark: #222222;
+  --fore: var(--dark);
+  --back: var(--light);
+
+  /* the docs geometry, verbatim */
+  --docs-nav-width: 16rem;
+  --docs-max-width: 100rem;
+  --editorial-width: max(320px - 1rem, 87.5vw);
+
+  color-scheme: light dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* the reset's heading rule: headings inherit size and weight, so all type
+   sizing on this page is an explicit utility class */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: var(--font-display);
+  line-height: 1.2;
+  color: var(--color-ink);
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-body);
+  background: var(--color-back);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* the focus ring, copied exactly: a 1px accent outline plus a 3px halo whose
+   colour is the accent hue at accent-l + --focus-l */
+:is(a, button, input, textarea, summary):focus:not(:focus-visible) {
+  outline: none;
+}
+
+:is(a, button, input, textarea, summary):focus-visible {
+  outline: max(var(--focus-size), 1px) solid var(--accent);
+  outline-offset: var(--focus-offset);
+  box-shadow: 0 0 0 max(var(--focus-size), 3px)
+    hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l) + var(--focus-l)));
+}
+
+/* .btn — square. The entire radius vocabulary on this site is none, 100%, and
+   pill, and buttons are square. */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-ink);
+  background: var(--color-panel);
+  border: 1px solid var(--color-ink);
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+.btn:hover {
+  background: var(--color-ink);
+  color: var(--color-back);
+}
+
+/* .btn--accent — the one filled variant, on the accent */
+.btn--accent {
+  color: var(--color-brandink);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn--accent:hover {
+  background: hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l) - 10%));
+  color: var(--color-brandink);
+}
+
+/* .panel — the card. Square corners, a 1px rule, white on the grey field. */
+.panel {
+  padding: 1.25rem;
+  background: var(--color-panel);
+  border: 1px solid var(--color-line);
+}
+
+/* .nav — the docs nav column: --docs-nav-width against --docs-max-width, with
+   the links on a 1px rule */
+.docs-nav {
+  width: var(--docs-nav-width);
+  max-width: var(--docs-max-width);
+}
+
+.docs-nav a {
+  display: block;
+  padding: 0.35rem 0;
+  font-size: 1rem;
+}
+
+.docs-nav a.is-current {
+  font-weight: 700;
+  border-inline-start: 2px solid var(--accent);
+  padding-inline-start: 0.5rem;
+}
+
+/* .editorial — the content measure, using the site's own expression */
+.editorial {
+  max-width: var(--editorial-width);
+}
+
+/* code / pre — Roboto Mono, on the darkest spot colour (--halite) */
+code,
+pre {
+  font-family: var(--font-mono);
+  text-align: left;
+}
+
+code {
+  font-size: 0.9em;
+  color: var(--color-codeink);
+  background: var(--color-code);
+  padding: 0.1em 0.3em;
+}
+
+pre {
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-codeink);
+  background: var(--color-code);
+  border-left: 3px solid var(--accent);
+}
+
+/* pre code sits on the same surface, so it loses its own chip */
+pre code {
+  padding: 0;
+  color: inherit;
+  background: none;
+  font-size: 1em;
+}
+
+/* .gc-bar — .scroll-progress is a modifier, not a behaviour: it sets no
+   geometry, so the rule lives here. */
+.gc-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: 100%;
+  height: 3px;
+  background: var(--accent);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--color-brandink);
+}

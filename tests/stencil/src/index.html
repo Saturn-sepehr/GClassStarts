@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>gclass-anims &mdash; Stencil</title>
+  </head>
+  <body>
+    <!-- Note: written as <div></div>, never <div />. This is plain HTML, and the
+         parser does not honour self-closing syntax on a div - a <div /> silently
+         never closes and swallows the rest of the document into itself. -->
+    <gc-bar class="gc-bar scroll-progress"></gc-bar>
+
+    <gc-page></gc-page>
+
+    <!-- Stencil's www build does not invent this tag: it looks for a script tag
+         pointing at the compiled esm bundle and rewrites it (checking
+         `hasStencilScript(doc)` to decide the page is one of its own). With no
+         such tag it treats the document as static and emits www/index.html with
+         no loader at all. The href is left relative so it resolves under the
+         GitHub Pages subdirectory without a rewrite. -->
+    <script type="module" src="/build/gclass-tests-stencil.esm.js"></script>
+  </body>
+</html>

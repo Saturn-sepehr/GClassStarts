@@ -1,0 +1,273 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://htmx.org/
+
+   Every value is read out of that site's own stylesheet, /css/site.css, with
+   the custom property it came from named below. htmx's site declares its whole
+   palette as `:root` variables, so the tokens here are lifted one for one.
+
+   The system is a plain documentation page with three structural bands and
+   one dark hero:
+
+     --topNavBackground  linear-gradient(#fff, #f4f5f5), a 1px #d0d0d0 bottom
+                         rule and 0 4px 15px #efefef underneath - the nav is
+                         a lit strip that floats over the page
+     .dark-hero         240px, url(/img/topo.svg) over
+                         linear-gradient(#1f1f1f, #2d2d2d), inset shadows top and
+                         bottom. The one dark band, and its .logo is 100px
+     .c                 max-width 40em, margin auto - the content measure
+     footer             --footerBackground #f6f6f6, 2em top padding
+
+   Type is the system stack, named verbatim in the site.css `body` rule:
+   -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+   "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+   sans-serif. 16px / 1.5em.
+
+   Shape has exactly two radii and they are different sizes:
+
+     .btn      8px, 1em padding, uppercase, letter-spacing .1em
+     .card     no radius at all - 1em padding inside a 1px #eee border
+     pre       .25rem radius on #272822 (Monokai), which is the site's one
+               dark surface
+
+   --color-warn and --color-ok are NOT from htmx.org - they exist only to
+   colour the copy button's success/failure state, which that site has no
+   equivalent of.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #3366cc;
+  --color-branddark: #3d72d7;
+  --color-accent: #3366cc;
+  --color-warn: #d9534f;
+  --color-ok: #2f6f3e;
+
+  --color-page: #ffffff;
+  --color-panel: #ffffff;
+  --color-panel2: #f6f6f6;
+  --color-ink: #111111;
+  --color-muted: #555555;
+  --color-dim: #767676;
+  --color-line: #eeeeee;
+  --color-navline: #d0d0d0;
+  --color-code: #272822;
+  --color-codeink: #f8f8f2;
+
+  --font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  --font-mono: Monaco, Consolas, "Lucida Console", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* body — the site's own stack, 16px / 1.5em */
+body {
+  overflow-x: hidden;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5em;
+  color: var(--color-ink);
+  background-color: var(--color-page);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: #ffffff;
+}
+
+/* .top-nav — the lit gradient strip with its 1px rule and soft shadow */
+.top-nav {
+  line-height: 30px;
+  border-bottom: 1px solid var(--color-navline);
+  background-image: linear-gradient(#ffffff, #f4f5f5);
+  box-shadow: 0 4px 15px 0 #efefef;
+}
+
+/* .logo — 28px bold with the `b` run in --midBlue */
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  color: inherit;
+  text-decoration: none;
+}
+
+.logo b {
+  font-weight: inherit;
+  color: var(--color-brand);
+}
+
+/* .dark-hero — the one dark band: topo pattern over a #1f1f1f → #2d2d2d ramp,
+   with the inset shadows top and bottom and the 100px logo */
+.dark-hero {
+  height: 240px;
+  line-height: 240px;
+  text-align: center;
+  vertical-align: center;
+  color: whitesmoke;
+  background: linear-gradient(#1f1f1f, #2d2d2d);
+  border-bottom: 1px solid var(--color-navline);
+  box-shadow:
+    inset 0 11px 8px -10px #262626,
+    inset 0 -11px 8px -10px #262626;
+}
+
+.dark-hero .logo {
+  font-size: 100px;
+}
+
+.dark-hero .blue {
+  color: var(--color-branddark);
+}
+
+/* .c — the 40em measure every content block sits in */
+.c {
+  padding: 0 0.7em;
+  max-width: 40em;
+  margin: auto;
+}
+
+/* .alert — 1px border plus the hard 3px 3px drop-shadow, no radius */
+.alert {
+  border: 1px solid lightgrey;
+  margin: 24px 8px;
+  padding: 12px;
+  background-color: whitesmoke;
+  filter: drop-shadow(3px 3px darkgray);
+}
+
+/* .card — 1em padding in a 1px #eee border, no radius */
+.card {
+  padding: 1em;
+  border: solid #eeeeee;
+}
+
+.card:focus {
+  outline: 0;
+  border: solid var(--color-brand);
+}
+
+/* .btn — 8px radius, uppercase, letter-spacing .1em, 1em padding */
+.btn {
+  padding: 1em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: solid;
+  border-radius: 8px;
+  background: Canvas;
+}
+
+.btn.primary {
+  color: white;
+  background: var(--color-brand);
+  border: solid var(--color-brand);
+}
+
+a {
+  color: var(--color-brand);
+  text-decoration: none;
+}
+
+a[href]:hover,
+.btn:hover {
+  opacity: 0.6;
+}
+
+/* h1-h4 share one rule on the real site: margin-bottom .65em, weight 600,
+   line-height 1em. The loose section spacing below is h2/h3/h4 margins. */
+h1,
+h2,
+h3,
+h4 {
+  margin-bottom: 0.65em;
+  font-weight: 600;
+  line-height: 1em;
+}
+
+h2:not(:first-child) {
+  margin-top: 42px;
+}
+
+h3 {
+  margin-top: 32px;
+}
+
+h4 {
+  margin-top: 16px;
+}
+
+/* code — the 0.9em scale and the 2px-radius #3465a41f tint */
+body .content code {
+  font-size: 0.9em;
+}
+
+code:not(code[class*="language-"]) {
+  background: #3465a41f;
+  border-radius: 2px;
+  padding: 2px 5px;
+}
+
+/* pre — Monokai, .25rem radius. The site's one dark surface. */
+pre {
+  overflow: auto;
+  font-size: 0.9em;
+  background-color: var(--color-code);
+  color: var(--color-codeink);
+  border-radius: 0.25rem;
+  line-height: 1.3;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  text-align: left;
+}
+
+pre[class|="language"] {
+  line-height: 1.3;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  border-radius: 0.25rem;
+  color: lightgray;
+}
+
+td {
+  padding: 0.2em 0.2em 0.2em 0;
+  text-align: left;
+  border-bottom: 1px solid #eeeeee;
+}
+
+th {
+  padding: 0.2em 0.2em 0.2em 0;
+  text-align: left;
+  border-bottom: 2px solid #eeeeee;
+}
+
+/* footer — --footerBackground, 2em top padding, 5em bottom */
+.site-footer {
+  margin-top: 2em;
+  padding-top: 2em;
+  padding-bottom: 5em;
+  background-color: var(--color-panel2);
+}
+
+/* The htmx request-in-flight classes. gclass-anims does not need them, but the
+   page is an htmx page, so they are here and visibly wired to the demo below. */
+.htmx-indicator {
+  opacity: 0;
+}
+
+.htmx-request .htmx-indicator {
+  opacity: 1;
+}
+
+.htmx-request.htmx-indicator {
+  opacity: 1;
+}
+
+.htmx-swapping {
+  opacity: 0;
+  transition: opacity 200ms ease-in;
+}

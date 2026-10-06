@@ -1,0 +1,21 @@
+{
+  "name": "gclass-tests-meteor",
+  "private": true,
+  "version": "0.0.0",
+  "description": "gclass-anims in a Meteor app",
+  "scripts": {
+    "build:css": "tailwindcss -i ./client/styles/tailwind.css -o ./client/styles.css",
+    "dev": "npm run build:css && meteor run",
+    "build": "npm run build:css && meteor build ../../meteor-out && node scripts/stage-static.mjs",
+    "preview": "npx --yes serve ../../meteor-static -l 4173"
+  },
+  "dependencies": {
+    "gclass-anims": "1.0.0-beta.24",
+    "meteor-node-stubs": "^1.2.12"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "meteor": "^3.5.2",
+    "tailwindcss": "^4.3.3"
+  }
+}

@@ -41,6 +41,9 @@ jobs:
           - jquery
           - alpine
           - backbone
+          - htmx
+          - stimulus
+          - marko
           - react
           - vue
           - preact
@@ -55,6 +58,17 @@ jobs:
           - remix
           - qwik
           - angular
+          - solidstart
+          - ripple
+          - riot
+          - knockout
+          - elm
+          - stencil
+          - meteor
+          - mithril
+          - enhance
+          - analog
+          - hotwire
 
     steps:
       - uses: actions/checkout@v4
@@ -69,12 +83,25 @@ jobs:
         run: |
           node -e '
             const v = require("./package.json").dependencies["gclass-anims"];
-            if (v !== "1.0.0-beta.23") {
-              console.error(`expected the pin 1.0.0-beta.23, found ${v}`);
+            if (v !== "1.0.0-beta.24") {
+              console.error(`expected the pin 1.0.0-beta.24, found ${v}`);
               process.exit(1);
             }
             console.log("pin:", v);
           '
+
+      # Meteor is the one environment that is not just `npm install`. Its CLI is
+      # a global tool with its own toolchain under ~/.meteor, and its npm package
+      # refuses to run inside a project-local node_modules ("You are not using a
+      # global npm context to install"). So this leg installs the CLI globally
+      # before the project install, and every other leg skips it.
+      - name: Install the Meteor CLI
+        if: matrix.env == 'meteor'
+        run: npm install -g meteor --no-audit --no-fund --allow-scripts=meteor
+
+      - name: Put Meteor on PATH
+        if: matrix.env == 'meteor'
+        run: echo "$HOME/.meteor" >> "$GITHUB_PATH"
 
       - name: Install
         run: |
@@ -84,7 +111,7 @@ jobs:
         run: |
           ACTUAL=$(node -p "require('./node_modules/gclass-anims/package.json').version")
           echo "resolved gclass-anims@$ACTUAL"
-          test "$ACTUAL" = "1.0.0-beta.23"
+          test "$ACTUAL" = "1.0.0-beta.24"
 
       - name: Build
         run: npm run build

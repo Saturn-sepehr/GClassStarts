@@ -1,0 +1,22 @@
+{
+  "name": "gclass-tests-elm",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "gclass-anims in an Elm app",
+  "scripts": {
+    "build:elm": "node scripts/build-elm.mjs",
+    "dev": "npm run build:elm && vite",
+    "build": "npm run build:elm && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "elm": "0.19.3-0",
+    "gclass-anims": "1.0.0-beta.24"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.2"
+  }
+}

@@ -44,6 +44,52 @@ const LAYOUT = {
   jquery:    { from: "dist", index: "index.html" },
   alpine:    { from: "dist", index: "index.html" },
   backbone:  { from: "dist", index: "index.html" },
+  // htmx fetches static .html partials, which are configured as Vite's
+  // publicDir in vite.config.js, so they land in dist/ alongside the bundle.
+  htmx:      { from: "dist", index: "index.html" },
+  // Stimulus attaches controllers to markup it never renders, so there is no
+  // component entry - index.html is the page and main.js is the entry.
+  stimulus:  { from: "dist", index: "index.html" },
+  // Marko mounts page.marko into #app from src/main.js. No SSR, so the build
+  // output is the same client-only dist/ as every other Vite environment.
+  marko:     { from: "dist", index: "index.html" },
+  // SolidStart v2 builds through nitro's prerenderer rather than Vite, because
+  // its SPA mode (ssr: false) emits only route chunks and no index.html at all.
+  // See the prerender block in tests/solidstart/vite.config.ts.
+  solidstart:{ from: ".output/public", index: "index.html" },
+  // Ripple's ssr:false build is a normal Vite build: mount(App) runs in the
+  // browser and dist/ is the whole tree.
+  ripple:    { from: "dist", index: "index.html" },
+  // Riot 10 has no official Vite plugin, so riot-plugin.js runs @riotjs/compiler
+  // over .riot files. Output is still an ordinary dist/.
+  riot:       { from: "dist", index: "index.html" },
+  // Knockout has no build step of its own: the page is plain HTML with
+  // data-bind attributes, and Vite only bundles the entry module.
+  knockout:   { from: "dist", index: "index.html" },
+  // Mithril builds the whole page with hyperscript at runtime, so index.html is
+  // only a mount point.
+  mithril:    { from: "dist", index: "index.html" },
+  // Enhance is HTML-first: index.html is the real page and Vite only bundles the
+  // two custom elements plus the entry module.
+  enhance:    { from: "dist", index: "index.html" },
+  // Analog's client environment only. The prerender path fails with NG0401 on
+  // this app's provider set, so the page ships as a client-built SPA — see the
+  // `ssr: false` note in tests/analog/vite.config.ts.
+  analog:     { from: "dist/client", index: "index.html" },
+  // Hotwire is Turbo + Stimulus with no framework in between: the markup is
+  // static HTML and Vite only bundles the two libraries plus the entry.
+  hotwire:    { from: "dist", index: "index.html" },
+  // Elm compiles to a single non-ESM IIFE first (scripts/build-elm.mjs rewrites
+  // its footer so it can be imported), then Vite bundles that with the entry.
+  elm:        { from: "dist", index: "index.html" },
+  // Meteor builds to a Node server bundle; scripts/stage-static.mjs unwraps the
+  // tarball into meteor-static/ and assembles the client program into a tree
+  // that needs no server. See that script for what it costs.
+  meteor:     { from: "../../meteor-static", index: "index.html" },
+  // Stencil drives its own bundler. The `www` output target is the static,
+  // client-only tree; srcDir: "src" is what puts index.html into it, and the
+  // /build/ refs it emits need the same subdirectory rewrite as qwik's.
+  stencil:    { from: "www", index: "index.html" },
   // Ember builds through Embroider + Vite, but its stylesheet is imported from
   // app/app.js rather than linked in index.html - the virtual app.css is a
   // verbatim copy that skips the PostCSS/Tailwind pipeline. See vite.config.mjs.
@@ -155,17 +201,29 @@ for (const env of built) {
     cpSync(from, dest, { recursive: true });
   }
 
-  // Qwik City's SSG honours basePathname for its own /build/… URLs but still
-  // emits the bundle-graph preload as an absolute /assets/… path. One targeted
-  // rewrite is cheaper than fighting the generator.
-  if (env === "qwik") {
+  // Two toolchains emit absolute asset refs that ignore the subdirectory they are
+  // staged into. Each is a single targeted string replacement, which is cheaper
+  // and less fragile than trying to configure each generator's base path.
+  //
+  //   qwik    honours basePathname for its own /build/… URLs but still emits the
+  //           bundle-graph preload as an absolute /assets/… path
+  //   stencil has no base-path concept at all: its loader's `data-resources-url`
+  //           and the dynamic imports it inlines into index.html are both rooted
+  //           at /build/
+  const rewrites = {
+    qwik: [[`"/assets/`, `"/${BASE}/qwik/assets/`]],
+    stencil: [[`"/build/`, `"/${BASE}/stencil/build/`]],
+  }[env];
+
+  if (rewrites) {
     const f = join(dest, spec.index);
     if (existsSync(f)) {
-      {
-        const before = readFileSync(f, "utf8");
-        const after = before.replaceAll('"/assets/', `"/${BASE}/qwik/assets/`);
-        writeFileSync(f, after);
-        if (before !== after) console.log(`             rewrote absolute /assets/ refs for qwik`);
+      const before = readFileSync(f, "utf8");
+      let after = before;
+      for (const [from, to] of rewrites) after = after.replaceAll(from, to);
+      writeFileSync(f, after);
+      if (before !== after) {
+        console.log(`             rewrote absolute asset refs for ${env}`);
       }
     }
   }

@@ -1,0 +1,21 @@
+{
+  "name": "gclass-tests-htmx",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "gclass-anims in an htmx app",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "gclass-anims": "1.0.0-beta.24",
+    "htmx.org": "^2.0.11"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.2"
+  }
+}

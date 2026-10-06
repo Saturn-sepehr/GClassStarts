@@ -17,7 +17,7 @@ initCopyButtons();
 
 document.getElementById("alpine-version").textContent = Alpine.version;
 
-console.log(`gclass-anims 1.0.0-beta.23 initialised (alpine ${Alpine.version})`);
+console.log(`gclass-anims 1.0.0-beta.24 initialised (alpine ${Alpine.version})`);
 
 // One delegated handler on document covers every [data-copy] button, including
 // any Alpine clones later. The text is the sibling <code> block's content.

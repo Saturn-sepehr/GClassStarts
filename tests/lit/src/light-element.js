@@ -16,7 +16,7 @@ class GcLight extends LitElement {
     return html`
       <main class="gc">
         <h1 class="gc-title appear order ease-expo">
-          gclass-anims <span class="gc-ver">1.0.0-beta.23</span>
+          gclass-anims <span class="gc-ver">1.0.0-beta.24</span>
         </h1>
         <p class="gc-sub appear">Environment: <strong>lit</strong> (light DOM)</p>
         <div class="gc-grid">

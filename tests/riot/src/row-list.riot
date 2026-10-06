@@ -1,0 +1,41 @@
+<row-list>
+  <div class="mt-5 flex flex-wrap items-center gap-3">
+    <button
+      type="button"
+      onclick={ () => state.rows.push(state.rows.length + 1) }
+      class="click-hover amount-2 rounded border border-line bg-panel px-4 py-2 text-[1.4rem] font-medium text-muted transition-colors hover:text-brand"
+    >
+      Add a row
+    </button>
+    <button
+      type="button"
+      onclick={ () => { state.rows.splice(0) } }
+      class="click-hover amount-2 rounded border border-line bg-panel px-4 py-2 text-[1.4rem] font-medium text-muted transition-colors hover:text-brand"
+    >
+      Reset
+    </button>
+    <span class="font-mono text-[1.3rem] text-muted">{ state.rows.length } rows</span>
+  </div>
+
+  <ul class="mt-4 grid list-none gap-2 p-0">
+    <li
+      each={ row in state.rows }
+      class="appear spawn-up time-1 rounded bg-panel px-4 py-3 font-mono text-[1.3rem]"
+    >
+      row { row } — inserted by a Riot update handler
+    </li>
+  </ul>
+
+  <row-list>
+    <script>
+      export default {
+        state: { rows: [] },
+
+        onBeforeMount() {
+          // Riot's reactivity is proxied per-object, so mutating the array in
+          // place from a handler is what triggers the re-render.
+        },
+      };
+    </script>
+  </row-list>
+</row-list>

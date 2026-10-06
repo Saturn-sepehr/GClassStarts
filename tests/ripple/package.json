@@ -1,0 +1,22 @@
+{
+  "name": "gclass-tests-ripple",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "gclass-anims in a Ripple app",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "gclass-anims": "1.0.0-beta.24",
+    "ripple": "^0.4.7"
+  },
+  "devDependencies": {
+    "@ripple-ts/vite-plugin": "^0.4.7",
+    "@tailwindcss/vite": "^4.3.3",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.2"
+  }
+}

@@ -1,0 +1,326 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400..1000&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://stenciljs.com/
+
+   stenciljs.com declares its entire palette as `:root` custom properties in a
+   single token block, and the tokens are a 21-step scale per hue. The steps that
+   matter are lifted verbatim below — the site uses 5 families, and each rule
+   below names the selector it was read from.
+
+     --c-indigo-*   the text ramp. Body copy is --c-indigo-90 (#2d4665)
+                    ([class*=ds-paragraph]), nav links --c-indigo-80, the
+                    smallest labels --c-indigo-40. Borders are --c-indigo-30.
+     --c-carbon-*   the neutral ramp, used for code gutters and the demo tab
+                    bar. Headings are --c-carbon-100 (#03060b).
+     --c-purple-*   THE accent. #5530ff is the site's primary button fill
+                    (.index_topCtaPrimary) and its link colour (.link), which is
+                    --c-purple-90 + a few steps. The hero word gradient is
+                    linear-gradient(90deg, #5530ff, #66a6ff) clipped to the text.
+     --c-blue-100   #0054e9, the secondary button in the footer form
+     --c-green      only success states (.submitted-message is #35af55)
+     --c-red-90     #e21827, error text only
+
+   Two families, and the second one is self-hosted with a unicode-range split:
+
+     body    Inter, weight 1 1000, served as one variable .woff2 with an Arial
+             fallback carrying ascent/descent/size-adjust overrides
+     code    Roboto Mono, weights 100 700, with a Courier New fallback
+
+   Shape is a three-step radius system and nothing else:
+
+     8px     --search-border inputs, the demo display-mode toggle
+     16px    the cards (.index_card), the code panels, the mobile menu
+     100px+  EVERY button and pill (.index_topCtaPrimary, .index_buttonSecondary,
+             .index_topPill, .framework-demo_headerRowCta all use 100px/1000px/
+             200px)
+
+   The one dark surface is the code panel: #0a1220, 16px radius, and a two-layer
+   shadow (0 16px 32px rgba(0,0,0,.1), 0 8px 16px rgba(0,0,0,.08)). Stencil's
+   own component code panels use #121d32.
+
+   Structure: a 4rem sticky white header with box-shadow 0 1px 0 rgba(0,0,0,.06)
+   (3rem on mobile), and a #f6f6fc section band with --section-space 12.5rem.
+
+   --color-warn and --color-ok are NOT from stenciljs.com — the site's own red
+   and green already fill those roles — so they exist only for the copy button's
+   success/failure state, which that site has no equivalent of.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  /* the purple accent ramp, from :root on stenciljs.com */
+  --color-purple-0: #f4f4ff;
+  --color-purple-10: #e9eaff;
+  --color-purple-20: #d0d2ff;
+  --color-purple-30: #b6b9f9;
+  --color-purple-40: #9a99fc;
+  --color-purple-60: #786df9;
+  --color-purple-80: #6030ff;
+  --color-purple-90: #4712fb;
+
+  /* the indigo text ramp */
+  --color-indigo-0: #fbfbfd;
+  --color-indigo-10: #f6f8fc;
+  --color-indigo-20: #e9edf3;
+  --color-indigo-30: #dee3ea;
+  --color-indigo-40: #ced6e0;
+  --color-indigo-50: #b2becd;
+  --color-indigo-60: #92a0b3;
+  --color-indigo-70: #73849a;
+  --color-indigo-80: #445b78;
+  --color-indigo-90: #2d4665;
+  --color-indigo-100: #001a3a;
+
+  /* the carbon neutral ramp */
+  --color-carbon-0: #eef1f3;
+  --color-carbon-40: #7d8894;
+  --color-carbon-50: #677483;
+  --color-carbon-70: #434f5e;
+  --color-carbon-80: #35404e;
+  --color-carbon-90: #222d3a;
+  --color-carbon-100: #03060b;
+
+  --color-blue-100: #0054e9;
+  --color-red-90: #e21827;
+  --color-green-ok: #35af55;
+
+  /* the two names this page's own utilities use */
+  --color-brand: #5530ff;
+  --color-branddeep: #4712fb;
+  --color-accent: #66a6ff;
+  --color-warn: #b45309;
+  --color-ok: #047857;
+
+  --color-page: #ffffff;
+  --color-band: #f6f6fc;
+  --color-panel: #ffffff;
+  --color-panel2: #f4f4ff;
+  --color-ink: #03060b;
+  --color-body: #2d4665;
+  --color-muted: #73849a;
+  --color-dim: #92a0b3;
+  --color-line: #dee3ea;
+  --color-line2: #ced6e0;
+  --color-code: #0a1220;
+  --color-codeink: #ffffff;
+
+  --font-display: "Inter", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "Roboto Mono", ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-page);
+  color: var(--color-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-ink);
+  line-height: 1.1;
+}
+
+/* headings in .ds-paragraph weight: the site's body copy is 400 with
+   letter-spacing .01em and line-height 1.6 */
+p {
+  margin: 0 0 1.6em;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  color: var(--color-indigo-90);
+}
+
+/* .site-header — 4rem sticky, white, box-shadow 0 1px 0 rgba(0,0,0,.06).
+   Copied from .desktop_header. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 4rem;
+  padding-right: 20px;
+  padding-left: 20px;
+  font-size: 0.875rem;
+  background: var(--color-white, #ffffff);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* the header links: --c-indigo-80, weight 500 */
+.site-header a {
+  padding: 0 0.75rem;
+  font-weight: 500;
+  color: var(--color-indigo-80);
+  text-decoration: none;
+}
+
+.site-header a:hover {
+  color: var(--color-brand);
+}
+
+/* the 1px rule between header items: --c-indigo-40, 1.75rem tall */
+.header-separator {
+  width: 1px;
+  height: 1.75rem;
+  margin: 0 0.75rem;
+  background: var(--color-indigo-40);
+}
+
+/* .btn — the primary CTA. #5530ff fill, white text, weight 600, radius 100px.
+   This is the site's single most recognisable shape. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  text-decoration: none;
+  background-color: var(--color-brand);
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: background-color 0.2s ease-out;
+}
+
+.btn:hover {
+  background-color: var(--color-branddeep);
+}
+
+/* .btn--secondary — .index_buttonSecondary: #f4f4ff fill on #5530ff text */
+.btn--secondary {
+  padding: 0.469rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-brand);
+  background-color: var(--color-panel2);
+}
+
+.btn--ghost {
+  color: var(--color-indigo-100);
+  background: var(--color-white, #ffffff);
+  border: 1px solid var(--color-indigo-40);
+  font-family: var(--font-mono);
+}
+
+/* .pill — .index_topPillCta: radius 200px, --c-purple-10 fill, #5530ff text */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.375rem 0.625rem;
+  font-weight: 600;
+  line-height: 100%;
+  color: var(--color-brand);
+  background: var(--color-purple-10);
+  border-radius: 200px;
+}
+
+/* .card — .index_card: 1px --c-indigo-30 border, 16px radius */
+.card {
+  padding: 2rem;
+  background: var(--color-panel);
+  border: 1px solid var(--color-indigo-30);
+  border-radius: 16px;
+}
+
+/* .band — .index_features: the #f6f6fc section background with
+   --section-space 12.5rem of vertical padding */
+.band {
+  padding: 6rem 0;
+  background: var(--color-band);
+}
+
+/* .grad-text — the hero word: linear-gradient(90deg, #5530ff, #66a6ff) clipped
+   to the glyphs, with font-style normal on the em */
+.grad-text {
+  font-style: normal;
+  color: transparent;
+  background: linear-gradient(90deg, #5530ff, #66a6ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* .code-panel — the site's one dark surface: #0a1220, 16px radius, and the
+   two-layer shadow copied from .index_webComponentsEnd */
+.code-panel {
+  position: relative;
+  padding: 2rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.813rem;
+  line-height: 1.9;
+  text-align: left;
+  color: var(--color-codeink);
+  background: var(--color-code);
+  border-radius: 16px;
+  box-shadow:
+    0 16px 32px rgba(0, 0, 0, 0.1),
+    0 8px 16px rgba(0, 0, 0, 0.06);
+}
+
+/* .inline-code — the highlighted-code chip, Roboto Mono at 0.875rem with
+   -.02em tracking */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  letter-spacing: -0.02em;
+}
+
+p code,
+li code {
+  padding: 0.15em 0.35em;
+  color: var(--color-brand);
+  background: var(--color-panel2);
+  border-radius: 4px;
+}
+
+.code-panel code {
+  padding: 0;
+  color: inherit;
+  background: none;
+}
+
+/* .input — the search field: 8px radius, 1px --c-indigo-30, 2.25rem tall */
+.input {
+  height: 2.25rem;
+  padding: 8px 8px 8px 32px;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--color-indigo-100);
+  background: var(--color-panel);
+  border: 1px solid var(--color-indigo-30);
+  border-radius: 8px;
+}
+
+/* .gc-bar — .scroll-progress is a modifier, not a behaviour: it sets no
+   geometry, so the rule lives here. */
+.gc-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: 100%;
+  height: 3px;
+  background: var(--color-brand);
+}
+
+::selection {
+  background: var(--color-purple-20);
+  color: var(--color-indigo-100);
+}

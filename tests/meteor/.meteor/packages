@@ -1,0 +1,16 @@
+meteor-base             # Packages every Meteor app needs
+mongo                   # The database Meteor supports right now
+static-html             # Define static page content in .html files
+reactive-var            # Reactive variable for tracker
+blaze                   # Full Blaze templating package
+es5-shim                # ECMAScript 5 compatibility for older browsers
+standard-minifier-css   # CSS minifier run for production mode
+shell-server            # Server-side component for the shell
+
+# standard-minifier-js is deliberately absent. Meteor 3's minifier runs on the
+# bundled output before the module wrapper has rewritten `import`, and terser
+# rejects it with "Import statement may only appear at the top level" for every
+# app file that uses ESM syntax. That includes plain `import { Template } from
+# "meteor/templating"` — there is no app-level workaround short of dropping ESM
+# entirely, which would be unidiomatic Meteor. Dropping the minifier costs
+# bytes and is the honest trade.

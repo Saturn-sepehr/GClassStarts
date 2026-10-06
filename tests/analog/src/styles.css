@@ -1,0 +1,305 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://analogjs.org/
+
+   Analog's docs declare their whole design system as one `:root` token block,
+   and the values below are lifted from it verbatim rather than sampled off the
+   rendered page. It has two such blocks; this is the light one.
+
+   The tokens that carry the identity:
+
+     --brand       #c30f2e     the Analog red. Buttons, links, active nav
+     --brand-hover #a40c26
+     --link        #2563eb     documentation links only — a *different* blue
+     --link-hover  #1d4ed8
+     --bg          #fff        --bg-subtle  #f9fafb
+     --fg          #1f2937     --fg-muted   #6b7280    --fg-subtle #9ca3af
+     --border      #e5e7eb     --border-subtle #f3f4f6
+     --surface-inverted       #111827, hovering to #1f2937
+
+   Two things worth noting because they are easy to miss:
+
+   1. There are FIVE accent hues in the block and the docs use them for
+      admonitions rather than for brand: each is a border/fill pair.
+
+        tip      #10b981 on #ecfdf5
+        info     #3b82f6 on #eff6ff
+        note     #6366f1 on #eef2ff
+        warning  #f59e0b on #fffbeb
+        caution  #ef4444 on #fef2f2
+
+      Five named callout tones is a more distinctive system than any single
+      accent, and it is reproduced below rather than flattened to one colour.
+
+   2. The dark demo card is its own island of colour, and it is the only place
+      the site goes dark:
+
+        --demo-card-bg     #011627
+        --demo-card-fg     #d6deeb
+        --demo-card-fg-muted #8b949e
+        --demo-card-border #1f2937
+        --demo-card-accent #fb7185
+        --demo-card-accent-bg #ffffff0f
+
+      That set is GitHub's dark-syntax palette, reused for the code demos in the
+      docs body. The code blocks on this page use it, which is what makes them
+      read as analogjs.org's rather than as generic dark mode.
+
+   Type is the system stack, not a webfont — ui-sans-serif, system-ui,
+   -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+   sans-serif — with ui-monospace and friends for code. The scale runs .75rem
+   through 4.5rem at 1.25 ratios.
+
+   Radius: .25rem / .375rem / .625rem / .75rem. Four steps, and nothing else.
+
+   --color-warn and --color-ok are NOT from analogjs.org — its own `--brand` and
+   admonition tones already fill those roles — so they exist only for the copy
+   button's success/failure state.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #c30f2e;
+  --color-brandhover: #a40c26;
+  --color-brandfg: #ffffff;
+  --color-link: #2563eb;
+  --color-linkhover: #1d4ed8;
+
+  --color-page: #ffffff;
+  --color-bg: #ffffff;
+  --color-subtle: #f9fafb;
+  --color-panel: #ffffff;
+  --color-panel2: #f9fafb;
+  --color-ink: #1f2937;
+  --color-body: #1f2937;
+  --color-muted: #6b7280;
+  --color-dim: #9ca3af;
+  --color-line: #e5e7eb;
+  --color-linesubtle: #f3f4f6;
+  --color-inverted: #111827;
+  --color-invertedhover: #1f2937;
+
+  /* the admonition pairs, lifted from the same :root block */
+  --color-tip: #10b981;
+  --color-tipbg: #ecfdf5;
+  --color-info: #3b82f6;
+  --color-infobg: #eff6ff;
+  --color-note: #6366f1;
+  --color-notebg: #eef2ff;
+  --color-warning: #f59e0b;
+  --color-warningbg: #fffbeb;
+  --color-caution: #ef4444;
+  --color-cautionbg: #fef2f2;
+
+  /* the dark demo card: GitHub's dark-syntax palette, as analogjs.org reuses it */
+  --color-demo: #011627;
+  --color-demofg: #d6deeb;
+  --color-demomuted: #8b949e;
+  --color-demoborder: #1f2937;
+  --color-demoaccent: #fb7185;
+
+  --color-warn: #b45309;
+  --color-ok: #047857;
+
+  /* code */
+  --color-code: #f6f8fa;
+  --color-codefg: #1f2937;
+  --color-copybg: #0f172a0f;
+
+  --font-display: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  line-height: 1.5;
+  color: var(--color-body);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: var(--color-ink);
+}
+
+/* .site-header — the sticky bar, 1px bottom rule */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-line);
+}
+
+/* nav links: muted at rest, --link on hover */
+.site-header nav a {
+  color: var(--color-muted);
+  text-decoration: none;
+}
+
+.site-header nav a:hover {
+  color: var(--color-link);
+}
+
+/* .lede — the 1.125rem / 1.75 body paragraph the docs use under a heading */
+.lede {
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+/* .btn — .625rem radius, --brand fill. The docs' primary control. */
+.btn {
+  display: inline-block;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-brandfg);
+  text-decoration: none;
+  background: var(--color-brand);
+  border: 1px solid var(--color-brand);
+  border-radius: 0.625rem;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:hover {
+  background: var(--color-brandhover);
+  border-color: var(--color-brandhover);
+}
+
+/* the quiet variant: --surface-inverted, or an outline on light */
+.btn--accent {
+  color: var(--color-ink);
+  background: var(--color-subtle);
+  border-color: var(--color-line);
+}
+
+.btn--accent:hover {
+  background: var(--color-linesubtle);
+}
+
+/* .pill — the small count badge next to the demo's buttons */
+.pill {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.75rem;
+  color: var(--color-ink);
+  background: var(--color-subtle);
+  border: 1px solid var(--color-line);
+  border-radius: 9999px;
+}
+
+/* .card — .5rem radius, 1px --border, white on the page */
+.card {
+  padding: 1rem;
+  background: var(--color-panel);
+  border: 1px solid var(--color-line);
+  border-radius: 0.5rem;
+}
+
+/* .admonition — the five-tone callout family. Each is a 1px left border in its
+   tone on that tone's own tint, which is how the docs site renders them. */
+.admonition {
+  padding: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border: 1px solid;
+  border-left-width: 4px;
+  border-radius: 0.375rem;
+}
+
+.admonition--tip {
+  color: #065f46;
+  background: var(--color-tipbg);
+  border-color: var(--color-tip);
+}
+
+.admonition--info {
+  color: #1e40af;
+  background: var(--color-infobg);
+  border-color: var(--color-info);
+}
+
+.admonition--note {
+  color: #3730a3;
+  background: var(--color-notebg);
+  border-color: var(--color-note);
+}
+
+.admonition--warning {
+  color: #92400e;
+  background: var(--color-warningbg);
+  border-color: var(--color-warning);
+}
+
+.admonition--caution {
+  color: #991b1b;
+  background: var(--color-cautionbg);
+  border-color: var(--color-caution);
+}
+
+/* .code-panel — the docs' dark demo card. --demo-card-bg and friends, with a
+   1px --demo-card-border and the rose --demo-card-accent for accents. */
+.code-panel {
+  position: relative;
+  padding: 1.25rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.625;
+  text-align: left;
+  white-space: pre;
+  color: var(--color-demofg);
+  background: var(--color-demo);
+  border: 1px solid var(--color-demoborder);
+  border-radius: 0.5rem;
+}
+
+pre code {
+  padding: 0;
+  color: inherit;
+  background: none;
+  font-size: inherit;
+}
+
+/* inline code — --code-bg at 6% over the ink, from --code-copy-bg */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  padding: 0.15em 0.35em;
+  color: var(--color-codefg);
+  background: var(--color-code);
+  border-radius: 0.25rem;
+}
+
+/* .gc-bar — .scroll-progress is a modifier, not a behaviour: it sets no
+   geometry, so the rule lives here. */
+.gc-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: 100%;
+  height: 3px;
+  background: var(--color-brand);
+}
+
+::selection {
+  background: var(--color-brand);
+  color: var(--color-brandfg);
+}

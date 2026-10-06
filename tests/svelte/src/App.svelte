@@ -84,6 +84,6 @@ if (!window.__gclassCopy) {
     </section>
 
     <footer class="border-t border-line pt-8 text-sm text-muted">
-      <p>Colours and type sampled from <a class="text-brand hover:underline" href="https://svelte.dev/">https://svelte.dev/</a>. This page is Svelte's own build output, running gclass-anims 1.0.0-beta.23 from npm.</p>
+      <p>Colours and type sampled from <a class="text-brand hover:underline" href="https://svelte.dev/">https://svelte.dev/</a>. This page is Svelte's own build output, running gclass-anims 1.0.0-beta.24 from npm.</p>
     </footer>
   </main>

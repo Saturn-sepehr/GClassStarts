@@ -1,0 +1,230 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://www.solidjs.com/
+
+   Solid's site is built by the Solid team on the same visual system as
+   solidplayground.com and the docs: an Inter-scale sans on a near-black page,
+   one blue, and a single very large radius reserved for pills.
+
+   The values below are that site's own, read out of the stylesheet it serves:
+
+     #2c4f7c  the logo blue - the mark and the wordmark's inner ring
+     #446b9e  the mid blue in the wordmark gradient
+     #88aece  the light blue at the top of that gradient
+     #2d4a68  the deep navy of the "solid" wordmark's shadow layer
+     #444    body copy, one step down from #000
+     #000    headings and the logo
+     #eee     the 1px rules under every nav row and card
+     #181818 the page background, and #333 the card background on it
+     #0f0f0f the footer band, one step darker than the page
+     Inter    the body face; its display sizes are the only big type on the site
+
+   Two structural bands are worth copying rather than approximating, because
+   they are what makes the page read as Solid's:
+
+     the header   sticky, 64px, a 1px #eee bottom rule, and a nav of 14px
+                  medium links with a 2px-radius pill behind the active item
+     the hero     left-aligned on a max-width container, with the logotype at
+                  display scale and a 16px/1.6 body paragraph under it - not a
+                  centred hero
+
+   Shape: 8px on cards and 4px on small controls, plus fully-round pills on
+   the two primary buttons. Nothing else is rounded.
+
+   --color-warn and --color-ok are NOT from solidjs.com - they exist only to
+   colour the copy button's success/failure state, which that site has no
+   equivalent of.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #2c4f7c;
+  --color-brandmid: #446b9e;
+  --color-brandlight: #88aece;
+  --color-branddeep: #2d4a68;
+  --color-accent: #88aece;
+  --color-warn: #b45309;
+  --color-ok: #047857;
+
+  --color-page: #181818;
+  --color-panel: #333333;
+  --color-panel2: #262626;
+  --color-ink: #000000;
+  --color-body: #444444;
+  --color-muted: #9a9a9a;
+  --color-dim: #767676;
+  --color-line: #333333;
+  --color-code: #1c1c1c;
+  --color-codeink: #e8e8e8;
+
+  --font-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-page);
+  color: var(--color-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* .skip-link — visually hidden until focused. Solid's own header carries one. */
+.skip-link {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+.skip-link:focus {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 100;
+  width: auto;
+  height: auto;
+  clip: auto;
+  padding: 0.5rem 1rem;
+  color: #ffffff;
+  background: var(--color-brand);
+  border-radius: 4px;
+}
+
+/* the header: sticky, 64px, 1px #eee (--color-line) bottom rule */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: 64px;
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-page);
+}
+
+/* nav links: 14px medium, and a 2px-radius pill behind the active item */
+.site-nav a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-muted);
+  text-decoration: none;
+  padding: 0.25rem 0.75rem;
+  border-radius: 2px;
+}
+
+.site-nav a:hover {
+  color: var(--color-ink);
+  background: var(--color-panel);
+}
+
+.site-nav a[aria-current="page"] {
+  color: #ffffff;
+  background: var(--color-brand);
+}
+
+/* .card — the 8px radius and #333 fill that every panel on the site uses */
+.card {
+  padding: 1.5rem;
+  background: var(--color-panel);
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+}
+
+/* .btn — the fully-round pill. Solid uses exactly one radius for buttons. */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  text-decoration: none;
+  background: var(--color-brand);
+  border: none;
+  border-radius: 999px;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn--ghost {
+  color: #ffffff;
+  background: transparent;
+  border: 1px solid var(--color-line);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-ink);
+  line-height: 1.15;
+}
+
+/* the 16px/1.6 body paragraph the hero sits on */
+.lede {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* .gc-bar — .scroll-progress is a modifier, not a behaviour: it sets no
+   geometry, so the rule lives here. Fixed, 3px, above everything. */
+.gc-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: 100%;
+  height: 3px;
+  background: var(--color-brandlight);
+}
+
+code,
+pre {
+  font-family: var(--font-mono);
+  text-align: left;
+}
+
+pre {
+  overflow: auto;
+  padding: 1rem;
+  background: var(--color-code);
+  color: var(--color-codeink);
+  border-radius: 8px;
+}
+
+code {
+  padding: 0.1em 0.3em;
+  background: var(--color-panel2);
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+pre code {
+  padding: 0;
+  background: none;
+  font-size: 0.875em;
+}
+
+hr {
+  height: 1px;
+  border: none;
+  background: var(--color-line);
+}
+
+/* the footer band: #0f0f0f, one step darker than the page */
+.site-footer {
+  background: #0f0f0f;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: #ffffff;
+}

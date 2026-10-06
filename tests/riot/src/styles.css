@@ -1,0 +1,308 @@
+@import url("https://fonts.googleapis.com/css2?family=Helvetica+Neue&display=swap");
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://riot.js.org/
+
+   Every value is read out of that site's own stylesheet, /style.css. Riot's
+   system is unusually honest about its scale — it sets `html { font-size: 62.5% }`
+   and then declares essentially every size in `em` against a `rem` ratio, so the
+   type scale below is copied as the em/rem pairs the site actually ships rather
+   than flattened to pixels:
+
+     html      62.5%  — the 10px root the whole em scale is built on
+     body      "Helvetica Neue", Helvetica, Arial, sans-serif
+              #333447, line-height 1.4
+     h1        3.5152em   (mobile) → 5.940688em, line-height 1.2,
+                          margin 3.2rem top and bottom
+     h2        2.704em    (mobile) → 3.7045777163em, same rhythm
+     main > p  1.6861983233em (mobile) → 1.8727766852em, margin-bottom 1.2rem
+     .hero p   1.9736705665em → 2.08em, colour #666
+     sidebar   1.6rem, menu links 1.7770404909em
+
+   The colour system is small and one hue dominates:
+
+     #333447  body text and sidebar links. A desaturated navy, not grey.
+     #ED1846  the Riot red. The one saturated colour: `.banner`, the active
+              sidebar link, `progress::-webkit-progress-value`, the
+              `.version-badge` fill, and every link hover
+     #12cd64  the Riot green — `progress.riot` in the libraries comparison
+     #f1f1f2  every rule and border on the site; the footer top rule, the
+              sidebar's right edge, and the inline-code background's sibling
+     #111     the dark theme's page background
+     #d0d0d0  the dark theme's body text
+
+   Shape: radius is almost absent. The only rounded things are `.note` at .25rem,
+   inline `code` at 3px, `.version-badge` at .25rem, and the theme switcher's
+   1em handle. No buttons exist on the real site — links are the only control,
+   and `.hero ul li a` gives them 0.8rem 1.6rem padding and nothing else.
+
+   Layout: a fixed 32rem sidebar on the left (`.detail .container` compensates
+   with `padding-left: 35.2rem`) and `.container { max-width: 90rem; padding:
+   0 3.2rem }` for the content. `.hero { min-height: 100vh; padding: 8rem 0;
+   text-align: center }` is the landing structure.
+
+   --color-warn and --color-ok are NOT from riot.js.org — they exist only to
+   colour the copy button's success/failure state, which that site has no
+   equivalent of.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #ed1846;
+  --color-branddark: #c01339;
+  --color-green: #12cd64;
+  --color-warn: #b45309;
+  --color-ok: #047857;
+
+  --color-page: #ffffff;
+  --color-panel: #ffffff;
+  --color-panel2: #f7f7f7;
+  --color-ink: #333447;
+  --color-muted: #666666;
+  --color-dim: #999999;
+  --color-line: #f1f1f2;
+  --color-code: #f1f1f2;
+  --color-codeink: #058;
+
+  --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: Menlo, Monaco, "Courier New", ui-monospace, monospace;
+}
+
+/* html { font-size: 62.5% } — Riot's own root, and the reason its em scale
+   works out. Copied verbatim. */
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 1.6rem;
+  line-height: 1.4;
+  color: var(--color-ink);
+  background: var(--color-page);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus,
+a:active {
+  color: var(--color-brand);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  line-height: 1.2;
+  color: var(--color-ink);
+  font-weight: 400;
+}
+
+h1 {
+  margin-top: 3.2rem;
+  margin-bottom: 3.2rem;
+  font-size: 3.5152em;
+}
+
+h2 {
+  margin-top: 3.2rem;
+  margin-bottom: 3.2rem;
+  font-size: 2.704em;
+}
+
+@media (min-width: 48.74em) {
+  h1 {
+    font-size: 5.940688em;
+  }
+
+  h2 {
+    font-size: 3.7045777163em;
+  }
+}
+
+/* .container — max-width 90rem, 3.2rem side padding */
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 90rem;
+  padding: 0 3.2rem;
+  margin: 0 auto;
+}
+
+/* .sidebar — the fixed 32rem left rail with its 1px #f1f1f2 right rule */
+.sidebar {
+  padding: 0 1.6rem;
+  background: var(--color-page);
+  border-right: 1px solid var(--color-line);
+}
+
+/* the active sidebar link is the Riot red, bold, no underline */
+.sidebar ul {
+  margin: 0;
+  padding: 0;
+  font-size: 1.6rem;
+  list-style: none;
+}
+
+.sidebar ul li a {
+  display: inline-block;
+  width: 100%;
+  padding: 0.2rem 0;
+  color: var(--color-ink);
+}
+
+.sidebar ul li a.active,
+.sidebar ul li a:hover {
+  color: var(--color-brand);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* .hero — the centred full-height landing block */
+.hero {
+  min-height: 100vh;
+  padding: 8rem 0;
+  text-align: center;
+}
+
+/* .hero p — 2.08em in #666, and the site's only large grey text */
+.hero p {
+  color: var(--color-muted);
+  font-size: 2.08em;
+}
+
+/* .hero ul li a — links are the only control on this site: padding, no radius,
+   no fill */
+.hero ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hero ul li a {
+  display: inline-block;
+  padding: 0.8rem 1.6rem;
+  font-size: 1.7770404909em;
+}
+
+/* main > p — the 1.8727766852em body measure */
+.content > p {
+  margin-top: 0;
+  margin-bottom: 1.2rem;
+  font-size: 1.8727766852em;
+  font-weight: 400;
+}
+
+@media (max-width: 48.74em) {
+  .content > p {
+    font-size: 1.6861983233em;
+  }
+}
+
+/* .note — .25rem radius, .02rem border, and the two tone variants. This is the
+   site's callout box, and the closest thing it has to a card. */
+.note {
+  padding: 1.2rem;
+  margin: 1.2rem 0 2.4rem 0;
+  font-size: 1.6rem;
+  font-weight: 500;
+  border-radius: 0.25rem;
+}
+
+.note--info {
+  color: #005fb2;
+  background: #f4faff;
+  border: 0.02rem solid #65b7ff;
+}
+
+.note--warning {
+  color: #777505;
+  background: #fefde4;
+  border: 0.02rem solid #f1ec0b;
+}
+
+/* .version-badge — the red pill Riot puts its version numbers in */
+.version-badge {
+  display: inline-block;
+  padding: 0.2rem 1.2rem;
+  margin: 0 0.6rem;
+  font-size: 1.6rem;
+  color: #ffffff;
+  background: var(--color-brand);
+  border-radius: 0.25rem;
+}
+
+/* .footer — a 0.1rem #f1f1f2 top rule and the #666 copy line */
+.footer {
+  margin-top: 4rem;
+  padding: 1.2rem 0;
+  border-top: 0.1rem solid var(--color-line);
+}
+
+.footer .copy {
+  margin-top: 1.2rem;
+  color: var(--color-muted);
+  font-size: 1.6rem;
+}
+
+/* code — 80% of body, Menlo; the inline chip is 3px radius on #f1f1f2 with #058
+   text, which is the site's one non-red chromatic colour */
+code {
+  font-family: var(--font-mono);
+  font-size: 80%;
+}
+
+li code,
+p code {
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  color: var(--color-codeink);
+  background-color: var(--color-code);
+  border-radius: 3px;
+  transform: translate(0, -0.125em);
+}
+
+pre {
+  overflow: auto;
+  padding: 1.6rem;
+  text-align: left;
+  background: var(--color-code);
+  color: var(--color-ink);
+}
+
+pre code {
+  padding: 0;
+  color: inherit;
+  background: none;
+  transform: none;
+  font-size: 1.4rem;
+  line-height: 1.5;
+}
+
+/* .gc-bar — .scroll-progress is a modifier, not a behaviour: it sets no
+   geometry, so the rule lives here. */
+.gc-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: 100%;
+  height: 3px;
+  background: var(--color-brand);
+}
+
+::selection {
+  background: var(--color-brand);
+  color: #ffffff;
+}

@@ -1,0 +1,23 @@
+{
+  "name": "gclass-tests-riot",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "gclass-anims in a Riot app",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "gclass-anims": "1.0.0-beta.24",
+    "riot": "^10.1.6"
+  },
+  "devDependencies": {
+    "@riotjs/compiler": "^10.0.4",
+    "@tailwindcss/vite": "^4.3.3",
+    "esbuild": "^0.28.2",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.2"
+  }
+}

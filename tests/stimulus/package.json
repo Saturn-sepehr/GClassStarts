@@ -1,0 +1,21 @@
+{
+  "name": "gclass-tests-stimulus",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "gclass-anims in a Stimulus app",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "gclass-anims": "1.0.0-beta.24"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.2"
+  }
+}

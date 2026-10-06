@@ -1,0 +1,20 @@
+<body>
+<template name="rowList">
+  <div class="mt-6">
+    <div class="flex flex-wrap items-center gap-3">
+      <button type="button" class="btn-primary click-hover amount-2 js-add">Add a row</button>
+      <button type="button" class="btn-tertiary click-hover amount-2 js-reset">Reset</button>
+      <span class="bg-fluor/15 text-fluor inline-flex items-center rounded-full px-3 py-1 font-mono text-xs">{{count}} rows</span>
+    </div>
+
+    <div class="mt-4 grid gap-2">
+      {{#each rows}}
+        <div class="appear spawn-up time-1 rounded-lg border border-line bg-cinder px-4 py-3 font-mono text-[13px]">
+          row {{this}} — inserted by a Blaze reactive list
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</template>
+
+</body>

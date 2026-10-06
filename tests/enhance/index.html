@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>gclass-anims &mdash; Enhance</title>
+  </head>
+  <body>
+
+<!-- This page is plain HTML. It works with no JavaScript at all — which is the
+     point of Enhance, and the reason the markup below is readable rather than
+     a compiled component tree. Note <div></div> and never <div />: this is
+     plain HTML and the parser does not honour self-closing syntax on a div. -->
+<div class="gc-bar scroll-progress"></div>
+
+<header class="border-be1 border-be3 border-solid bg-panel">
+  <div class="mx-auto flex max-w-[100rem] items-center justify-between p3">
+    <a href="https://enhance.dev/" class="text2 font-bold tracking-tight">enhance</a>
+    <nav class="docs-nav flex flex-wrap items-center gap4">
+      <a href="#install">Install</a>
+      <a href="#quick-start">Quick start</a>
+      <a href="#anatomy">Class anatomy</a>
+      <a href="#notes">Notes</a>
+    </nav>
+  </div>
+</header>
+
+<main class="editorial mx-auto p4 pb-12">
+  <section class="p5">
+    <p class="font-mono text--1 text-muted">https://enhance.dev/</p>
+    <p class="font-mono text--1">
+      <a href="https://enhance.dev/" class="text-brand underline">Official Enhance website</a>
+    </p>
+
+    <h1 class="mt3 text5 font-bold tracking-tight scroll letter spawn-text-spawn-down">
+      gclass-anims for Enhance
+    </h1>
+
+    <p class="mt4 text1 leading4 text-muted scroll typewriter time-2">
+      Enhance is HTML-first: pages are documents, and behaviour arrives later as
+      custom elements. gclass-anims animates whatever markup is on the page,
+      which makes the two a natural fit. One
+      <code>initAnimations()</code> call, and the utility classes in the markup
+      below animate with no wiring at all.
+    </p>
+
+    <p class="mt4 text1 leading4">
+      This page is deliberately left as plain HTML with no framework at all. The
+      only JavaScript on it is two custom elements and the animation engine.
+    </p>
+
+    <p class="mt5">
+      <a href="#install" class="btn btn--accent click-expand compatibility amount-4">Get started</a>
+    </p>
+  </section>
+
+  <section id="install" class="scroll-mt24 p5 border-t1 border-t3 border-solid">
+    <h2 class="text3 font-bold tracking-tight scroll letter spawn-text-spawn-down">Install</h2>
+    <p class="mt4 text1 leading4 text-muted scroll typewriter">
+      GClass ships as the npm package gclass-anims. GSAP is a regular dependency
+      and is installed automatically - nothing is bundled or redistributed.
+      Enhance is a peer of this page, not a dependency of the library.
+    </p>
+    <pre class="relative mt4 p3 pr8 scroll spawn-down"><code>npm install gclass-anims</code><button type="button" data-copy class="absolute right-2 top-2 border1 border-solid border-line bg-panel px2 py1 font-sans text--1 text-muted hover:text-ink" aria-label="Copy code">Copy</button></pre>
+  </section>
+
+  <section id="quick-start" class="scroll-mt24 p5 border-t1 border-t3 border-solid">
+    <h2 class="text3 font-bold tracking-tight scroll letter spawn-text-spawn-down">Quick start</h2>
+    <p class="mt4 text1 leading4 text-muted scroll typewriter">
+      Import initAnimations once your DOM is ready. From then on, everything is
+      class-driven: add a utility class to an element and it animates - no
+      per-element JS, no config files.
+    </p>
+
+    <h3 class="mt6 text2 font-semibold">One call, after the elements are defined</h3>
+    <pre class="relative mt3 p3 pr8 scroll spawn-down"><code>// main.js
+import { initAnimations } from 'gclass-anims'
+
+import './elements/row-list.js'
+import './elements/row-item.js'
+
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  initAnimations()
+})</code><button type="button" data-copy class="absolute right-2 top-2 border1 border-solid border-line bg-panel px2 py1 font-sans text--1 text-muted hover:text-ink" aria-label="Copy code">Copy</button></pre>
+
+    <h3 class="mt6 text2 font-semibold">Live - an element that appends</h3>
+    <p class="mt4 text1 leading4 text-muted scroll typewriter">
+      The markup below is a plain <code>&lt;ul&gt;</code> with a plain
+      <code>&lt;button&gt;</code>. With JavaScript disabled it still renders and
+      the button does nothing - that is progressive enhancement. The custom
+      element upgrades it, appends real nodes, and each one plays its entrance
+      because the engine watches for insertions.
+    </p>
+
+    <row-list class="block mt5">
+      <div class="flex flex-wrap items-center gap3">
+        <button type="button" class="btn btn--accent click-hover amount-2 js-add">Add a row</button>
+        <button type="button" class="btn click-hover amount-2 js-reset">Reset</button>
+        <span class="font-mono text--1 text-muted"><span class="js-count">0</span> rows</span>
+      </div>
+      <ul class="js-list grid gap2 list-none p0 mt4"></ul>
+    </row-list>
+
+    <!-- A second element, so this is not a single-element demo. Changing its
+         `status` attribute makes the element add a gclass-anims class itself:
+         the two libraries talking through the DOM with neither importing the
+         other. -->
+    <div class="mt6">
+      <p class="text--1 text-muted font-mono">A second element, reacting to an attribute:</p>
+      <row-item status="idle" class="block mt2 p3 border1 border-solid border-line">row-item</row-item>
+    </div>
+
+    <pre class="relative mt5 p3 pr8 scroll spawn-down"><code>&lt;!-- the element --&gt;
+export class RowList extends HTMLElement {
+  get rows() { this._rows ??= []; return this._rows }
+
+  add = () =&gt; { this.rows = [...this.rows, this.rows.length + 1] }
+
+  render() {
+    this.list.innerHTML = this.rows
+      .map((row) =&gt; `&lt;li class="appear spawn-up time-1"&gt;row ${row}&lt;/li&gt;`)
+      .join('')
+  }
+}
+
+customElements.define('row-list', RowList)</code><button type="button" data-copy class="absolute right-2 top-2 border1 border-solid border-line bg-panel px2 py1 font-sans text--1 text-muted hover:text-ink" aria-label="Copy code">Copy</button></pre>
+  </section>
+
+  <section id="anatomy" class="scroll-mt24 p5 border-t1 border-t3 border-solid">
+    <h2 class="text3 font-bold tracking-tight scroll letter spawn-text-spawn-down">Class anatomy</h2>
+    <p class="mt4 text1 leading4 text-muted scroll typewriter-split letter">
+      Class anatomy: <strong class="text-ink">behaviour</strong>
+      (<code>.spawn-up</code>) + <strong class="text-ink">trigger</strong>
+      (<code>.scroll</code>, <code>.appear</code>) +
+      <strong class="text-ink">tunables</strong> (<code>.time-1</code>,
+      <code>.ease-back</code>, <code>.priority-2</code>). Combine freely - order
+      in class does not matter.
+    </p>
+    <pre class="relative mt4 p3 pr8 scroll spawn-down"><code>&lt;!-- behaviour + trigger + tunables --&gt;
+&lt;div class="appear scroll spawn-up"&gt;…&lt;/div&gt;
+&lt;div class="appear scroll order ease-expo time-1 priority-2"&gt;…&lt;/div&gt;
+&lt;div class="float"&gt;loops forever&lt;/div&gt;
+&lt;button class="magnet click-expand"&gt;magnet + click&lt;/button&gt;</code><button type="button" data-copy class="absolute right-2 top-2 border1 border-solid border-line bg-panel px2 py1 font-sans text--1 text-muted hover:text-ink" aria-label="Copy code">Copy</button></pre>
+
+    <div class="mt5 grid gap3 sm:grid-cols-3">
+      <div class="panel scroll spawn-down order priority-2">
+        <h3 class="text1 font-semibold text-brand">Behaviour</h3>
+        <p class="mt2 font-mono text--1 text-muted">spawn-up, float, marquee, magnet</p>
+      </div>
+      <div class="panel scroll spawn-down order priority-2">
+        <h3 class="text1 font-semibold text-brand">Trigger</h3>
+        <p class="mt2 font-mono text--1 text-muted">appear, scroll, preserve</p>
+      </div>
+      <div class="panel scroll spawn-down order priority-2">
+        <h3 class="text1 font-semibold text-brand">Tunables</h3>
+        <p class="mt2 font-mono text--1 text-muted">order, ease-expo, time-1, priority-2</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="notes" class="scroll-mt24 p5 border-t1 border-t3 border-solid">
+    <h2 class="text3 font-bold tracking-tight scroll letter spawn-text-spawn-down">Notes</h2>
+    <ul class="mt5 grid gap3 list-none p0">
+      <li class="panel scroll spawn-down order priority-2">
+        <strong class="text-ink">No framework at all.</strong> There is no
+        compiler, no component runtime and no hydration step. The markup above is
+        the page; two custom elements and one animation call are the whole client
+        side.
+      </li>
+      <li class="panel scroll spawn-down order priority-2">
+        <strong class="text-ink">Light DOM is required.</strong>
+        gclass-anims queries the document and reads ordinary
+        <code>class</code> attributes. A shadow root would hide both, so these
+        elements stay in the light tree.
+      </li>
+      <li class="panel scroll spawn-down order priority-2">
+        <strong class="text-ink">GSAP stays external.</strong> ESM is
+        <code>dist/gclass.esm.js</code> and CJS is <code>dist/gclass.cjs</code> -
+        GSAP is external, not bundled, and the build is tree-shakable with
+        <code>sideEffects: false</code>.
+      </li>
+    </ul>
+  </section>
+
+  <footer class="p5 border-t1 border-t3 border-solid">
+    <p class="text--1 text-muted">
+      Not affiliated with or endorsed by the Enhance team. Colours and type
+      sampled from <a href="https://enhance.dev/" class="text-brand">https://enhance.dev/</a>,
+      including its HSL-channel accent, its named spot colours and its 1.25-ratio
+      text and space scales. Running gclass-anims 1.0.0-beta.24 from npm.
+    </p>
+  </footer>
+</main>
+
+<script type="module" src="/src/main.js"></script>
+  </body>
+</html>

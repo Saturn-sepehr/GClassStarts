@@ -1,0 +1,307 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://knockoutjs.com/
+
+   Knockout's docs are the last of the old-school sites here, and the design
+   language is built out of two stylesheets that must both be copied for the
+   resemblance to hold: css/tripoli.simple.css (the generic HTML standard) and
+   css/styles.css (Knockout's overrides). Neither alone is the site.
+
+   From styles.css:
+
+     #CF5300      the page background — literally `html { background: #CF5300
+                  url(../img/main-background.jpg) no-repeat top center }`. A
+                  burnt orange with a tile gradient above it, which is why the
+                  whole page reads as warm rather than white
+     white        .sticker — the content card. It is the entire layout: a white
+                  panel floating on the orange
+     0 0 1.1em #666  that card's drop shadow, at opacity .9. The site's one
+                  shadow and it is not subtle
+     1em         the card's radius, and .stickerHeading inherits it on its top
+                  two corners only
+     rgb(229,218,214)  .stickerHeading — the grey bar across the top of each
+                  card, pulled up over the card's padding by negative margins
+     #A71500      every heading inside a card, and every .sticker link
+     rgb(81,29,0) the menu hover/active fill
+     #FED         the left column's text — a pale tint of the orange
+     arial, 14px  body, with html at 125% and body at 50% on top of Tripoli
+
+   From tripoli.simple.css, the parts the page actually inherits:
+
+     .content     1.2em / 1.6em, then styles.css bumps it to 1.1em !important
+     h1-h3        1.6em / 1.5em / 1.4em, line-height 1, weight 700 — and
+                  styles.css scales them down again inside a .sticker to
+                  1.6em / 1.4em / 1.2em
+     blockquote   the pure-CSS one: a 2.5em Georgia " as a ::before, plus 2.2em
+                  left padding. styles.css recolours the background to #fec
+     .liveExample #EEEEDD field with a #CCC border and max-width 655px — the
+                  cream runnable-example panel, which is where most of the
+                  site's interactive examples live
+     table        border-top/-left 1px #ccc, cells 1px #ccc right / #ddd bottom,
+                  .8em padding
+
+   --color-warn and --color-ok are NOT from knockoutjs.com — they exist only to
+   colour the copy button's success/failure state, which that site has no
+   equivalent of.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #a71500;
+  --color-branddark: #511d00;
+  --color-tint: #fed;
+  --color-accent: #cf5300;
+  --color-warn: #b45309;
+  --color-ok: #047857;
+
+  --color-page: #cf5300;
+  --color-panel: #ffffff;
+  --color-panel2: #eeeedd;
+  --color-ink: #000000;
+  --color-heading: #a71500;
+  --color-muted: #666666;
+  --color-dim: #aaaaaa;
+  --color-line: #cccccc;
+  --color-line2: #dddddd;
+  --color-rule: rgb(229, 218, 214);
+  --color-code: #ffffff;
+  --color-codeink: #cc3333;
+
+  --font-display: arial, Helvetica, sans-serif;
+  --font-body: arial, Helvetica, sans-serif;
+  --font-mono: Consolas, Monaco, "Courier New", mono-space, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  /* The site's own page treatment: the burnt orange field, with a vertical
+     gradient standing in for ../img/main-background.jpg. */
+  background-color: var(--color-page);
+  background-image: linear-gradient(180deg, #b84700 0%, #cf5300 40%, #a84600 100%);
+  background-repeat: no-repeat;
+  background-position: top center;
+
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6em;
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* #wrapper — min-width 982px, max-width 1665px, width 70%, centred */
+.wrapper {
+  width: 70%;
+  min-width: 982px;
+  max-width: 1665px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+/* .sticker — the white content card. The whole layout is this one shape:
+   white, 1em radius, opacity .9, and the 0 0 1.1em #666 shadow. */
+.sticker {
+  padding: 1.25em 1.45em 1.25em 1.55em;
+  margin: 0.5em 0 3em 0;
+  background-color: #ffffff;
+  border-radius: 1em;
+  opacity: 0.9;
+  box-shadow: 0 0 1.1em #666666;
+}
+
+/* .stickerHeading — the grey bar across the top of each card, pulled up over
+   the card's own padding by negative margins, with the card's radius on its top
+   two corners only. */
+.sticker-heading {
+  height: 1.3em;
+  margin: -2em -1.45em 1.25em -1.55em;
+  padding: 0.7em 1em 1.1em 1.75em;
+  background-color: rgb(229, 218, 214);
+  border-top-right-radius: 1em;
+  border-top-left-radius: 1em;
+}
+
+/* the engraved text-shadow the site puts on those bars */
+.engraved {
+  color: #350808;
+  text-shadow: rgba(253, 204, 197, 0.4) 1px 1px 0px;
+}
+
+/* .main-menu — the dark strip above the card */
+.main-menu {
+  max-width: 982px;
+  margin: 0 auto;
+}
+
+.main-menu ul {
+  display: table;
+  float: right;
+  margin: 1em 0 0.5em 0;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.main-menu ul li {
+  display: inline;
+  margin-left: 0.3em;
+}
+
+.main-menu ul li a,
+.main-menu ul li a:visited {
+  display: inline-block;
+  padding: 0.4em 1.5em;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 0.5em;
+}
+
+.main-menu ul li a:hover,
+.main-menu ul li a.active {
+  background-color: rgb(81, 29, 0);
+}
+
+/* headings inside a card: #A71500, and scaled down from Tripoli's h1-h3 by
+   styles.css's .sticker rules */
+.sticker h1,
+.sticker h2,
+.sticker h3 {
+  color: var(--color-heading);
+  font-weight: bold;
+  line-height: 1;
+}
+
+.sticker h1 {
+  margin: 0.25em 0 0.4em 0;
+  font-size: 1.6em;
+}
+
+.sticker h2 {
+  margin: 0.4em 0;
+  font-size: 1.4em;
+}
+
+.sticker h3 {
+  margin: 0.4em 0;
+  font-size: 1.2em;
+}
+
+.sticker a,
+.sticker a:visited {
+  color: var(--color-heading);
+  text-decoration: underline;
+}
+
+/* .content — 1.1em !important per styles.css's Tripoli override */
+.content {
+  font-size: 1.1em;
+  line-height: 1.6em;
+}
+
+/* .liveExample — the cream runnable panel, #EEEEDD on a #CCC border */
+.live-example {
+  max-width: 655px;
+  padding: 1em;
+  background-color: #eeeedd;
+  border: 1px solid #cccccc;
+}
+
+.live-example input {
+  font-family: Arial;
+}
+
+.live-example p {
+  margin-top: 0.9em;
+  margin-bottom: 0.9em;
+}
+
+/* blockquote — Tripoli's pure-CSS version: a 2.5em Georgia " as a ::before,
+   2.2em left padding, recoloured to #fec by styles.css */
+blockquote {
+  padding-left: 2.2em;
+  color: #666666;
+}
+
+blockquote::before {
+  content: "\201C";
+  margin-left: -0.62em;
+  padding-right: 0.2em;
+  font-family: georgia, serif;
+  font-size: 2.5em;
+  line-height: 0;
+  color: var(--color-dim);
+}
+
+.sticker blockquote {
+  padding: 1em;
+  background-color: #ffeeee;
+  margin-bottom: 1em;
+  color: inherit;
+}
+
+.sticker blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* .syntaxhighlighter — the code panel, .5em radius (from styles.css) */
+.syntaxhighlighter,
+pre {
+  overflow-x: auto;
+  margin-bottom: 1.8em;
+  padding: 1em;
+  font-family: var(--font-mono);
+  font-size: 0.95em;
+  line-height: 1.4em;
+  text-align: left;
+  white-space: pre;
+  background: #ffffff;
+  border: 1px solid var(--color-line);
+  border-radius: 0.5em;
+}
+
+code {
+  font-family: var(--font-mono);
+  color: #cc3333;
+  background: #ffffff;
+}
+
+pre code {
+  padding: 0;
+  color: inherit;
+  background: none;
+}
+
+/* table — Tripoli's rule set verbatim */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-top: 1px solid #cccccc;
+  border-left: 1px solid #cccccc;
+}
+
+th,
+td {
+  padding: 0.8em;
+  text-align: left;
+  border-bottom: 1px solid #dddddd;
+  border-right: 1px solid #cccccc;
+}
+
+/* .gc-bar — .scroll-progress is a modifier, not a behaviour: it sets no
+   geometry, so the rule lives here. */
+.gc-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: 100%;
+  height: 3px;
+  background: #ffffff;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: #ffffff;
+}

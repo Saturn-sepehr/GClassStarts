@@ -1,0 +1,267 @@
+@import url("https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap");
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://www.meteor.com/
+
+   meteor.com is a Tailwind v3 site with a hand-named colour set, and both are
+   worth copying: the names below are the site's own, read out of the compiled
+   stylesheet it serves, and they are what makes the page read as Meteor's
+   rather than as generic dark-mode Tailwind.
+
+   The named palette — every value lifted verbatim from its utility class:
+
+     --color-meteor-purple   rgb(91 95 239)   = #5b5fef   the brand colour, used
+                                                     for the primary button
+                                                     (.btn-primary), badges and
+                                                     links
+     --color-fluor          rgb(114 224 231)  = #72e0e7   the cyan accent:
+                                                     inline code, section
+                                                     headings, the row badge,
+                                                     and every footer link
+     --color-alice-blue     rgb(243 244 255)  = #f3f4ff   the light band
+                                                     alternate sections
+     --color-cinder         rgb(37 39 49)     = #252731   the dark card fill
+     --color-haiti          rgb(44 44 53)     = #2c2c35   the header band
+     --color-eerie-black    rgb(26 28 35)     = #1a1c23   the page background
+     --color-iris           rgb(71 70 184)    = #4746b8   the hover state on a
+                                                     primary button
+     --color-majorelly      rgb(67 56 202)    = #4338ca   the darker iris
+     --color-very-light-blue rgb(89 93 255)   = #595dff   .btn-primary at rest
+     --color-yankees-blue   rgb(24 24 61)     = #18183d   gradient start
+     --color-dark-imperial-blue rgb(14 18 87)  = #0e1257   gradient via
+     --color-tuna           rgb(49 51 64)     = #313340   gradient end
+
+   Three families, and the weight axis matters as much as the family:
+
+     Unbounded     the display face, loaded at 200..900. The site pins three
+                   weights with names: .unbounded-light is 300,
+                   .unbounded-bold is 500, .unbounded-black is 800. The logo and
+                   the h1 are unbounded-black.
+     Space Grotesk 300..700, the second face, used for headings and nav
+     Inter 400/500/600, .font-inter, the body and small print
+
+   Shape is one radius: `.btn-primary` and `.btn-tertiary` both use .5rem with
+   a 2px border. Cards and the code panel are square or lightly rounded; nothing
+   on the site is a pill except the small status badges, which are fully round.
+
+   The two other details that carry the look:
+
+     .star      a single `box-shadow` with ~30 comma-separated offsets in
+                #9fbfec — the starfield behind the hero, done entirely in one
+                declaration
+     .bg-noise  an inline feTurbulence data-URI, fractalNoise at 0.65 base
+                frequency over a 200x200 tile
+
+   --color-warn and --color-ok are NOT from meteor.com — the site's own red and
+   green already fill those roles — so they exist only for the copy button's
+   success/failure state, which that site has no equivalent of.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  /* the site's named palette, one entry per custom colour */
+  --color-meteor-purple: #5b5fef;
+  --color-fluor: #72e0e7;
+  --color-alice-blue: #f3f4ff;
+  --color-cinder: #252731;
+  --color-haiti: #2c2c35;
+  --color-eerie-black: #1a1c23;
+  --color-iris: #4746b8;
+  --color-majorelly: #4338ca;
+  --color-very-light-blue: #595dff;
+  --color-yankees-blue: #18183d;
+  --color-dark-imperial-blue: #0e1257;
+  --color-tuna: #313340;
+  --color-engineering-red: #cb180a;
+  --color-discord: #5765f2;
+
+  --color-brand: #595dff;
+  --color-branddeep: #4338ca;
+  --color-accent: #72e0e7;
+  --color-warn: #b45309;
+  --color-ok: #047857;
+
+  --color-page: #1a1c23;
+  --color-panel: #252731;
+  --color-panel2: #2c2c35;
+  --color-band: #f3f4ff;
+  --color-ink: #ffffff;
+  --color-body: #cbd0d8;
+  --color-muted: #94a0b0;
+  --color-dim: #6b7280;
+  --color-line: #374151;
+  --color-code: #0e1257;
+  --color-codeink: #f8f8f2;
+
+  --font-display: "Unbounded", sans-serif, system-ui, -apple-system, sans-serif;
+  --font-body: "Space Grotesk", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+/* The three Unbounded weights the site pins, by the names it gives them. */
+.unbounded-light {
+  font-family: "Unbounded", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.unbounded-bold {
+  font-family: "Unbounded", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.unbounded-black {
+  font-family: "Unbounded", sans-serif;
+  font-weight: 800;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+/* body — the site's own reset line, from :host,html */
+body {
+  font-family: "Space Grotesk", system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  color: var(--color-body);
+  background: var(--color-page);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Unbounded", sans-serif;
+  line-height: 1.1;
+  color: var(--color-ink);
+}
+
+a {
+  color: var(--color-meteor-purple);
+  text-decoration: none;
+}
+
+/* .btn-primary — rgb(89 93 255), 2px border of the same colour, .5rem radius,
+   white text. This is the site's single most recognisable control. */
+.btn-primary,
+.btn-primary-lg,
+.btn-primary-sm {
+  border-width: 2px;
+  border-style: solid;
+  border-color: #595dff;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  background-color: #595dff;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.btn-primary-lg {
+  padding: 0.875rem 1.75rem;
+  font-size: 1.125rem;
+}
+
+.btn-primary-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.btn-primary:hover,
+.btn-primary-lg:hover,
+.btn-primary-sm:hover {
+  background-color: rgba(89, 93, 255, 0.8);
+}
+
+/* .btn-tertiary — the outline variant: transparent fill, 2px white border,
+   .5rem radius, white text */
+.btn-tertiary {
+  border-width: 2px;
+  border-style: solid;
+  border-color: #ffffff;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  background-color: transparent;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.btn-tertiary:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* .grad-text — the hero word. The site's launch-week gradient is
+   linear-gradient(90deg, #5530ff…) on Stencil; Meteor's own pair runs
+   #80caff -> #ff80b5, per its .from-[#80caff] / .from-[#ff80b5] stops. */
+.grad-text {
+  color: transparent;
+  background: linear-gradient(90deg, #80caff, #ff80b5);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* .code-panel — the dark code surface. #0e1257 (dark-imperial-blue) is the
+   site's darkest token and the one its gradient ramps end at. */
+.code-panel {
+  position: relative;
+  padding: 2rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.813rem;
+  line-height: 1.9;
+  text-align: left;
+  white-space: pre;
+  color: var(--color-codeink);
+  background: var(--color-code);
+  border-radius: 0.5rem;
+}
+
+/* inline code — the site's cyan chip, 15% fluor over the dark cards */
+code {
+  padding: 0.15em 0.35em;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  color: var(--color-fluor);
+  background: rgba(114, 224, 231, 0.15);
+  border-radius: 0.25rem;
+}
+
+.code-panel code {
+  padding: 0;
+  color: inherit;
+  background: none;
+  border-radius: 0;
+}
+
+/* .star — the starfield. One box-shadow declaration with ~30 offsets in #9fbfec,
+   exactly as .star is written on meteor.com. This is the detail that makes the
+   hero read as Meteor's. */
+.star {
+  background: transparent;
+  box-shadow:
+    64vw 24vh #9fbfec, 28vw 30vh #9fbfec, 29vw 67vh #9fbfec, 78vw 11vh #9fbfec,
+    10vw 17vh #9fbfec, 39vw 9vh #9fbfec, 78vw 21vh #9fbfec, 35vw 9vh #9fbfec,
+    57vw 82vh #9fbfec, 14vw 39vh #9fbfec, 50vw 42vh #9fbfec, 75vw 91vh #9fbfec,
+    21vw 27vh #9fbfec, 33vw 63vh #9fbfec, 62vw 32vh #9fbfec, 90vw 58vh #9fbfec,
+    47vw 73vh #9fbfec, 5vw 55vh #9fbfec, 68vw 77vh #9fbfec, 84vw 44vh #9fbfec,
+    44vw 18vh #9fbfec, 91vw 27vh #9fbfec, 26vw 84vh #9fbfec, 60vw 66vh #9fbfec;
+}
+
+/* .gc-bar — .scroll-progress is a modifier, not a behaviour: it sets no
+   geometry, so the rule lives here. */
+.gc-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: 100%;
+  height: 3px;
+  background: var(--color-fluor);
+}
+
+::selection {
+  background: var(--color-meteor-purple);
+  color: #ffffff;
+}

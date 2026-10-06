@@ -19,7 +19,7 @@ const pkgPath = join(root, "node_modules", "gclass-anims", "package.json");
 check("gclass-anims is installed", existsSync(pkgPath));
 if (existsSync(pkgPath)) {
   const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
-  check("version is 1.0.0-beta.23", pkg.version === "1.0.0-beta.23", pkg.version);
+  check("version is 1.0.0-beta.24", pkg.version === "1.0.0-beta.24", pkg.version);
 }
 
 const esm = join(root, "node_modules", "gclass-anims", "dist", "gclass.esm.js");

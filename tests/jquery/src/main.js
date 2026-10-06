@@ -14,7 +14,7 @@ $(function () {
   $("#jquery-version").text($.fn.jquery);
 
   console.log(
-    `gclass-anims 1.0.0-beta.23 initialised (jquery ${$.fn.jquery})`,
+    `gclass-anims 1.0.0-beta.24 initialised (jquery ${$.fn.jquery})`,
   );
 });
 

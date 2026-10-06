@@ -37,11 +37,42 @@ The only reason this exists is to test all frameworks properly and spice up the 
 | `remix` | Remix 2.17 | `useEffect` on `location.pathname` |
 | `qwik` | Qwik 1.20 City | `useVisibleTask$` (not `useTask$`) |
 | `angular` | Angular 22, zoneless | `ngAfterViewInit` + `isPlatformBrowser` |
+| `htmx` | vite 8, htmx 2 | `initAnimations()` on `DOMContentLoaded` |
+| `stimulus` | vite 8, Stimulus 3 | `initAnimations()` after `Application.start()` |
+| `marko` | vite 8, Marko 6 (`@marko/vite`) | `initAnimations()` after `Page.mount()` |
+| `solidstart` | SolidStart 2, nitro prerender | `initAnimations()` in the root layout's `onMount` |
+| `ripple` | vite 8, Ripple 0.4 (`.tsrx`) | `initAnimations()` after `mount(App)` |
+| `riot` | vite 8, Riot 10 (`riot-plugin.js`) | `initAnimations()` after `component(...)` |
+| `knockout` | vite 8, Knockout 3 | `initAnimations()` after `applyBindings()` |
+| `elm` | vite 8, Elm 0.19 (`elm make`) | `initAnimations()` after `Elm.Main.init()` |
+| `stencil` | Stencil 4, `www` output | `initAnimations()` in `componentDidLoad` |
+| `meteor` | Meteor 3, Blaze | `initAnimations()` in `onRendered` |
+| `mithril` | vite 8, Mithril 2 | `initAnimations()` after `m.mount()` |
+| `enhance` | vite 8, Enhance (custom elements) | `initAnimations()` on `DOMContentLoaded` |
+| `analog` | Analog 2, Angular 22, zoneless | `initAnimations()` in `ngOnInit` + `isPlatformBrowser` |
+| `hotwire` | vite 8, Turbo 8 + Stimulus 3 | `initAnimations()` on `turbo:load` |
 
 The toolchains are deliberately **not** interchangeable — Ember brings its own
 Embroider + Vite pipeline, Qwik peers `vite >=5 <8`, Remix peers
 `vite ^5 || ^6` and `typescript ^5`, Angular peers `typescript >=6 <6.1`,
-SvelteKit 3 peers `vite ^8`. A matrix has to cover all of them.
+SvelteKit 3 peers `vite ^8`, SolidStart 2 drives Vite through its own environment
+API and refuses `app.config.ts`, and Meteor is not a bundler at all — its CLI is
+a global tool with its own toolchain under `~/.meteor`. A matrix has to cover all
+of them.
+
+Several of the new environments need something the rest do not:
+
+- **SolidStart** prerenders through nitro rather than Vite. Its `ssr: false` SPA
+  mode emits route chunks and *no* `index.html`, so there is nothing to serve
+  without a prerender pass.
+- **Riot 10** ships a compiler but no official Vite plugin — there is no
+  `@vitejs/plugin-riot` on the registry. `tests/riot/riot-plugin.js` is that
+  integration written out.
+- **Elm** compiles to a non-ESM IIFE whose footer ends in `}(this))`, which
+  throws when imported. `tests/elm/scripts/build-elm.mjs` rewrites the footer and
+  appends a real `export`.
+- **Stencil** has no base-path concept, so its loader's `/build/` refs are
+  rewritten during staging exactly like Qwik's `/assets/` refs.
 
 Every page renders the same documented class anatomy — behaviour + trigger +
 tunables, per the docs:
@@ -62,10 +93,11 @@ utility classes against a real utility framework in each one.
 
 | Path | Environments | Integration |
 |---|---|---|
-| Vite plugin | jquery, alpine, backbone, react, vue, preact, solid, lit, svelte, sveltekit, qwik, remix | `@tailwindcss/vite` |
+| Vite plugin | jquery, alpine, backbone, htmx, stimulus, marko, react, vue, preact, solid, lit, svelte, sveltekit, qwik, remix, ripple, riot, knockout, elm, mithril, enhance, hotwire | `@tailwindcss/vite` |
 | Nested Vite config | astro, nuxt | `vite.plugins` in `astro.config.mjs` / `nuxt.config.ts` |
+| Top-level Vite plugin | solidstart, analog | `plugins: [solidStart()]` / `[analog()]` — both meta-frameworks *are* Vite plugins, so Tailwind sits beside them |
 | PostCSS | next, ember, angular | `@tailwindcss/postcss` + `postcss.config.mjs` / `.postcssrc.json` |
-| CLI | vanilla | `@tailwindcss/cli` as the CSS build step — still **no JS bundler** |
+| CLI | vanilla, stencil, meteor | `@tailwindcss/cli` as the CSS build step — vanilla still has **no JS bundler** |
 
 In every case it is a CSS-first setup: `@import "tailwindcss";` at the top of the
 environment's stylesheet, no `tailwind.config.js`.
@@ -79,7 +111,7 @@ same property on the same element, the demo rule wins. Wrap the demo CSS in
 ## Running it
 
 ```bash
-npm test                     # install + build all 18
+npm test                     # install + build all 32
 node scripts/verify-all.mjs --filter=vue
 node scripts/verify-all.mjs --skip-install   # reuse node_modules
 ```
@@ -90,7 +122,7 @@ Output:
 jquery      pass
 react       pass
 ...
-17/18 environments passed
+31/32 environments passed
 ```
 
 ## CI
@@ -103,9 +135,11 @@ under test.
 
 ## What this does and does not prove
 
-**Proven:** the published tarball installs, resolves, imports and compiles in 18
+**Proven:** the published tarball installs, resolves, imports and compiles in 32
 environments — including SSR and SSG toolchains where Next, Nuxt, SvelteKit,
-Astro, Qwik and Remix all prerender or emit server bundles successfully.
+Astro, Qwik, Remix, SolidStart, Analog and Meteor all prerender or emit server
+bundles successfully. Riot and Stencil compile their own component languages
+(`.riot`, `.tsx`) through their own compilers, and Elm goes through `elm make`.
 
 **Not proven:** runtime behaviour. No browser executed these builds. A green
 build proves the import resolves and the modules compile — not that an animation
@@ -118,7 +152,7 @@ Also unexercised here: Safari/Firefox rendering, and the `.preserve`,
 
 ## Deploying to GitHub Pages
 
-One Pages site, eighteen sub-paths:
+One Pages site, thirty-two sub-paths:
 
 ```
 https://saturn-sepehr.github.io/GClassStarts/<env>/
@@ -132,7 +166,7 @@ environment is configured with `base = /GClassStarts/<env>` and staged into
 The workflow cannot do that part for you.
 
 ```bash
-npm run pages:build      # build all 18 and stage public/
+npm run pages:build      # build all 32 and stage public/
 npm run pages:assemble   # re-stage from an existing stage/ (CI does this)
 ```
 
@@ -145,7 +179,7 @@ to static output:
 
 | Environment | Configuration |
 |---|---|
-| jquery, alpine, backbone, react, vue, preact, solid, lit, svelte | `base` in `vite.config.js` |
+| jquery, alpine, backbone, htmx, stimulus, marko, react, vue, preact, solid, lit, svelte, ripple, riot, knockout, elm | `base` in `vite.config.js` |
 | astro | `base` in `astro.config.mjs` |
 | next | `output: 'export'`, `basePath`, `trailingSlash` |
 | nuxt | `nuxt generate` + `app.baseURL` |
@@ -154,6 +188,11 @@ to static output:
 | qwik | static adapter + `basePathname` |
 | angular | `baseHref` + `deployUrl` |
 | remix | SPA mode (`ssr: false`) — Remix 2 has no static export |
+| solidstart | nitro prerenderer pointed at `/`; `.output/public` is the tree |
+| analog | `dist/client` — the prerender path fails with NG0401 on this app's provider set, so it ships client-built |
+| stencil | `www` output target with `srcDir: "src"`; `/build/` refs rewritten at stage time |
+| meteor | `scripts/stage-static.mjs` unwraps the server tarball into a client-only tree |
+| mithril, enhance, hotwire | plain `base` in `vite.config.js` |
 | vanilla | no bundler; `node_modules` copies staged alongside the page |
 
 ### CI
@@ -175,6 +214,9 @@ environment name and every leg would collide on merge.
   `base` is left unset and `scripts/build-pages.mjs` rewrites that one path.
 - **Remix**'s `base` must keep its trailing slash, or Vite concatenates
   `/GClassStarts/remix` + `assets/…` into `/GClassStarts/remixassets/…`.
+- **Stencil** has no base-path option at all, so `build-pages.mjs` rewrites its
+  `/build/` refs to `/GClassStarts/stencil/build/` the same way it rewrites
+  Qwik's `/assets/` refs.
 
 ## Licence
 

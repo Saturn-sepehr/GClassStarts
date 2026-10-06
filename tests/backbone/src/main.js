@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCopyButtons();
 
   console.log(
-    `gclass-anims 1.0.0-beta.23 initialised (backbone ${Backbone.VERSION})`,
+    `gclass-anims 1.0.0-beta.24 initialised (backbone ${Backbone.VERSION})`,
   );
 });
 

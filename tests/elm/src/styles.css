@@ -1,0 +1,369 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Source+Code+Pro:wght@400&display=swap");
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://elm-lang.org/
+
+   Elm's site is a narrow, generous, blue-accented page and every value below is
+   read out of its own stylesheet, /assets/style.css. There are no CSS variables
+   on that site — it is plain hex — so these are lifted directly.
+
+   The type pairing is the identity, and it is the only two-family site here:
+
+     body      'IBM Plex Sans', sans-serif, #000E16, line-height 1.5
+     code/pre  'Source Code Pro', monospace — the terminal block is 12px in it
+     h1-h4     margin 1.2em top / 0.8em bottom, font-weight *normal* (not bold,
+               which is the unusual part — the site never sets a heading bold)
+     .home h1  3em, centred, margin-top 100px
+
+   The one hue, used everywhere and never in a gradient:
+
+     #1293D8  the Elm blue. .splash's background, .header's background, the
+              link colour is the rgb() equivalent (12,145,216) = #0C91D8, the
+              .comparison th fill, and .docs-buttons' border
+     #1293D8 on hover inverts: .buttons a:hover goes white-on-blue and
+              .docs-buttons a:hover goes blue-on-white
+     #000E16  body text — a near-black with a blue cast, not #000
+     #00263C  blockquote text, on the #F5FBFF quote field
+     #cdcdcd  the .fixed-menu top rule
+     #eee     the footer top rule, and #bbb its text
+
+   Structure worth copying rather than approximating, because it is what makes
+   the page read as elm-lang.org:
+
+     .header       the blue nav bar: calc(100% - 40px) wide with 20px side
+                   padding, and a .nav inside at max-width 800px, height 64px,
+                   centred, space-between
+     .splash       the blue hero, flex row, centred, holding a .messages block
+                   at a fixed 400px and 28px type
+     .content      the body column
+     .terminal     the code block: 1px lightgrey border, white fill, and
+                   `box-shadow: 5px 5px 0px 1px lightgrey` — a hard offset
+                   shadow, not a blur. That is the site's one shadow
+     blockquote    6px radius on #F5FBFF with #00263C text, and no border
+
+   Radius is almost absent elsewhere: 3px on inline code, 6px on blockquote,
+   0 on everything else.
+
+   --color-warn and --color-ok are NOT from elm-lang.org — they exist only to
+   colour the copy button's success/failure state, which that site has no
+   equivalent of.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #1293d8;
+  --color-brandlink: #0c91d8;
+  --color-branddeep: #00263c;
+  --color-warn: #b45309;
+  --color-ok: #047857;
+
+  --color-page: #ffffff;
+  --color-panel: #ffffff;
+  --color-panel2: #f5fbff;
+  --color-ink: #000e16;
+  --color-muted: #666666;
+  --color-dim: #bbbbbb;
+  --color-line: #cdcdcd;
+  --color-line2: #eeeeee;
+  --color-code: #ffffff;
+  --color-codeink: #000000;
+
+  --font-display: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background: var(--color-page);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--color-brandlink);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+/* h1-h4 — normal weight, 1.2em / 0.8em margins. The site's headings are never
+   bold; that is the detail that makes it read as elm-lang.org. */
+h1,
+h2,
+h3,
+h4 {
+  margin-top: 1.2em;
+  margin-bottom: 0.8em;
+  font-weight: normal;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+h3 {
+  font-size: 1.5em;
+}
+
+/* .header — the blue nav bar: calc(100% - 40px) with 20px side padding */
+.header {
+  width: calc(100% - 40px);
+  padding-right: 20px;
+  padding-left: 20px;
+  overflow-x: hidden;
+  background-color: var(--color-brand);
+}
+
+/* .nav — max-width 800px, 64px tall, centred, space-between */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 800px;
+  height: 64px;
+  margin: 0 auto;
+}
+
+.brand {
+  font-size: 24px;
+  font-weight: 600;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.tabs a {
+  font-size: 16px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.tabs a:hover,
+.tabs a.current {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* .splash — the blue hero: flex row, centred, holding a fixed-width message
+   block at 28px */
+.splash {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 4rem 1rem;
+  color: #ffffff;
+  background-color: var(--color-brand);
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 700px;
+  font-size: 28px;
+}
+
+.messages h1 {
+  margin-top: 0;
+  text-align: center;
+  font-size: 3em;
+}
+
+.splash-accent {
+  color: var(--color-ink);
+}
+
+/* .content — the body column, matching the site's 800px measure */
+.content {
+  max-width: 800px;
+  padding: 0 1em 4em 1em;
+  margin: 0 auto;
+}
+
+.content li {
+  margin-bottom: 6px;
+}
+
+/* .syntaxhighlighter / pre — the terminal block. 1px lightgrey border, white
+   fill, 12px Source Code Pro, and the hard 5px 5px offset shadow that is the
+   site's only shadow. */
+pre {
+  overflow-x: auto;
+  padding: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  color: #000000;
+  background-color: #ffffff;
+  border: 1px solid lightgrey;
+  border-radius: 0;
+  box-shadow: 5px 5px 0px 1px lightgrey;
+}
+
+pre code {
+  display: block;
+  overflow-x: auto;
+  padding: 0;
+  font-size: inherit;
+  background: none;
+}
+
+/* :not(pre) > code — the inline chip: 85% size, rgba(0,0,0,.04) fill, 3px
+   radius, and the letter-spacing -0.2em non-breaking spaces the site uses to
+   stop the padding showing at the edges of an inline code run */
+:not(pre) > code {
+  margin: 0;
+  padding: 0.2em 0;
+  font-family: var(--font-mono);
+  font-size: 85%;
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 3px;
+}
+
+:not(pre) > code::before,
+:not(pre) > code::after {
+  content: "\00a0";
+  letter-spacing: -0.2em;
+}
+
+/* .button — the outlined pill. 2px solid #1293D8, 8px 24px padding, and the
+   inversion on hover (blue fill, white text). */
+.button {
+  display: inline-block;
+  padding: 8px 24px;
+  font-size: 16px;
+  color: var(--color-brand);
+  text-decoration: none;
+  background: transparent;
+  border: 2px solid var(--color-brand);
+  border-radius: 0;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+.button:hover {
+  color: #ffffff;
+  background-color: var(--color-brand);
+}
+
+.button--ghost {
+  color: var(--color-ink);
+  border-color: var(--color-line);
+}
+
+/* .live-example — the runnable panel */
+.live-example {
+  max-width: 655px;
+  padding: 1em;
+  border: 1px solid lightgrey;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.rows {
+  display: grid;
+  gap: 6px;
+  margin-top: 1em;
+}
+
+.row {
+  padding: 10px 12px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background-color: #ffffff;
+  border: 1px solid lightgrey;
+  box-shadow: 5px 5px 0px 1px lightgrey;
+}
+
+/* .cards — the three-up row */
+.cards {
+  display: grid;
+  gap: 16px;
+  margin: 2em 0;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.card {
+  padding: 1em;
+  border: 1px solid var(--color-line2);
+}
+
+.card h3 {
+  margin: 0 0 0.4em 0;
+  font-size: 1.1em;
+  color: var(--color-brand);
+}
+
+.card p {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+/* blockquote — 6px radius, #F5FBFF fill, #00263C text, no border */
+blockquote {
+  padding: 0 1em;
+  color: var(--color-branddeep);
+  background-color: var(--color-panel2);
+  border-radius: 6px;
+}
+
+/* .footer — centred, 6em above, 1px #eee top rule, #bbb text */
+.footer {
+  margin-top: 6em;
+  padding: 2em 0;
+  color: var(--color-dim);
+  text-align: center;
+  border-top: 1px solid var(--color-line2);
+}
+
+/* .gc-bar — .scroll-progress is a modifier, not a behaviour: it sets no
+   geometry, so the rule lives here. */
+.gc-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: 100%;
+  height: 3px;
+  background: var(--color-ink);
+}
+
+::selection {
+  background: var(--color-brand);
+  color: #ffffff;
+}

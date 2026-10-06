@@ -1,0 +1,278 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://mithril.js.org/
+
+   Every value below is read out of that site's own stylesheet, style.css, which
+   is a single flat file with no CSS variables and no build step — the whole
+   design system is about thirty rules.
+
+   The structure is the identity. Mithril's docs are a **fixed 250px sidebar
+   with the page content offset 270px to its right**:
+
+     body>header, body>main   max-width 1000px, margin auto
+     header section           position absolute, width 250px
+     .body                    margin-left 270px
+     h1 + ul                  the TOC — absolutely positioned at width 250px
+                              inside main, 40px above the h1
+
+   Colour is one blue and three greys:
+
+     #1e5799  the Mithril blue. Every link, plus two structural 3px rules:
+              the left border on every `pre`, and the left border on the
+              current TOC section (`h1 + ul strong + ul`)
+     #ddd     the nav cell rules, the hr, the table header's bottom edge, and
+              the inline `code` border
+     #eee     every `pre` and `code` background, and the TOC's mobile panel
+     #f3f3f3  the table head and even rows
+     #fafafa  odd table rows
+
+   Type is Open Sans at 16px, named in that site's own body rule, with a very
+   short heading scale — 24/22/20/18 — and generous top margins:
+
+     h1 24px, margin 0 0 15px
+     h2 22px, margin 45px 0 15px     ← the 45px is the spacing rhythm
+     h3 20px, margin 45px 0 15px
+     h4 18px, margin 30px 0 15px
+
+   The one flourish worth copying: `h2::before` renders a "#" at left:-20px,
+   hidden until the heading is hovered. It is small and it is what makes the page
+   feel like a reference site rather than a document.
+
+   --color-warn and --color-ok are NOT from mithril.js.org — they exist only to
+   colour the copy button's success/failure state, which that site has no
+   equivalent of.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #1e5799;
+  --color-branddark: #164a80;
+  --color-accent: #1e5799;
+  --color-warn: #b45309;
+  --color-ok: #047857;
+
+  --color-page: #ffffff;
+  --color-panel: #ffffff;
+  --color-panel2: #eeeeee;
+  --color-ink: #000000;
+  --color-muted: #555555;
+  --color-dim: #767676;
+  --color-line: #dddddd;
+  --color-line2: #eeeeee;
+  --color-code: #eeeeee;
+  --color-codeink: #000000;
+  --color-row: #fafafa;
+  --color-rowhead: #f3f3f3;
+
+  --font-display: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 1.6;
+  color: var(--color-ink);
+  background: var(--color-page);
+  -webkit-text-smoothing: antialiased;
+}
+
+a {
+  color: var(--color-brand);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* The heading scale, verbatim from style.css: 24/22/20/18 with 45px on h2 and
+   h3. The 45px is the spacing rhythm and it is the whole reason the page reads
+   as a reference site. */
+h1,
+h2,
+h3,
+h4,
+h5 {
+  position: relative;
+  font-weight: normal;
+}
+
+h1 {
+  margin: 0 0 15px 0;
+  font-size: 24px;
+}
+
+h2 {
+  margin: 45px 0 15px 0;
+  font-size: 22px;
+}
+
+h3 {
+  margin: 45px 0 15px 0;
+  font-size: 20px;
+}
+
+h4 {
+  margin: 30px 0 15px 0;
+  font-size: 18px;
+}
+
+h5 {
+  margin: 15px 0 15px 0;
+  font-weight: bold;
+}
+
+/* h2::before — the "#" anchor that appears at left:-20px on hover. The one
+   flourish in the whole stylesheet and worth copying exactly. */
+.anchor::before {
+  content: "#";
+  position: absolute;
+  left: -20px;
+  visibility: hidden;
+}
+
+.anchor:hover::before {
+  visibility: visible;
+}
+
+/* header section — the fixed 250px block holding the logo and nav */
+.header-section {
+  position: absolute;
+  width: 250px;
+}
+
+/* nav a — a 1px #ddd left rule on every cell, dropped on the first */
+.nav a {
+  padding: 0 10px;
+  border-left: 1px solid #dddddd;
+}
+
+.nav a:first-child {
+  padding-left: 0;
+  border: 0;
+}
+
+/* .body — the content offset. Mithril's whole layout is this margin. */
+.body {
+  margin-left: 270px;
+}
+
+/* pre — the 3px blue left rule and the #eee fill. The site's signature code
+   block, and `.demo-scale` (the #1e5799 bar that animates width) is the same
+   colour. */
+pre {
+  padding: 10px 20px;
+  margin: 20px 0;
+  overflow: auto;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  text-align: left;
+  background: #eeeeee;
+  border: 0;
+  border-left: 3px solid var(--color-brand);
+}
+
+pre code {
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: 0;
+}
+
+/* code — inline, 1px #ddd border, 5px 3px padding */
+code {
+  display: inline-block;
+  padding: 5px 3px;
+  margin: 0 0 1px 0;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  white-space: pre;
+  background: #eeeeee;
+  border: 1px solid #dddddd;
+}
+
+/* table — collapsed, 3px 10px padding, the #f3f3f3 head and even rows, #fafafa
+   odds, and a #eee rule under each row */
+table {
+  width: 100%;
+  margin: 0 0 30px 0;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 3px 10px;
+  vertical-align: top;
+  text-align: left;
+}
+
+tr {
+  border-bottom: 1px solid #eeeeee;
+}
+
+thead tr,
+tbody tr:nth-child(even) {
+  background: var(--color-rowhead);
+}
+
+tbody tr:nth-child(odd) {
+  background: var(--color-row);
+}
+
+hr {
+  margin: 30px 0;
+  border: 0;
+  border-bottom: 1px solid #dddddd;
+}
+
+/* .demo-scale — the 3px #1e5799 bar. Mithril uses it as a visual weight
+   comparison in its guides; it is also exactly what .scroll-progress needs. */
+.demo-scale {
+  height: 3px;
+  margin: 0 10px 10px 0;
+  background: var(--color-brand);
+  transform-origin: 0;
+}
+
+/* .gc-bar — .scroll-progress is a modifier, not a behaviour: it sets no
+   geometry, so the rule lives here. */
+.gc-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: 100%;
+  height: 3px;
+  background: var(--color-brand);
+}
+
+/* .footer — the relative bar with its absolutely-placed children, left and
+   right, at 80% */
+.footer {
+  position: relative;
+  padding: 15px 0;
+  margin: 15px 0;
+  border-top: 1px solid #dddddd;
+}
+
+.footer > * {
+  position: absolute;
+  font-size: 80%;
+}
+
+.footer > :first-child {
+  left: 0;
+}
+
+.footer > :last-child {
+  right: 0;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: #ffffff;
+}

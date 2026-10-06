@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>gclass-anims &mdash; Hotwire</title>
+  </head>
+  <body>
+
+<!-- Note: written as <div></div>, never <div />. This is plain HTML, and the
+     parser does not honour self-closing syntax on a div - a <div /> silently
+     never closes and swallows the rest of the document into itself. -->
+<div class="gc-bar scroll-progress"></div>
+
+<!-- .header — centred, with the nav in a COLUMN. hotwired.dev has no horizontal
+     nav; the column layout is the site's own. -->
+<header class="header">
+  <h1 class="weight-800"><a href="https://hotwired.dev/">hotwire</a></h1>
+  <p class="header__tagline">the html-over-the-wire way to build modern web apps</p>
+
+  <nav class="header__nav">
+    <a href="#install">Install</a>
+    <a href="#quick-start">Quick start</a>
+    <a href="#anatomy">Class anatomy</a>
+    <a href="#notes">Notes</a>
+  </nav>
+</header>
+
+<!-- The four Hotwire projects, each in its own colour: turbo, stimulus,
+     strada, native. Those four hexes are how hotwired.dev tells them apart. -->
+<div class="brand-row space-top-xl" style="justify-content: center">
+  <a class="brand-pill brand-pill--turbo click-hover amount-2" href="#notes">Turbo</a>
+  <a class="brand-pill brand-pill--stimulus click-hover amount-2" href="#quick-start">Stimulus</a>
+  <a class="brand-pill brand-pill--strada click-hover amount-2" href="#anatomy">Strada</a>
+  <a class="brand-pill brand-pill--native click-hover amount-2" href="#install">Native</a>
+</div>
+
+<main>
+  <!-- .card / .card__inner — the full-viewport band with a white sheet on the
+       beige page. This is how every section on hotwired.dev is built. -->
+  <section class="card" id="install">
+    <div class="card__inner">
+      <p class="font-mono text-xs space-bottom-s">
+        <a href="https://hotwired.dev/">https://hotwired.dev/</a>
+      </p>
+
+      <h2 class="anchor scroll letter spawn-text-spawn-down">gclass-anims for Hotwire</h2>
+
+      <p class="weight-300 scroll typewriter time-2">
+        Hotwire is Turbo and Stimulus together: Turbo drives page visits over the
+        wire, Stimulus attaches behaviour to markup that never gets compiled.
+        gclass-anims animates whatever is in the document, so the two coexist
+        without either knowing about the other.
+      </p>
+
+      <p class="weight-300">
+        This page has no build step for its markup and no framework. The two
+        libraries it does use are the same two a Rails app gets.
+      </p>
+
+      <p class="space-top-m">
+        <a class="button button--turbo click-expand compatibility amount-4" href="#quick-start">Get started</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="card" id="quick-start">
+    <div class="card__inner">
+      <h2 class="anchor scroll letter spawn-text-spawn-down">Quick start</h2>
+
+      <p class="weight-300 scroll typewriter">
+        Import initAnimations once your DOM is ready. From then on, everything is
+        class-driven: add a utility class to an element and it animates - no
+        per-element JS, no config files.
+      </p>
+
+      <h3 class="anchor scroll spawn-down space-top-l">One call, on turbo:load</h3>
+
+      <p class="weight-300 scroll typewriter">
+        Turbo's own lifecycle event is the right hook, because a Drive
+        navigation replaces the document and the engine needs a fresh walk. The
+        page also calls start() directly, so a hard load that never goes through
+        Turbo still initialises.
+      </p>
+
+      <pre class="relative space-top-s scroll spawn-down"><code>// main.js
+import '@hotwired/turbo'
+import { Application } from '@hotwired/stimulus'
+import { initAnimations } from 'gclass-anims'
+
+document.addEventListener('turbo:load', () =&gt; {
+  initAnimations()
+})</code><button type="button" data-copy class="absolute right-3 top-3 rounded-none border border-ink bg-sheet px2 py1 font-sans text-xs text-ink hover:bg-ink hover:text-sheet" aria-label="Copy code">Copy</button></pre>
+
+      <h3 class="anchor scroll spawn-down space-top-xl">Live — rows from a Stimulus controller</h3>
+
+      <p class="weight-300 scroll typewriter">
+        Nothing re-initialises after this point. The button appends real
+        <code>&lt;li&gt;</code> elements, and each one plays its entrance because
+        the engine watches the DOM for insertions.
+      </p>
+
+      <div data-controller="row-list" class="space-top-l">
+        <div class="flex flex-wrap items-center gap4">
+          <button type="button" class="button button--stimulus click-hover amount-2" data-action="click->row-list#add">Add a row</button>
+          <button type="button" class="button click-hover amount-2" data-action="click->row-list#reset">Reset</button>
+          <span class="text-s"><span data-row-list-target="count">0</span> rows</span>
+        </div>
+
+        <ul class="space-top-m" data-row-list-target="list"></ul>
+      </div>
+
+      <h3 class="anchor scroll spawn-down space-top-xl">Live — a second controller, Turbo-permanent</h3>
+
+      <p class="weight-300 scroll typewriter">
+        The badge below carries <code>data-turbo-permanent</code>, so it survives
+        a Drive navigation rather than being replaced — the same intent as a
+        <code>.preserve</code> element, expressed in Hotwire's own vocabulary.
+      </p>
+
+      <div
+        data-controller="counter"
+        data-turbo-permanent
+        class="space-top-l flex flex-wrap items-center gap4"
+      >
+        <button type="button" class="button button--native click-hover amount-2" data-action="click->counter#bump">Bump</button>
+        <button type="button" class="button click-hover amount-2" data-action="click->counter#reset">Reset</button>
+        <span class="brand-pill brand-pill--strada">
+          <span data-counter-target="total" data-counter-value="total">0</span>
+        </span>
+      </div>
+
+      <pre class="relative space-top-l scroll spawn-down"><code>&lt;!-- the row controller's markup --&gt;
+&lt;div data-controller="row-list"&gt;
+  &lt;button data-action="click-&gt;row-list#add"&gt;Add a row&lt;/button&gt;
+
+  &lt;ul data-row-list-target="list"&gt;&lt;/ul&gt;
+&lt;/div&gt;
+
+// row_list_controller.js
+add() {
+  const row = document.createElement('li')
+  row.className = 'appear spawn-up time-1'
+  row.textContent = `row ${n} — appended by a Stimulus controller`
+  this.listTarget.append(row)
+}</code><button type="button" data-copy class="absolute right-3 top-3 rounded-none border border-ink bg-sheet px2 py1 font-sans text-xs text-ink hover:bg-ink hover:text-sheet" aria-label="Copy code">Copy</button></pre>
+    </div>
+  </section>
+
+  <section class="card" id="anatomy">
+    <div class="card__inner">
+      <h2 class="anchor scroll letter spawn-text-spawn-down">Class anatomy</h2>
+
+      <p class="weight-300 scroll typewriter-split letter">
+        Class anatomy: <strong>behaviour</strong> (<code>.spawn-up</code>) +
+        <strong>trigger</strong> (<code>.scroll</code>, <code>.appear</code>) +
+        <strong>tunables</strong> (<code>.time-1</code>, <code>.ease-back</code>,
+        <code>.priority-2</code>). Combine freely - order in class does not matter.
+      </p>
+
+      <pre class="relative space-top-s scroll spawn-down"><code>&lt;!-- behaviour + trigger + tunables --&gt;
+&lt;div class="appear scroll spawn-up"&gt;…&lt;/div&gt;
+&lt;div class="appear scroll order ease-expo time-1 priority-2"&gt;…&lt;/div&gt;
+&lt;div class="float"&gt;loops forever&lt;/div&gt;
+&lt;button class="magnet click-expand"&gt;magnet + click&lt;/button&gt;</code><button type="button" data-copy class="absolute right-3 top-3 rounded-none border border-ink bg-sheet px2 py1 font-sans text-xs text-ink hover:bg-ink hover:text-sheet" aria-label="Copy code">Copy</button></pre>
+
+      <ul class="space-top-l grid gap3 sm:grid-cols-3">
+        <li class="card scroll spawn-up order priority-2" style="min-height: 0; padding: 2rem; border: 0.1rem solid #000">
+          <h3 class="weight-700">Behaviour</h3>
+          <p class="font-mono text-xs">spawn-up, float, marquee, magnet</p>
+        </li>
+        <li class="card scroll spawn-up order priority-3" style="min-height: 0; padding: 2rem; border: 0.1rem solid #000">
+          <h3 class="weight-700">Trigger</h3>
+          <p class="font-mono text-xs">appear, scroll, preserve</p>
+        </li>
+        <li class="card scroll spawn-up order priority-4" style="min-height: 0; padding: 2rem; border: 0.1rem solid #000">
+          <h3 class="weight-700">Tunables</h3>
+          <p class="font-mono text-xs">order, ease-expo, time-1, priority-2</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card" id="notes">
+    <div class="card__inner">
+      <h2 class="anchor scroll letter spawn-text-spawn-down">Notes</h2>
+
+      <ul class="space-top-l">
+        <li class="scroll spawn-down order priority-2">
+          <strong>turbo:load is the right hook, not DOMContentLoaded.</strong> A
+          Drive navigation replaces the document, so the engine needs a fresh
+          walk on every visit. That is Turbo's own lifecycle event and the page
+          uses it as documented.
+        </li>
+        <li class="scroll spawn-down order priority-2">
+          <strong>data-turbo-permanent is the preserve equivalent.</strong> The
+          permanent badge above survives a navigation without being
+          re-initialised, which is the same outcome <code>.preserve</code> buys
+          on a framework that re-renders.
+        </li>
+        <li class="scroll spawn-down order priority-2">
+          <strong>Two utility systems coexist here.</strong> The em-based
+          <code>.space-*</code> / <code>.text-*</code> classes on this page are
+          hotwired.dev's own. They set spacing and size; gclass-anims sets motion.
+          Neither reads the other.
+        </li>
+        <li class="scroll spawn-down order priority-2">
+          <strong>GSAP stays external.</strong> ESM is
+          <code>dist/gclass.esm.js</code> and CJS is <code>dist/gclass.cjs</code> -
+          GSAP is external, not bundled, and the build is tree-shakable with
+          <code>sideEffects: false</code>.
+        </li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <p class="footer__headline">not affiliated with or endorsed by the Hotwire team</p>
+  <p class="text-s">
+    Colours, the fluid type scale and the jagged clip-path buttons sampled from
+    <a href="https://hotwired.dev/">https://hotwired.dev/</a>, including its
+    <code>:root</code> token block and its <code>wdth</code> 180 axis.
+  </p>
+  <p class="footer__copyright">
+    Running gclass-anims 1.0.0-beta.24 from npm with Hotwire — Turbo 8 and
+    Stimulus 3.
+  </p>
+</footer>
+
+<script type="module" src="/src/main.js"></script>
+  </body>
+</html>

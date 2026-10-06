@@ -236,7 +236,7 @@ add() {
         Not affiliated with or endorsed by the Ember team. Colours and type sampled
         from
         <a class='text-brand hover:underline' href='https://emberjs.com/'>https://emberjs.com/</a>.
-        Running gclass-anims 1.0.0-beta.23 from npm with Ember 7.3.
+        Running gclass-anims 1.0.0-beta.24 from npm with Ember 7.3.
       </p>
     </footer>
   </main>

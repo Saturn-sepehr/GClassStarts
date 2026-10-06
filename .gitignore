@@ -22,3 +22,9 @@ pnpm-debug.log*
 .vercel
 .turbo
 FINDINGS.txt
+
+# Meteor's build output. Deliberately at the REPO ROOT, not under tests/:
+# verify-all.mjs treats every directory under tests/ as an environment, so a
+# staged tree there is reported as a failing env that has no gclass-anims in it.
+meteor-out/
+meteor-static/

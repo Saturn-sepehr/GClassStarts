@@ -1,0 +1,391 @@
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap");
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://hotwired.dev/
+
+   hotwired.dev ships one token block and an entire utility system built on it.
+   Both are reproduced below, because the utilities ARE the design language here:
+   the site's own class names (`.space.--top-m`, `.text.--size-xl`,
+   `.grid__item.--span-8`) are what produce its look, and a page that invents
+   Tailwind utilities instead will not read as Hotwire's.
+
+   The token block, lifted verbatim from /assets/main.css:
+
+     --color-white #fff   --color-black #000   --color-beige #fbf7f0
+     --color-yellow #ffe801   --color-teal #15d1d8   --color-pink #ef6baa
+
+     --color-text var(--color-black)      --color-inversed-text var(--color-white)
+     --color-sheet var(--color-white)     --color-neutral var(--color-beige)
+     --color-link var(--color-yellow)     --color-accent var(--color-yellow)
+     --color-positive var(--color-teal)   --color-negative var(--color-pink)
+
+   The four brand colours are one per Hotwire project, and they are how the
+   homepage tells the four apart:
+
+     --color-brand-turbo     #5cd8e5
+     --color-brand-stimulus  #77e8b9
+     --color-brand-strada    #e76057
+     --color-brand-native    #c18bf4
+
+   Two type details are the identity and neither is guessable:
+
+   1. `html { font-size: 10px }` and `body { font-size: var(--type-base) }` where
+      --type-base is `max(1.8em, min(calc(1em + 0.9vw), 2.4em))`. Every size on
+      the site is an `em` off that fluid root, which is why the whole page scales
+      with the viewport rather than snapping at breakpoints.
+   2. `font-variation-settings: "wdth" 180` on body. Jost is loaded at
+      width 100 and *stretched to 180* — that is what gives the headlines their
+      flattened, wide look, and it is not reproducible with weight alone.
+
+   --type-xxxl is 300% and `--type-xxxxl` is 600%, which is how large h1 is.
+
+   Shape: the jagged clip-path button, exactly as Stimulus's site draws it —
+   polygon(5% 10%, 46% 1%, 46% 10%, 100% 0, 95% 90%, 31% 100%, 31% 90%, 0% 100%)
+   at rest, shifting to the 66%/51% variant on hover. 2rem on .video, nothing
+   anywhere else.
+
+   The .animate.--delay-* / .--duration-* families are CSS keyframe utilities,
+   not gclass ones. They are included so it is obvious the two are separate
+   systems coexisting on one page.
+
+   --color-warn and --color-ok are NOT from hotwired.dev — its own teal and pink
+   already fill those roles — so they exist only for the copy button's
+   success/failure state.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-beige: #fbf7f0;
+  --color-yellow: #ffe801;
+  --color-teal: #15d1d8;
+  --color-pink: #ef6baa;
+
+  --color-brand: #ffe801;
+  --color-accent: #ffe801;
+  --color-positive: #15d1d8;
+  --color-negative: #ef6baa;
+
+  /* one per Hotwire project, exactly as the site names them */
+  --color-turbo: #5cd8e5;
+  --color-stimulus: #77e8b9;
+  --color-strada: #e76057;
+  --color-native: #c18bf4;
+
+  --color-page: #fbf7f0;
+  --color-sheet: #ffffff;
+  --color-panel: #ffffff;
+  --color-panel2: #fbf7f0;
+  --color-ink: #000000;
+  --color-inversed: #ffffff;
+  --color-muted: #555555;
+  --color-line: #000000;
+  --color-code: #fbf7f0;
+  --color-codeink: #000000;
+
+  --color-warn: #b45309;
+  --color-ok: #047857;
+
+  --font-display: "Jost", "Helvetica Neue", helvetica, "Apple Color Emoji", arial, sans-serif;
+  --font-body: "Jost", "Helvetica Neue", helvetica, "Apple Color Emoji", arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* html { font-size: 10px } — the root every em-based size on the site is built
+   on. Copied verbatim; it is why the type scales fluidly rather than snapping. */
+html {
+  font-size: 10px;
+  scroll-behavior: smooth;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-height: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  /* the fluid root: max(1.8em, min(1em + 0.9vw, 2.4em)) */
+  font-size: max(1.8em, min(calc(1em + 0.9vw), 2.4em));
+  /* Jost loaded at width 100 and stretched to 180. This is the wide, flat
+     headline look and it is not reproducible with font-weight. */
+  font-variation-settings: "wdth" 180;
+  color: var(--color-ink);
+  background: var(--color-page);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* the em type scale, from --type-xxxs to --type-xxxxl */
+.text-xxxs { font-size: 55%; }
+.text-xxs { font-size: 65%; }
+.text-xs { font-size: 75%; }
+.text-s { font-size: 85%; }
+.text-m { font-size: 100%; }
+.text-l { font-size: 120%; }
+.text-xl { font-size: 150%; line-height: 1.4; }
+.text-xxl { font-size: 200%; line-height: 1.4; }
+.text-xxxl { font-size: 300%; line-height: 1.1; }
+.text-xxxxl { font-size: 600%; line-height: 1.1; letter-spacing: -0.02em; }
+
+/* the weight scale, as named by the site */
+.weight-200 { font-weight: 200; }
+.weight-300 { font-weight: 300; }
+.weight-400 { font-weight: 400; }
+.weight-600 { font-weight: 600; }
+.weight-700 { font-weight: 700; }
+.weight-800 { font-weight: 800; }
+
+/* the space scale: xs 0.25em, s 0.5em, m 1em, l 1.5em, xl 3em, xxl 4em */
+.space-top-s { margin-top: 0.5em; }
+.space-top-m { margin-top: 1em; }
+.space-top-l { margin-top: 1.5em; }
+.space-top-xl { margin-top: 3em; }
+.space-bottom-s { margin-bottom: 0.5em; }
+.space-bottom-m { margin-bottom: 1em; }
+.space-bottom-l { margin-bottom: 1.5em; }
+.space-bottom-xl { margin-bottom: 3em; }
+
+/* h1 — 300% weight 700, -0.02em tracking, on the fluid root */
+h1 {
+  margin: max(3em, 30vmin) 0 0.25em 0;
+  font-size: 300%;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  transition: font-weight 0.2s ease;
+}
+
+/* h2 — UPPERCASE ITALIC at 200%. That pair is the site's section-heading voice. */
+h2 {
+  margin: 1.5em 0 0.5em 0;
+  font-size: 200%;
+  font-weight: 600;
+  line-height: 1.4;
+  text-transform: uppercase;
+  font-style: italic;
+}
+
+h3 {
+  margin: 1.5em 0 0.25em 0;
+  font-size: 120%;
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+p {
+  margin: 1em 0;
+  font-weight: 350;
+  line-height: 1.7;
+}
+
+ul {
+  margin: 1em 0;
+  padding: 0;
+  list-style: none;
+  list-style-position: outside;
+}
+
+li {
+  margin-left: 0;
+  margin-bottom: 0.25em;
+  position: relative;
+}
+
+li ul {
+  margin-left: 1.25em;
+  margin-bottom: 0;
+  font-size: 100%;
+}
+
+/* a — no colour, the thickness does the work, doubling on hover */
+a,
+a:visited {
+  color: var(--color-ink);
+  text-decoration-thickness: 0.1em;
+  text-decoration-width: 0.1rem;
+  transition: all 0.2s ease;
+  transition-property: text-decoration-thickness, text-decoration-width,
+    -webkit-text-decoration-color, text-decoration-color, color, fill, stroke,
+    opacity, background-color;
+}
+
+a:hover {
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 0.2em;
+  text-decoration-width: 0.2em;
+}
+
+hr {
+  width: 100%;
+  margin: 3em 0;
+  border: 0;
+  border-top: 0.1rem solid var(--color-ink);
+}
+
+blockquote {
+  position: relative;
+  margin: 1.5em 0;
+  padding: 0;
+  font-size: 100%;
+  font-weight: 200;
+  font-style: italic;
+  letter-spacing: 0.1em;
+  line-height: 1.7;
+  text-transform: uppercase;
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+
+/* .button — the jagged clip-path polygon, verbatim from .button. Hover shifts
+   the notch from 46%/31% to 66%/51% and goes weight 800. */
+.button {
+  display: inline-block;
+  padding: 1em 1.5em;
+  font-family: var(--font-display);
+  text-align: center;
+  text-decoration: none;
+  line-height: normal;
+  color: var(--color-ink);
+  background-color: var(--color-brand);
+  border: 0;
+  box-shadow: none;
+  clip-path: polygon(5% 10%, 46% 1%, 46% 10%, 100% 0, 95% 90%, 31% 100%, 31% 90%, 0% 100%);
+  transition: font-weight 0.1s ease, clip-path 0.2s ease,
+    background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.button:hover {
+  color: var(--color-ink);
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 800;
+  background-color: var(--color-accent);
+  clip-path: polygon(5% 10%, 66% 1%, 66% 10%, 100% 0, 95% 90%, 51% 100%, 51% 90%, 0% 100%);
+}
+
+/* the per-project button variants, named as the site names them */
+.button--turbo { background-color: var(--color-turbo); }
+.button--stimulus { background-color: var(--color-stimulus); }
+.button--strada { background-color: var(--color-strada); color: var(--color-inversed); }
+.button--native { background-color: var(--color-native); color: var(--color-inversed); }
+
+/* .card — the full-viewport card, min-height 96vh, from .card.--fullscreen's
+   sibling rule */
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  min-height: 96vh;
+  margin: 0;
+  padding: 2vh;
+}
+
+/* .card__inner — the white sheet sitting on the beige page. hotwired.dev puts
+   each section's content on a --color-sheet card. */
+.card__inner {
+  width: 100%;
+  max-width: 120rem;
+  padding: 4rem 3rem;
+  background: var(--color-sheet);
+}
+
+/* .header — centred, with the nav in a column: the site has no horizontal nav */
+.header {
+  width: 100%;
+  text-align: center;
+}
+
+.header__nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  z-index: 20000;
+  margin: -4.5em 0 0;
+  padding: 0 2em;
+}
+
+/* .header__tagline — uppercase, italic, .25em tracking. The site's voice. */
+.header__tagline {
+  margin: 0;
+  font-size: 85%;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+}
+
+/* .footer — centred column, 3em above */
+.footer {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 3em;
+  text-align: center;
+}
+
+.footer__headline {
+  font-size: 75%;
+  margin: 0 0 0.5em 0;
+}
+
+/* .brand — the four-colour stack that names the Hotwire projects. Each is the
+   project's own colour, which is how the homepage tells them apart. */
+.brand-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  margin: 1.5em 0;
+}
+
+.brand-pill {
+  display: inline-block;
+  padding: 0.4em 1em;
+  font-size: 85%;
+  font-weight: 600;
+  color: var(--color-ink);
+  text-decoration: none;
+  border-radius: 2rem;
+}
+
+.brand-pill--turbo { background: var(--color-turbo); }
+.brand-pill--stimulus { background: var(--color-stimulus); }
+.brand-pill--strada { background: var(--color-strada); color: var(--color-inversed); }
+.brand-pill--native { background: var(--color-native); color: var(--color-inversed); }
+
+code,
+pre {
+  font-family: var(--font-mono);
+  text-align: left;
+}
+
+pre {
+  overflow: auto;
+  padding: 1em 1.5em;
+  background: var(--color-sheet);
+  border: 0.1rem solid var(--color-ink);
+}
+
+/* .gc-bar — .scroll-progress is a modifier, not a behaviour: it sets no
+   geometry, so the rule lives here. */
+.gc-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: 100%;
+  height: 3px;
+  background: var(--color-ink);
+}
+
+::selection {
+  color: var(--color-sheet);
+  background-color: var(--color-ink);
+}

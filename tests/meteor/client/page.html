@@ -1,0 +1,171 @@
+<body>
+<template name="page">
+  <main class="min-h-screen">
+    <header class="expand-down ease-expo border-b border-line/40 bg-cinder">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+        <a href="https://www.meteor.com/" class="unbounded-light text-xl">meteor</a>
+        <nav class="flex flex-wrap items-center gap-6 text-sm">
+          <a href="#install">Install</a>
+          <a href="#quick-start">Quick start</a>
+          <a href="#anatomy">Class anatomy</a>
+          <a href="#notes">Notes</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="px-6 py-20 text-center">
+      <span class="bg-meteor-purple/10 text-meteor-purple inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold">gclass-anims 1.0.0-beta.24</span>
+      <p class="font-mono text-sm mt-6"><a class="text-fluor hover:underline" href="https://www.meteor.com/">https://www.meteor.com/</a></p>
+      <h1 class="unbounded-black mx-auto mt-6 max-w-3xl text-5xl leading-none tracking-tight scroll letter spawn-text-spawn-down">
+        The <span class="grad-text">full stack</span> behind your UI
+      </h1>
+      <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-300 scroll typewriter time-2">
+        Meteor ships Blaze templates, reactive data and a build system in one
+        package. gclass-anims animates whatever markup those templates render.
+        Call <code>initAnimations()</code> once from the template's
+        <code>created</code> hook - everything after that is covered.
+      </p>
+      <a href="#install" class="btn-primary-lg mt-10 inline-block click-expand compatibility amount-4">Get started</a>
+    </section>
+
+    <section class="bg-alice-blue px-6 py-16">
+      <div class="mx-auto grid max-w-6xl gap-6 sm:grid-cols-3">
+        <div class="scroll spawn-up order priority-2 rounded-lg border border-line bg-cinder p-6">
+          <h3 class="unbounded-bold text-lg text-fluor">Behaviour</h3>
+          <p class="mt-2 font-mono text-xs text-slate-400">spawn-up, float, marquee, magnet</p>
+        </div>
+        <div class="scroll spawn-up order priority-3 rounded-lg border border-line bg-cinder p-6">
+          <h3 class="unbounded-bold text-lg text-fluor">Trigger</h3>
+          <p class="mt-2 font-mono text-xs text-slate-400">appear, scroll, preserve</p>
+        </div>
+        <div class="scroll spawn-up order priority-4 rounded-lg border border-line bg-cinder p-6">
+          <h3 class="unbounded-bold text-lg text-fluor">Tunables</h3>
+          <p class="mt-2 font-mono text-xs text-slate-400">order, ease-expo, time-1, priority-2</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="mx-auto max-w-3xl px-6 py-16">
+      <section id="install" class="scroll-mt-24">
+        <h2 class="unbounded-bold text-4xl scroll letter spawn-text-spawn-down">Install</h2>
+        <p class="mt-4 text-slate-300 scroll typewriter">
+          GClass ships as the npm package gclass-anims. GSAP is a regular
+          dependency and is installed automatically - nothing is bundled or
+          redistributed. Meteor is a peer of this page, not a dependency of the
+          library.
+        </p>
+        <div class="code-panel scroll spawn-down mt-5">
+          <code>npm install gclass-anims meteor</code>
+        </div>
+      </section>
+
+      <section id="quick-start" class="scroll-mt-24 py-16">
+        <h2 class="unbounded-bold text-4xl scroll letter spawn-text-spawn-down">Quick start</h2>
+        <p class="mt-4 text-slate-300 scroll typewriter">
+          Import initAnimations once your DOM is ready. From then on, everything
+          is class-driven: add a utility class to an element and it animates - no
+          per-element JS, no config files.
+        </p>
+
+        <h3 class="mt-8 text-xl font-semibold">One call, in the created hook</h3>
+        <p class="mt-3 text-slate-300 scroll typewriter">
+          Blaze constructs a template instance and fires <code>created</code>
+          before its rendered DOM is inserted, so this page inits on
+          <code>onRendered</code> instead - the first hook where the elements
+          exist.
+        </p>
+        <div class="code-panel scroll spawn-down mt-4">
+          <code>{{!
+  client/lib/page.js
+  Template.page.onRendered(() => {
+    initAnimations()
+  })
+}}</code>
+        </div>
+
+        <h3 class="mt-8 text-xl font-semibold">Live — rows from a ReactiveVar</h3>
+        <p class="mt-3 text-slate-300 scroll typewriter">
+          Nothing re-initialises after this point. The button pushes onto a
+          <code>ReactiveVar</code>, Blaze's <code>{{#each}}</code> inserts real
+          nodes, and each one plays its entrance because the engine is watching
+          for insertions.
+        </p>
+
+        {{> rowList}}
+
+        <div class="code-panel scroll spawn-down mt-5">
+          <code>{{!
+  client/lib/row_list.js
+  Template.rowList.events({
+    'click .js-add': () => {
+      const n = Template.instance().rows.get()
+      Template.instance().rows.set([...n, n.length + 1])
+    },
+  })
+}}
+
+&lt;!-- client/row_list.html --&gt;
+{{#each rows}}
+  &lt;div class="appear spawn-up time-1"&gt;row {{this}}&lt;/div&gt;
+{{/each}}</code>
+        </div>
+      </section>
+
+      <section id="anatomy" class="scroll-mt-24 py-16">
+        <h2 class="unbounded-bold text-4xl scroll letter spawn-text-spawn-down">Class anatomy</h2>
+        <p class="mt-4 text-slate-300 scroll typewriter-split letter">
+          Class anatomy: <strong class="text-white">behaviour</strong>
+          (<code>.spawn-up</code>) + <strong class="text-white">trigger</strong>
+          (<code>.scroll</code>, <code>.appear</code>) +
+          <strong class="text-white">tunables</strong>
+          (<code>.time-1</code>, <code>.ease-back</code>, <code>.priority-2</code>).
+          Combine freely — order in class does not matter.
+        </p>
+        <div class="code-panel scroll spawn-down mt-5">
+          <code>&lt;!-- behaviour + trigger + tunables --&gt;
+&lt;div class="appear scroll spawn-up"&gt;…&lt;/div&gt;
+&lt;div class="appear scroll order ease-expo time-1 priority-2"&gt;…&lt;/div&gt;
+&lt;div class="float"&gt;loops forever&lt;/div&gt;
+&lt;button class="magnet click-expand"&gt;magnet + click&lt;/button&gt;</code>
+        </div>
+      </section>
+
+      <section id="notes" class="scroll-mt-24 py-16">
+        <h2 class="unbounded-bold text-4xl scroll letter spawn-text-spawn-down">Notes</h2>
+        <ul class="mt-8 grid gap-4">
+          <li class="scroll spawn-down order priority-2 rounded-lg border border-line bg-cinder p-6 text-left">
+            <strong class="text-white">Reactivity is on your side.</strong>
+            Blaze tracks a region and only touches the DOM where data changed.
+            Adding to a list is a real insertion, so the MutationObserver catches
+            it; updating a single value patches a text node, which
+            gclass-anims has no interest in.
+          </li>
+          <li class="scroll spawn-down order priority-2 rounded-lg border border-line bg-cinder p-6 text-left">
+            <strong class="text-white">onRendered, not created.</strong>
+            <code>created</code> runs before the template's DOM exists.
+            <code>onRendered</code> is the first hook where there is something to
+            walk.
+          </li>
+          <li class="scroll spawn-down order priority-2 rounded-lg border border-line bg-cinder p-6 text-left">
+            <strong class="text-white">GSAP stays external.</strong> ESM is
+            <code>dist/gclass.esm.js</code> and CJS is <code>dist/gclass.cjs</code>
+            — GSAP is external, not bundled, and the build is tree-shakable with
+            <code>sideEffects: false</code>.
+          </li>
+        </ul>
+      </section>
+
+      <footer class="mt-8 border-t border-line/40 py-12 text-center text-sm text-slate-400">
+        <p>
+          Not affiliated with or endorsed by the Meteor team. Colours and type
+          sampled from <a class="text-fluor hover:underline" href="https://www.meteor.com/">https://www.meteor.com/</a>,
+          including its Unbounded / Space Grotesk pairing and its named colour
+          set (meteor-purple, fluor, cinder, haiti, iris). Running
+          gclass-anims 1.0.0-beta.24 from npm with Meteor 3.5.
+        </p>
+      </footer>
+    </div>
+  </main>
+</template>
+
+</body>

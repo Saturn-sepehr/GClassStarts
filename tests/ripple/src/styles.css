@@ -1,0 +1,257 @@
+@import url("https://fonts.googleapis.com/css2?family=Recursive:slnt,wght,CASL,MONO@-15..0,300..1000,0..1,0..1&display=swap");
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design language copied from https://ripple-ts.com/
+
+   Ripple's site is a single dark page with a starfield, and every one of its
+   values is in the inline <style> block it serves rather than an external
+   stylesheet — read out of it directly:
+
+     #0a0a0f            body background, near-black with a blue cast
+     rgba(40,44,52,.92) .content-section fill — the one panel surface, and the
+                        only place the page steps up from the background
+     rgba(255,255,255,.1) the 1px border on that panel
+     #78dbe2            the cyan. Cursor, inline code, list ::marker, and every
+                        scrollbar thumb on the site
+     #ff77c6            the pink. Only in the glow behind the logo and one
+                        atmospheric gradient
+     #7877c6            the purple. Only in the third atmospheric gradient
+     #ffc107            the amber, at rgba(255,193,7,.18) fill and .3 border —
+                        the "early development" notice
+     Recursive          the body face, a variable font driven with
+                        `font-variation-settings: 'CASL'`. The subtitle runs
+                        CASL 0.5, body copy CASL 0.3.
+
+   Two shapes only, and the radius is the whole identity:
+
+     12px   .content-section and the scrollbar thumbs — the panel radius
+     50px   .github-link, .social-button, .coming-soon — every pill
+     4px    inline code and the scrollbar tracks
+
+   The give-away is that there is no header and no nav: .container is max-width
+   720px, centred, with the logo at max-width 400px and a subtitle beneath it.
+   Everything else is a centred panel. That restraint is the resemblance.
+
+   --color-warn and --color-ok are NOT from ripple-ts.com — the amber already
+   fills that role — so they exist only for the copy button's success/failure
+   state, which that site has no equivalent of.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-brand: #78dbe2;
+  --color-branddim: #3aa8b0;
+  --color-accent: #ff77c6;
+  --color-accent2: #7877c6;
+  --color-warn: #ffc107;
+  --color-ok: #4ade80;
+
+  --color-page: #0a0a0f;
+  --color-panel: #282c34;
+  --color-panel2: #141419;
+  --color-ink: #ffffff;
+  --color-body: rgba(255, 255, 255, 0.8);
+  --color-muted: rgba(255, 255, 255, 0.6);
+  --color-line: rgba(255, 255, 255, 0.1);
+  --color-code: #141419;
+  --color-codeink: #78dbe2;
+
+  --font-display: "Recursive", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: "Recursive", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "SF Mono", Monaco, Inconsolata, "Roboto Mono", ui-monospace, monospace;
+}
+
+body {
+  font-family: var(--font-body);
+  font-variation-settings: "CASL" 0.3;
+  background: var(--color-page);
+  color: #ffffff;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* body::before — the tiled starfield. Four 1-2px radial-gradient dots on a
+   200px x 100px repeat, one cyan and one pink among them, twinking over 8s. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(1px 1px at 20px 30px, rgba(255, 255, 255, 0.15), transparent),
+    radial-gradient(1px 1px at 40px 70px, rgba(120, 219, 226, 0.4), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255, 119, 198, 0.3), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.1), transparent),
+    radial-gradient(2px 2px at 160px 30px, rgba(120, 219, 226, 0.2), transparent);
+  background-repeat: repeat;
+  background-size:
+    200px 100px,
+    200px 100px,
+    200px 100px,
+    200px 100px,
+    200px 100px;
+}
+
+/* body::after — the three large atmospheric washes. Fixed, no pointer events,
+   behind the content. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 219, 226, 0.1) 0%, transparent 50%);
+}
+
+/* .container — max-width 720px, centred, above the starfield */
+.container {
+  position: relative;
+  z-index: 10;
+  max-width: 720px;
+  padding: 2rem;
+  margin: 0 auto;
+}
+
+/* .content-section — the one panel surface on the site:
+   rgba(40,44,52,.92), 12px radius, 1px rgba(255,255,255,.1) */
+.content-section {
+  max-width: 700px;
+  padding: 2rem;
+  margin: 2rem auto;
+  background: rgba(40, 44, 52, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+
+/* .subtitle — 1.25rem, opacity .8, CASL 0.5, and a 20px cyan text-shadow */
+.subtitle {
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+  font-variation-settings: "CASL" 0.5;
+  text-shadow: 0 0 20px rgba(120, 219, 226, 0.2);
+}
+
+/* .pill — the 50px-radius link button, used for every button on the site:
+   .75rem 1.5rem padding, height 48px, cyan border at .3, rgba(0,0,0,.32) fill */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 48px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  background: rgba(0, 0, 0, 0.32);
+  border: 1px solid rgba(120, 219, 226, 0.3);
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.pill:hover {
+  color: #ffffff;
+  background: rgba(120, 219, 226, 0.1);
+  border-color: rgba(120, 219, 226, 0.6);
+  box-shadow: 0 10px 30px rgba(120, 219, 226, 0.2);
+  transform: translateY(-2px);
+}
+
+/* .notice — the amber early-development panel: rgba(255,193,7,.18) fill on a
+   .3 border, 8px radius */
+.notice {
+  max-width: 700px;
+  padding: 1.5rem;
+  margin: 2rem auto;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  line-height: 1.5;
+  background: rgba(255, 193, 7, 0.18);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 8px;
+}
+
+/* .features — the disc list. The ::marker is the cyan accent, 1.2em. */
+.features {
+  margin: 1.5rem 0 0 0;
+  padding-left: 2rem;
+  list-style-type: disc;
+}
+
+.features li {
+  position: relative;
+  padding: 0.6rem 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.features li::marker {
+  color: var(--color-brand);
+  font-size: 1.2em;
+}
+
+.features strong {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* inline code — the 4px radius chip. 15% cyan fill, cyan text. */
+.features code,
+code {
+  padding: 0.2rem 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  color: var(--color-brand);
+  background: rgba(120, 219, 226, 0.15);
+  border-radius: 4px;
+}
+
+pre {
+  overflow: auto;
+  padding: 1.5rem;
+  color: #e6e6e6;
+  background: rgba(0, 0, 0, 0.32);
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+  text-align: left;
+}
+
+pre code {
+  padding: 0;
+  font-size: 0.875em;
+  color: inherit;
+  background: none;
+}
+
+/* .gc-bar — .scroll-progress is a modifier, not a behaviour: it sets no
+   geometry, so the rule lives here. Fixed above the starfield. */
+.gc-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  width: 100%;
+  height: 3px;
+  background: var(--color-brand);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+::selection {
+  background: rgba(120, 219, 226, 0.3);
+  color: #ffffff;
+}

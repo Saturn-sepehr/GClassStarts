@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>gclass-anims &mdash; Stimulus</title>
+  </head>
+  <body>
+
+<!-- Note: written as <div></div>, never <div />. This is plain HTML, and the
+     parser does not honour self-closing syntax on a div - a <div /> silently
+     never closes and swallows the rest of the document into itself. -->
+<div class="gc-bar scroll-progress"></div>
+
+<!-- .jump — the black sibling strip across the top: Jost, uppercase, italic -->
+<nav class="jump">
+  <ul class="jump__list flex flex-wrap items-center justify-center gap-3 border-none bg-black px-4 py-2">
+    <li><a class="jump__list-link jump__list-link--hotwire" href="https://hotwired.dev">Hotwire:</a></li>
+    <li><a class="jump__list-link" href="https://turbo.hotwired.dev/">Turbo</a></li>
+    <li><a class="jump__list-link jump__list-link--active" href="https://stimulus.hotwired.dev/">Stimulus</a></li>
+    <li><a class="jump__list-link" href="https://native.hotwired.dev/">Native</a></li>
+  </ul>
+</nav>
+
+<!-- .page-header — logo left, nav right, .75em 1em padding -->
+<header class="page-header flex items-center justify-between px-4 py-3">
+  <a class="nav-logo block text-2xl font-bold tracking-tight" href="https://stimulus.hotwired.dev/">Stimulus<span class="text-brand">*</span></a>
+
+  <nav class="nav">
+    <ul class="nav__list flex items-center gap-6 border-none">
+      <li><a class="nav__list-link block border-t-[0.2rem] border-brand px-1 pt-1" href="#install">Install</a></li>
+      <li><a class="nav__list-link block border-t-[0.2rem] border-brand px-1 pt-1" href="#quick-start">Quick start</a></li>
+      <li><a class="nav__list-link block border-t-[0.2rem] border-brand px-1 pt-1" href="#anatomy">Class anatomy</a></li>
+      <li><a class="nav__list-link block border-t-[0.2rem] border-brand px-1 pt-1" href="#notes">Notes</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- .landing-intro — cream band, .4rem mint rule, one huge centred Jost line -->
+<div class="landing-intro">
+  <h1 class="landing-intro__text">A modest animation library for the HTML you already have.</h1>
+</div>
+
+<main id="content" class="mx-auto max-w-6xl px-4 pt-10 pb-24">
+
+  <!-- .landing-hero — two code cards side by side, each on the cream field
+       with a .25em white border and a black caption bar -->
+  <section class="landing-hero grid gap-6 sm:grid-cols-2">
+    <div class="step scroll spawn-down ease-expo priority-1">
+      <p class="step-title">Sprinkle your HTML with controller, target and action attributes:</p>
+      <pre><code>&lt;div data-controller="hello"&gt;
+  &lt;input data-hello-target="name" type="text"&gt;
+
+  &lt;button data-action="click-&gt;hello#greet"&gt;
+    Greet
+  &lt;/button&gt;
+
+  &lt;span data-hello-target="output"&gt;&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+    <div class="step scroll spawn-down ease-expo priority-2">
+      <p class="step-title">Write a compatible controller and watch Stimulus bring it to life:</p>
+      <pre><code>// hello_controller.js
+import { Controller } from '@hotwired/stimulus'
+
+export default class extends Controller {
+  static targets = ['name', 'output']
+
+  greet() {
+    this.outputTarget
+      .textContent = `Hello, ${this.nameTarget.value}!`
+  }
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- .landing-hello — the live greeting. The output is a Stimulus target that
+       gclass-anims never knew about until the controller filled it in. -->
+  <section class="step scroll spawn-up my-8" data-controller="hello">
+    <p class="step-title">Hello Stimulus</p>
+    <div class="flex flex-wrap items-center gap-3 p-4">
+      <label class="sr-only" for="stimulus-name">Your name</label>
+      <input id="stimulus-name" data-hello-target="name" class="landing-hello__input grow border-2 border-ink bg-page px-3 py-2 font-display text-base transition-colors focus:border-brand focus:outline-none" type="text" placeholder="Your name" />
+      <button data-action="click->hello#greet" class="landing-hello__button bg-black px-6 py-2 font-display font-bold text-brand">Greet</button>
+    </div>
+    <p class="appear spawn-up m-0 border-b-[0.1em] border-ink px-4 py-4 text-center font-display text-xl text-ellipsis overflow-hidden whitespace-nowrap" data-hello-target="output"></p>
+  </section>
+
+  <!-- .landing-actions — the three action cards. The only rounded things on
+       the real site, each with a mint icon block. -->
+  <section class="my-10 grid gap-6 sm:grid-cols-3">
+    <a href="#install" class="action-item scroll spawn-up order priority-2">
+      <span class="icon" style="-webkit-mask:url('data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22&gt;&lt;path d=%22M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z%22/&gt;&lt;/svg&gt;') center/100% no-repeat;mask:url('data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22&gt;&lt;path d=%22M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z%22/&gt;&lt;/svg&gt;') center/100% no-repeat"></span>
+      Read the Handbook
+    </a>
+    <a href="#quick-start" class="action-item scroll spawn-up order priority-3">
+      <span class="icon" style="-webkit-mask:url('data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22&gt;&lt;path d=%22M12 2v6m0 8v6M2 12h6m8 0h6M5 5l4 4m6 6 4 4M19 5l-4 4M9 15l-4 4%22 stroke=%22black%22 stroke-width=%222%22 fill=%22none%22/&gt;&lt;/svg&gt;') center/100% no-repeat;mask:url('data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22&gt;&lt;path d=%22M12 2v6m0 8v6M2 12h6m8 0h6M5 5l4 4m6 6 4 4M19 5l-4 4M9 15l-4 4%22 stroke=%22black%22 stroke-width=%222%22 fill=%22none%22/&gt;&lt;/svg&gt;') center/100% no-repeat"></span>
+      Install Stimulus
+    </a>
+    <a href="https://github.com/hotwired/stimulus" class="action-item scroll spawn-up order priority-4">
+      <span class="icon" style="-webkit-mask:url('data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22&gt;&lt;path d=%22M9 19c-4 1.5-4-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.3-.3 4.5-1.1 4.5-5a3.9 3.9 0 00-1.1-2.7 3.6 3.6 0 00-.1-2.7s-.9-.3-2.9 1.1a10 10 0 00-5 0C8.1 4.8 7.2 5.1 7.2 5.1a3.6 3.6 0 00-.1 2.7A3.9 3.9 0 006 10.5c0 3.9 2.2 4.7 4.5 5-.6.6-.6 1.2-.5 2V21%22/&gt;&lt;/svg&gt;') center/100% no-repeat;mask:url('data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22&gt;&lt;path d=%22M9 19c-4 1.5-4-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.3-.3 4.5-1.1 4.5-5a3.9 3.9 0 00-1.1-2.7 3.6 3.6 0 00-.1-2.7s-.9-.3-2.9 1.1a10 10 0 00-5 0C8.1 4.8 7.2 5.1 7.2 5.1a3.6 3.6 0 00-.1 2.7A3.9 3.9 0 006 10.5c0 3.9 2.2 4.7 4.5 5-.6.6-.6 1.2-.5 2V21%22/&gt;&lt;/svg&gt;') center/100% no-repeat"></span>
+      Browse the source
+    </a>
+  </section>
+
+  <section id="install" class="scroll-mt-24 py-8">
+    <h2 class="scroll letter spawn-text-spawn-down text-4xl">Install</h2>
+    <p class="mx-auto mt-3 max-w-3xl text-center text-[17px] leading-relaxed">GClass ships as the npm package gclass-anims. GSAP is a regular dependency and is installed automatically - nothing is bundled or redistributed. Stimulus is a peer of this page, not a dependency of the library.</p>
+    <div class="step scroll spawn-down mx-auto mt-5 max-w-3xl">
+      <pre class="p-4 pr-16"><code>npm install gclass-anims @hotwired/stimulus</code><button type="button" data-copy class="absolute right-2 top-2 rounded-none border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:text-brand" aria-label="Copy code">Copy</button></pre>
+    </div>
+  </section>
+
+  <section id="quick-start" class="scroll-mt-24 py-8">
+    <h2 class="scroll letter spawn-text-spawn-down text-4xl">Quick start</h2>
+    <p class="mx-auto mt-3 max-w-3xl text-center text-[17px] leading-relaxed">Import initAnimations once your DOM is ready. From then on, everything is class-driven: add a utility class to an element and it animates - no per-element JS, no config files.</p>
+
+    <h3 class="mt-8 text-2xl">One call, after start()</h3>
+    <div class="step scroll spawn-down mx-auto mt-4 max-w-3xl">
+      <pre class="p-4 pr-16"><code>// main.js
+import { Application } from '@hotwired/stimulus'
+import { initAnimations } from 'gclass-anims'
+
+const application = Application.start()
+application.register('hello', HelloController)
+
+// controllers are already connected by the time start() returns
+initAnimations()</code><button type="button" data-copy class="absolute right-2 top-2 rounded-none border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:text-brand" aria-label="Copy code">Copy</button></pre>
+    </div>
+
+    <h3 class="mt-8 text-2xl">Live - nodes appended by a controller</h3>
+    <p class="mx-auto mt-3 max-w-3xl text-center text-[17px] leading-relaxed">Nothing re-initialises after this point. The controller appends real elements on each click, and each one plays its entrance because the engine watches the DOM for insertions.</p>
+    <div class="mt-5" data-controller="counter">
+      <div class="flex flex-wrap items-center gap-3">
+        <button type="button" data-action="click->counter#add" class="button text-[15px]">Add a row</button>
+        <button type="button" data-action="click->counter#reset" class="button text-[15px] opacity-70">Reset</button>
+        <span class="font-mono text-xs text-muted"><span data-counter-target="count">0</span> rows</span>
+      </div>
+      <div class="mt-4 grid gap-2" data-counter-target="list"></div>
+    </div>
+
+    <div class="step scroll spawn-down mx-auto mt-5 max-w-3xl">
+      <pre class="p-4 pr-16"><code>&lt;div data-controller="counter"&gt;
+  &lt;button data-action="click-&gt;counter#add"&gt;Add a row&lt;/button&gt;
+  &lt;div data-counter-target="list"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+// counter_controller.js
+const row = document.createElement('div')
+row.className = 'appear spawn-up time-1'
+row.textContent = `row ${n}`
+this.listTarget.append(row)</code><button type="button" data-copy class="absolute right-2 top-2 rounded-none border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:text-brand" aria-label="Copy code">Copy</button></pre>
+    </div>
+  </section>
+
+  <section id="anatomy" class="scroll-mt-24 py-8">
+    <h2 class="scroll letter spawn-text-spawn-down text-4xl">Class anatomy</h2>
+    <p class="mx-auto mt-3 max-w-3xl text-center text-[17px] leading-relaxed">Three pieces, in any order: <strong>behaviour</strong> (<code>.spawn-up</code>), <strong>trigger</strong> (<code>.scroll</code>, <code>.appear</code>) and <strong>tunables</strong> (<code>.time-1</code>, <code>.ease-back</code>, <code>.priority-2</code>). Order in <code>class</code> does not matter.</p>
+    <div class="step scroll spawn-down mx-auto mt-5 max-w-3xl">
+      <pre class="p-4 pr-16"><code>&lt;!-- behaviour + trigger + tunables --&gt;
+&lt;div class="appear scroll spawn-up"&gt;…&lt;/div&gt;
+&lt;div class="appear scroll order ease-expo time-1 priority-2"&gt;…&lt;/div&gt;
+&lt;div class="float"&gt;loops forever&lt;/div&gt;
+&lt;button class="magnet click-expand"&gt;magnet + click&lt;/button&gt;</code><button type="button" data-copy class="absolute right-2 top-2 rounded-none border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:text-brand" aria-label="Copy code">Copy</button></pre>
+    </div>
+    <div class="mx-auto mt-6 grid max-w-3xl gap-4 sm:grid-cols-3">
+      <div class="step scroll spawn-down order priority-2 p-4"><h3 class="text-xl text-ink">Behaviour</h3><p class="mt-1 font-mono text-[12px]">spawn-up, float, marquee, magnet</p></div>
+      <div class="step scroll spawn-down order priority-3 p-4"><h3 class="text-xl">Trigger</h3><p class="mt-1 font-mono text-[12px]">appear, scroll, preserve</p></div>
+      <div class="step scroll spawn-down order priority-4 p-4"><h3 class="text-xl">Tunables</h3><p class="mt-1 font-mono text-[12px]">order, ease-expo, time-1, priority-2</p></div>
+    </div>
+  </section>
+
+  <section id="notes" class="scroll-mt-24 py-8">
+    <h2 class="scroll letter spawn-text-spawn-down text-4xl">Notes</h2>
+    <ul class="mx-auto mt-6 max-w-3xl grid gap-4">
+      <li class="step scroll spawn-down order priority-2 p-5"><strong>No controller required.</strong> A utility class on plain markup animates without a Stimulus controller anywhere near it. gclass-anims never reads <code>data-controller</code>, and Stimulus never reads a utility class.</li>
+      <li class="step scroll spawn-down order priority-3 p-5"><strong>Insertions are covered.</strong> A controller that appends, replaces or clones markup gets its <code>.appear</code> / <code>.scroll</code> elements picked up automatically - there is exactly one <code>initAnimations()</code> call on this page.</li>
+      <li class="step scroll spawn-down order priority-4 p-5"><strong>GSAP stays external.</strong> ESM is <code>dist/gclass.esm.js</code> and CJS is <code>dist/gclass.cjs</code> - GSAP is external, not bundled, and the build is tree-shakable with <code>sideEffects: false</code>.</li>
+    </ul>
+  </section>
+
+  <footer class="mt-8 text-center text-sm text-muted">
+    <p>Not affiliated with or endorsed by the Hotwire team. Colours and type sampled from <a class="hover:text-brand" href="https://stimulus.hotwired.dev/">https://stimulus.hotwired.dev/</a>, including its Bitter / Jost / Roboto Mono type pairing and its jagged clip-path buttons. Running gclass-anims 1.0.0-beta.24 from npm with Stimulus <span id="stimulus-version">3.2.2</span>.</p>
+  </footer>
+</main>
+
+<script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>gclass-anims &mdash; Knockout.js</title>
+  </head>
+  <body>
+
+<!-- Note: written as <div></div>, never <div />. This is plain HTML, and the
+     parser does not honour self-closing syntax on a div - a <div /> silently
+     never closes and swallows the rest of the document into itself. Knockout's
+     own templates get this wrong constantly, so it is worth stating. -->
+<div class="gc-bar scroll-progress"></div>
+
+<div id="wrapper" class="wrapper">
+  <nav class="main-menu">
+    <ul>
+      <li><a href="https://knockoutjs.com/">Home</a></li>
+      <li><a href="#install">Install</a></li>
+      <li><a href="#quick-start">Quick start</a></li>
+      <li><a href="#anatomy">Class anatomy</a></li>
+      <li><a href="#notes">Notes</a></li>
+    </ul>
+  </nav>
+
+  <!-- .sticker — the white card the whole site is built from -->
+  <div class="sticker scroll spawn-down">
+    <div class="sticker-heading engraved flex items-center justify-between">
+      <span>gclass-anims for Knockout.js</span>
+      <span class="font-mono text-[12px] font-normal">v1.0.0-beta.24</span>
+    </div>
+
+    <div class="content">
+      <p style="font-family: arial, sans-serif; font-size: 0.9em;">
+        Not affiliated with or endorsed by the Knockout team.
+        <a href="https://knockoutjs.com/">Official Knockout.js website</a>
+      </p>
+
+      <h1 class="scroll letter spawn-text-spawn-down">MVVM, with motion</h1>
+
+      <p class="scroll typewriter time-2">
+        Knockout keeps view state in observables and writes it into the DOM with
+        bindings. gclass-anims animates whatever markup is on the page, however
+        it got there. Call <code>initAnimations()</code> once after
+        <code>applyBindings()</code> - and every node a
+        <code>foreach</code> binding adds afterwards is picked up for free.
+      </p>
+
+      <div class="live-example mt-6 scroll spawn-up">
+        <a href="#install" class="click-expand compatibility amount-4" style="display: inline-block; padding: 0.4em 1.4em; background-color: #A71500; color: #fff; font-weight: bold; border-radius: 0.5em; text-decoration: none;">Get started</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="sticker scroll spawn-down" id="install">
+    <div class="sticker-heading engraved">Install</div>
+    <div class="content">
+      <p class="scroll typewriter">GClass ships as the npm package gclass-anims. GSAP is a regular dependency and is installed automatically - nothing is bundled or redistributed. Knockout is a peer of this page, not a dependency of the library.</p>
+      <div class="mt-4 scroll spawn-down">
+        <pre class="group relative"><code>npm install gclass-anims knockout</code><button type="button" data-copy class="absolute right-2 top-2 rounded border border-line bg-panel px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:text-brand" aria-label="Copy code">Copy</button></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="sticker scroll spawn-down" id="quick-start">
+    <div class="sticker-heading engraved">Quick start</div>
+    <div class="content">
+      <p class="scroll typewriter">Import initAnimations once your DOM is ready. From then on, everything is class-driven: add a utility class to an element and it animates - no per-element JS, no config files.</p>
+
+      <h2>One call, after applyBindings</h2>
+      <div class="mt-4 scroll spawn-down">
+        <pre class="group relative"><code>// main.js
+import ko from 'knockout'
+import { initAnimations } from 'gclass-anims'
+
+ko.applyBindings(viewModel, document.getElementById('wrapper'))
+
+initAnimations()</code><button type="button" data-copy class="absolute right-2 top-2 rounded border border-line bg-panel px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:text-brand" aria-label="Copy code">Copy</button></pre>
+      </div>
+
+      <h2>Live - a foreach binding over an observableArray</h2>
+      <p class="scroll typewriter">
+        Nothing re-initialises after this point. The button pushes onto the
+        <code>observableArray</code>, the <code>foreach</code> binding inserts
+        real nodes, and each one plays its entrance because the engine is watching
+        the DOM for insertions.
+      </p>
+
+      <!-- The Knockout live demo: a real observableArray, a real foreach
+           binding, and no JS touching the rows directly. -->
+      <div class="live-example mt-5">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.8em;">
+          <button type="button" data-bind="click: addRow" class="click-hover amount-2" style="padding: 0.3em 1em; background-color: #A71500; color: #fff; font-weight: bold; border: none; border-radius: 0.5em; cursor: pointer; font-family: arial, sans-serif;">Add a row</button>
+          <button type="button" data-bind="click: resetRows" class="click-hover amount-2" style="padding: 0.3em 1em; background-color: #fff; color: #A71500; font-weight: bold; border: 1px solid #A71500; border-radius: 0.5em; cursor: pointer; font-family: arial, sans-serif;">Reset</button>
+          <span data-bind="text: rows().length + ' rows'" style="font-family: Consolas, Monaco, monospace; font-size: 12px; color: #666;"></span>
+        </div>
+
+        <div style="display: grid; gap: 0.5em; margin-top: 1em;">
+          <!-- data-bind="foreach" inserts and removes real elements, which is
+               the case the engine's MutationObserver exists to cover. -->
+          <div data-bind="foreach: rows" class="appear spawn-up time-1" style="padding: 0.7em 1em; background-color: #fff; border: 1px solid #ccc; border-radius: 0.5em; font-family: Consolas, Monaco, monospace; font-size: 13px;">
+            row <span data-bind="text: id"></span> &mdash; inserted by a Knockout foreach binding
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-5 scroll spawn-down">
+        <pre class="group relative"><code>&lt;!-- markup --&gt;
+&lt;button data-bind="click: addRow"&gt;Add a row&lt;/button&gt;
+&lt;span data-bind="text: rows().length + ' rows'"&gt;&lt;/span&gt;
+
+&lt;div data-bind="foreach: rows"&gt;
+  row &lt;span data-bind="text: id"&gt;&lt;/span&gt;
+&lt;/div&gt;
+
+// view model
+const viewModel = {
+  rows: ko.observableArray([]),
+  addRow() { this.rows.push({ id: this.rows().length + 1 }) },
+}</code><button type="button" data-copy class="absolute right-2 top-2 rounded border border-line bg-panel px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:text-brand" aria-label="Copy code">Copy</button></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="sticker scroll spawn-down" id="anatomy">
+    <div class="sticker-heading engraved">Class anatomy</div>
+    <div class="content">
+      <p class="scroll typewriter-split letter">Class anatomy: <strong>behaviour</strong> (<code>.spawn-up</code>) + <strong>trigger</strong> (<code>.scroll</code>, <code>.appear</code>) + <strong>tunables</strong> (<code>.time-1</code>, <code>.ease-back</code>, <code>.priority-2</code>). Combine freely - order in class does not matter.</p>
+      <div class="mt-4 scroll spawn-down">
+        <pre class="group relative"><code>&lt;!-- behaviour + trigger + tunables --&gt;
+&lt;div class="appear scroll spawn-up"&gt;…&lt;/div&gt;
+&lt;div class="appear scroll order ease-expo time-1 priority-2"&gt;…&lt;/div&gt;
+&lt;div class="float"&gt;loops forever&lt;/div&gt;
+&lt;button class="magnet click-expand"&gt;magnet + click&lt;/button&gt;</code><button type="button" data-copy class="absolute right-2 top-2 rounded border border-line bg-panel px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:text-brand" aria-label="Copy code">Copy</button></pre>
+      </div>
+      <table class="mt-6">
+        <thead>
+          <tr><th>Piece</th><th>Classes</th></tr>
+        </thead>
+        <tbody>
+          <tr class="scroll spawn-down order priority-2"><td><strong>Behaviour</strong></td><td><code>spawn-up</code>, <code>float</code>, <code>marquee</code>, <code>magnet</code></td></tr>
+          <tr class="scroll spawn-down order priority-3"><td><strong>Trigger</strong></td><td><code>appear</code>, <code>scroll</code>, <code>preserve</code></td></tr>
+          <tr class="scroll spawn-down order priority-4"><td><strong>Tunables</strong></td><td><code>order</code>, <code>ease-expo</code>, <code>time-1</code>, <code>priority-2</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="sticker scroll spawn-down" id="notes">
+    <div class="sticker-heading engraved">Notes</div>
+    <div class="content">
+      <ul>
+        <li class="scroll spawn-down order priority-3" style="margin-bottom: 0.8em;">
+          <strong>No Knockout plugin needed.</strong> The engine reads the
+          <code>class</code> attribute and never looks at
+          <code>data-bind</code>. The two are orthogonal - a row can be
+          <code>foreach</code>-bound and <code>.appear</code>-classed at the same
+          time.
+        </li>
+        <li class="scroll spawn-down order priority-3" style="margin-bottom: 0.8em;">
+          <strong>Bindings that update in place are fine.</strong>
+          <code>text</code> and <code>attr</code> rewrite an existing node, which
+          the engine has no interest in. Only <code>foreach</code>,
+          <code>if</code> and <code>template</code> add or remove elements, and
+          those are covered.
+        </li>
+        <li class="scroll spawn-down order priority-3" style="margin-bottom: 0.8em;">
+          <strong>GSAP stays external.</strong> ESM is
+          <code>dist/gclass.esm.js</code> and CJS is <code>dist/gclass.cjs</code>
+          - GSAP is external, not bundled, and the build is tree-shakable with
+          <code>sideEffects: false</code>.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <footer id="page-footer">
+    <p style="color: #FED; font-size: 13px;">
+      Not affiliated with or endorsed by the Knockout team. Colours and type
+      sampled from
+      <a style="color: #FED;" href="https://knockoutjs.com/">https://knockoutjs.com/</a>,
+      including its Tripoli base stylesheet and its <code>.sticker</code> card.
+      Running gclass-anims 1.0.0-beta.24 from npm with Knockout
+      <span data-bind="text: version"></span>.
+    </p>
+  </footer>
+</div>
+
+<script type="module" src="/src/main.js"></script>
+  </body>
+</html>
