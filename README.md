@@ -122,7 +122,7 @@ Output:
 jquery      pass
 react       pass
 ...
-31/32 environments passed
+32/32 environments passed
 ```
 
 ## CI
