@@ -120,7 +120,6 @@ export default function Page() {
       </header>
 
       <main className="mx-auto flex max-w-4xl flex-col px-6 pb-24">
-        {/* hero — the pitch: what if this were just part of Next.js */}
         <section className="relative w-full">
           <div className="relative mx-auto flex w-full flex-col items-center py-16">
             

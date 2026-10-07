@@ -1,9 +1,20 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>gclass-anims — Vue</title>
+    <meta name="color-scheme" content="dark light" />
+    <title>gclass-anims — Vue.js</title>
+    <script>
+      // Applied before first paint so the nav switch never flashes the wrong
+      // theme. Dark is the default; anything else is the reader's saved choice.
+      // Kept inline and tiny on purpose — it has to run before the module graph.
+      try {
+        if (localStorage.getItem("gclass-vue-theme") === "light") {
+          document.documentElement.classList.remove("dark");
+        }
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="app"></div>

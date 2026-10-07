@@ -1,44 +1,905 @@
-@import "tailwindcss";
-
 /* ─────────────────────────────────────────────────────────────────────────────
-   Design language copied from https://remix.run/
+   remix.run's own stylesheet, transcribed.
 
-   Every colour below is that site's own token, not an approximation.
+   Not a sampling — these are the literal declarations from that site's
+   `global.*.css`, `home.*.css` and `md.*.css` (fetched from remix.run), so the
+   brand cycle, the #000 page and the JetBrains Mono body are the originals.
+   The component classes below are the layout rules those three sheets carry.
    ───────────────────────────────────────────────────────────────────────────── */
+
+@import "tailwindcss";
 
 @theme {
   --color-brand: #2dacf9;
   --color-branddark: #1458e1;
   --color-accent: #7ce95a;
-  --color-warn: #ac1fa3;
-  --color-ok: #ffdf5f;
+  --color-warn: #ffdf5f;
+  --color-pink: #fc62a7;
 
-  --color-page: #121212;
-  --color-panel: #1c1c1c;
-  --color-panel2: #262626;
-  --color-ink: #f7f7f7;
+  --color-page: #000;
+  --color-panel: #0b0f16;
+  --color-panel2: #12161d;
+  --color-ink: #dee2e6;
   --color-muted: #a4a4a4;
   --color-line: #383838;
-  --color-code: #1c1c1c;
-  --color-codeink: #8ecdff;
+  --color-code: #0b0f16;
 
-  --font-display: Inter, -apple-system, ui-sans-serif, system-ui, sans-serif;
-  --font-body: Inter, -apple-system, ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-display: Inter, "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
 }
 
-html {
-  scroll-behavior: smooth;
+/* The brand cycle. remix.run animates a single custom property through five
+   brand colours over 10s and reads it anywhere it needs an accent; the paused
+   state on :root is the initial #2dacf9. */
+@property --brand-cycle {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #2dacf9;
+}
+
+@keyframes brand-cycle {
+  0% {
+    --brand-cycle: #2dacf9;
+  }
+  20% {
+    --brand-cycle: #7ce95a;
+  }
+  40% {
+    --brand-cycle: #ffdf5f;
+  }
+  60% {
+    --brand-cycle: #fa73da;
+  }
+  80% {
+    --brand-cycle: #ff3c32;
+  }
+  to {
+    --brand-cycle: #2dacf9;
+  }
+}
+
+:root {
+  --lightningcss-light: ;
+  --lightningcss-dark: initial;
+  color-scheme: dark;
+  scrollbar-width: thin;
+  scrollbar-color: gray transparent;
+  animation: 10s linear infinite paused brand-cycle;
+
+  /* Layout tokens the reference's own sheets carry. */
+  --rx-nav-h: 24px;
+  --rx-gutter: 24px;
+}
+
+html,
+body {
+  color: #dee2e6;
+  background: #000;
+  min-height: 100%;
+  margin: 0;
 }
 
 body {
-  font-family: var(--font-body);
-  background: var(--color-page);
-  color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--font-body);
+  overflow-x: hidden;
 }
 
 ::selection {
-  background: var(--color-accent);
-  color: var(--color-page);
+  color: #000;
+  background: var(--brand-cycle);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --brand-cycle: #2dacf9;
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── page shell ─────────────────────────────────────────────────────────── */
+
+.rx-page {
+  position: relative;
+  min-height: 100vh;
+  isolation: isolate;
+}
+
+/* The GL layer. Fixed, full-bleed, and behind everything: the reference draws
+   its landscape as a full-viewport background rather than an element in flow.
+   The radial gradients are the fallback while the scene module loads. */
+.rx-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 20% 90%, rgba(60, 255, 60, 0.1), transparent 60%),
+    radial-gradient(90% 60% at 75% 80%, rgba(255, 60, 40, 0.08), transparent 60%),
+    #000;
+}
+
+.rx-bg__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── nav ────────────────────────────────────────────────────────────────── */
+
+.rx-nav {
+  position: relative;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px var(--rx-gutter);
+}
+
+.rx-nav__brand {
+  color: var(--color-pink);
+  line-height: 0;
+}
+
+.rx-logo svg {
+  display: block;
+  width: 200px;
+  height: auto;
+}
+
+.rx-nav__links {
+  display: flex;
+  gap: 8px;
+}
+
+.rx-nav__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: #1e2226;
+  transition: background-color 0.2s;
+}
+
+.rx-nav__pill:hover {
+  background: #2a2f34;
+}
+
+.rx-nav__key {
+  color: #61a6da;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+/* The wordmark lockup. Set in type rather than drawn as paths: remix.run's mark
+   is a custom cut of a geometric grotesque, and hand-authored SVG data distorts
+   the moment the viewBox is rescaled. Italic + tight tracking reproduces the
+   read of the original, and `+ gclass` at a lighter colour sits after it. */
+.rx-logo {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.28em;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.rx-logo__plus {
+  font-style: normal;
+  font-weight: 400;
+  opacity: 0.55;
+}
+
+.rx-logo__gclass {
+  font-style: normal;
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+/* ── hero ───────────────────────────────────────────────────────────────── */
+
+.rx-scroll-hint {
+  position: relative;
+  z-index: 20;
+  margin: 0;
+  padding: 0 var(--rx-gutter);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.rx-hero {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px var(--rx-gutter) 120px;
+}
+
+/* The wordmark spans the page width above the headline, set as display type:
+   900 weight, italic, tight tracking, all caps — the reference's own treatment.
+   `clamp` keeps it from overflowing on narrow viewports without a breakpoint. */
+.rx-hero__wordmark {
+  width: 100%;
+  margin: 0 0 40px;
+  line-height: 0.85;
+}
+
+.rx-hero__mark {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(44px, 11.4vw, 218px);
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+  color: var(--color-pink);
+}
+
+.rx-hero__mark-plus {
+  display: inline-block;
+  margin: 0 0.06em;
+  font-style: normal;
+  font-weight: 400;
+  opacity: 0.6;
+}
+
+.rx-hero__mark-gclass {
+  font-style: normal;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.rx-hero__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(40px, 7vw, 88px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: #fff;
+  text-shadow: 0 0 40px rgba(140, 200, 255, 0.35);
+}
+
+.rx-hero__lede {
+  max-width: 640px;
+  margin: 28px 0 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #dee2e6;
+}
+
+.rx-hero__accent {
+  color: var(--color-brand);
+}
+
+/* ── command bar ────────────────────────────────────────────────────────── */
+
+.rx-cmd {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  width: min(720px, 100%);
+  margin-top: 40px;
+  border: 1px solid #1e2226;
+  border-radius: 10px;
+  background: #0b0f16;
+  overflow: visible;
+}
+
+.rx-cmd__runner {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  border-right: 1px solid #1e2226;
+  transition: background-color 0.2s;
+}
+
+.rx-cmd__runner:hover {
+  background: #12161d;
+}
+
+.rx-cmd__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #04070a;
+  background: var(--color-brand);
+  border-radius: 4px;
+}
+
+.rx-cmd__mark--pnpm {
+  background: #f9ad00;
+}
+.rx-cmd__mark--yarn {
+  background: #2dacf9;
+}
+.rx-cmd__mark--bun {
+  background: #fbf0df;
+}
+.rx-cmd__mark--deno {
+  background: #c8c8c8;
+}
+
+.rx-cmd__chevron {
+  width: 14px;
+  height: 14px;
+  color: var(--color-muted);
+}
+
+.rx-cmd__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 40;
+  min-width: 180px;
+  padding: 6px;
+  border: 1px solid #1e2226;
+  border-radius: 8px;
+  background: #0b0f16;
+  box-shadow: 0 18px 40px rgb(0 0 0 / 0.6);
+}
+
+.rx-cmd__option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.rx-cmd__option[data-highlighted="true"] {
+  background: #12161d;
+}
+
+.rx-cmd__check {
+  width: 16px;
+  height: 16px;
+  margin-left: auto;
+  color: var(--color-accent);
+}
+
+.rx-cmd__code {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--color-ink);
+}
+
+.rx-cmd__copy {
+  padding: 12px 16px;
+  border-left: 1px solid #1e2226;
+  color: var(--color-muted);
+  transition: color 0.2s;
+}
+
+.rx-cmd__copy:hover {
+  color: var(--color-ink);
+}
+
+/* ── feature rail ───────────────────────────────────────────────────────── */
+
+.rx-rail {
+  position: fixed;
+  left: var(--rx-gutter);
+  bottom: var(--rx-gutter);
+  z-index: 25;
+  /* --rx-progress is written every frame by FeatureRail; 0 is its server value
+     so the bar starts collapsed rather than at full height before hydration. */
+  --rx-progress: 0;
+  padding: 20px 24px;
+  background: rgb(4 8 12 / 0.72);
+  backdrop-filter: blur(6px);
+}
+
+.rx-rail ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Rows are laid out with the bar's own width reserved, so the progress bar can
+   grow independently without shifting the labels. */
+.rx-rail li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 0 0 20px;
+  margin-bottom: 14px;
+}
+
+.rx-rail li:last-child {
+  margin-bottom: 0;
+}
+
+/* Hollow dot for inactive rows. */
+.rx-rail li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #dee2e6;
+}
+
+/* The active row's dot becomes the track the progress bar fills. */
+.rx-rail li.is-active::before {
+  width: 8px;
+  border-radius: 6px;
+  background: rgb(252 98 167 / 0.22);
+  box-shadow: 0 0 12px rgb(252 98 167 / 0.35);
+}
+
+/* The progress bar: grows downward with the page. Spans the rail's list and is
+   scaled on Y from the top edge, so it reads as filling rather than stretching
+   from the centre. `transform` rather than `height` because it is composited
+   and does not reflow anything around it. */
+.rx-rail__bar {
+  position: absolute;
+  left: 24px;
+  top: 20px;
+  width: 8px;
+  height: calc(100% - 40px);
+  border-radius: 6px;
+  background: rgb(252 98 167 / 0.22);
+  transform-origin: top center;
+  transform: scaleY(var(--rx-progress));
+  box-shadow: 0 0 16px rgb(252 98 167 / 0.55);
+  pointer-events: none;
+}
+
+.rx-rail__label {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.rx-rail li.is-active .rx-rail__label {
+  color: #fff;
+  font-weight: 700;
+}
+
+.rx-rail__value {
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: var(--color-brand);
+}
+
+/* ── sections ───────────────────────────────────────────────────────────── */
+
+/* Every section below the hero shares one column and sits above the fixed
+   track. The hero is deliberately not in this flow — it is centred in the
+   viewport the way the reference's is. */
+.rx-section {
+  position: relative;
+  z-index: 20;
+  width: min(1040px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 120px 0;
+}
+
+.rx-section--sprue {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 48px;
+  min-height: 620px;
+}
+
+/* The sprue canvas fills its grid cell and bleeds behind the copy, which is how
+   the reference's object sits half behind the panel. */
+.rx-sprue {
+  min-width: 0;
+}
+
+.rx-sprue__canvas {
+  display: block;
+  width: 100%;
+  height: 620px;
+}
+
+.rx-section__title {
+  margin: 0 0 16px;
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3.4vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.rx-section__lede {
+  max-width: 46ch;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--color-ink);
+}
+
+.rx-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.rx-chip {
+  padding: 5px 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-ink);
+  border: 1px solid #26303d;
+  border-radius: 999px;
+  background: rgb(6 9 14 / 0.6);
+}
+
+.rx-section--docs {
+  display: grid;
+  gap: 72px;
+}
+
+.rx-card {
+  border: 1px solid #131a24;
+  border-radius: 14px;
+  background: rgb(6 9 14 / 0.92);
+  overflow: hidden;
+}
+
+.rx-card__tabs {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  border-bottom: 1px solid #131a24;
+}
+
+.rx-card__tab {
+  position: relative;
+  padding: 18px 12px;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  transition: color 0.2s;
+}
+
+.rx-card__tab:hover {
+  color: var(--color-ink);
+}
+
+.rx-card__tab[data-state="active"] {
+  color: #fff;
+  background: #12161d;
+}
+
+/* The active tab's underline — the only place the reference uses flat pink on
+   this card. */
+.rx-card__tab[data-state="active"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--color-pink);
+}
+
+.rx-card__panel {
+  padding: 28px 40px 40px;
+}
+
+.rx-card__examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.rx-pill {
+  padding: 7px 18px;
+  font-size: 13px;
+  color: var(--color-ink);
+  border: 1px solid #26303d;
+  border-radius: 999px;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.rx-pill:hover {
+  border-color: var(--color-brand);
+}
+
+.rx-pill[data-state="active"] {
+  color: #fff;
+  background: rgb(252 98 167 / 0.14);
+  border-color: var(--color-pink);
+}
+
+.rx-card__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.rx-card__lede {
+  max-width: 62ch;
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--color-ink);
+}
+
+/* Two columns: the prose note on the left, the snippet on the right. */
+.rx-card__body {
+  display: grid;
+  gap: 32px;
+  margin-top: 32px;
+}
+
+.rx-example {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.rx-example__prose {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.rx-example__prose strong {
+  font-family: var(--font-display);
+  font-size: 17px;
+  color: #fff;
+}
+
+.rx-example__prose span {
+  color: var(--color-ink);
+  line-height: 1.7;
+}
+
+.rx-code,
+.rx-snippet {
+  position: relative;
+  border: 1px solid #131a24;
+  border-radius: 12px;
+  background: #05080c;
+  overflow: hidden;
+}
+
+.rx-code__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #131a24;
+  background: #0b0f16;
+}
+
+.rx-code__dots {
+  display: flex;
+  gap: 6px;
+}
+
+.rx-code__dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #26303d;
+}
+
+.rx-code__file {
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.rx-code pre,
+.rx-snippet pre {
+  margin: 0;
+  padding: 20px 20px 24px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.75;
+  color: #dee2e6;
+}
+
+.tok-kw {
+  color: #2dacf9;
+}
+.tok-str {
+  color: #7ce95a;
+}
+.tok-com {
+  color: #6b7684;
+}
+.tok-num {
+  color: #ffdf5f;
+}
+
+.rx-code__copy,
+.rx-snippet__copy {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  padding: 5px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-muted);
+  border: 1px solid #26303d;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.rx-code:hover .rx-code__copy,
+.rx-snippet:hover .rx-snippet__copy {
+  opacity: 1;
+}
+
+/* ── documentation below the card ───────────────────────────────────────── */
+
+.rx-doc {
+  padding: 64px 0 0;
+}
+
+.rx-doc h2 {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.rx-doc p {
+  max-width: 68ch;
+  margin: 0 0 20px;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--color-ink);
+}
+
+.rx-doc strong {
+  color: #fff;
+}
+
+.rx-snippet {
+  margin: 20px 0 0;
+}
+
+.rx-notes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.rx-notes li {
+  padding: 18px 20px;
+  font-size: 14px;
+  line-height: 1.7;
+  border: 1px solid #131a24;
+  border-radius: 10px;
+  background: rgb(6 9 14 / 0.7);
+  color: var(--color-ink);
+}
+
+.rx-footer {
+  position: relative;
+  z-index: 20;
+  width: min(1040px, calc(100% - 48px));
+  margin: 64px auto 0;
+  padding-top: 24px;
+  font-size: 12px;
+  color: var(--color-muted);
+  border-top: 1px solid #131a24;
+}
+
+.rx-footer a {
+  color: var(--color-brand);
+}
+
+/* ── narrower viewports ─────────────────────────────────────────────────── */
+
+@media (width <= 900px) {
+  .rx-example,
+  .rx-card__body,
+  .rx-section--sprue {
+    grid-template-columns: 1fr;
+  }
+
+  .rx-sprue__canvas {
+    height: 380px;
+  }
+
+  .rx-section {
+    padding: 80px 0;
+  }
+
+  .rx-card__panel {
+    padding: 24px;
+  }
+
+  .rx-card__tabs {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .rx-nav__links {
+    display: none;
+  }
+
+
+}
+
+@media (width <= 640px) {
+  .rx-logo svg {
+    width: 140px;
+  }
+
+  .rx-rail {
+    position: static;
+    margin: 0 var(--rx-gutter) 32px;
+  }
+
+  .rx-docs {
+    margin-top: 160px;
+  }
 }

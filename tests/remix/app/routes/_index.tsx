@@ -1,55 +1,203 @@
+import { CommandBar } from "../components/CommandBar";
+import { FeatureRail } from "../components/FeatureRail";
+import { LazySprueScene, LazyTrackScene, Scene } from "../components/Scenes";
+import { SiteNav } from "../components/SiteNav";
+import { StackCard } from "../components/StackCard";
+import { useCopyCommand } from "../hooks/useCopyCommand";
+
+export const meta = () => [
+  { title: "Remix + GClass — The Fully-Stacked Web Framework" },
+  { name: "description", content: "The fully-stacked web framework, running gclass-anims 1.0.0-beta.24" },
+];
+
 export default function Index() {
+  const copy = useCopyCommand();
+
   return (
-    <>
-<div class="gc-bar scroll-progress" />
+    <div className="rx-page">
+      <SiteNav />
 
-        <header className="sticky top-0 z-40 border-b border-line bg-page/90 backdrop-blur">
-    <div className="mx-auto flex max-w-4xl items-center gap-6 px-6 py-4">
-      <span className="font-display text-lg font-bold"><span className="text-brand">Remix</span> + gclass-anims</span>
-      <nav className="ml-auto hidden gap-5 text-sm font-medium text-muted sm:flex"><a className="hover:text-brand" href="#install">Install</a><a className="hover:text-brand" href="#quick-start">Quick start</a><a className="hover:text-brand" href="#anatomy">Class anatomy</a><a className="hover:text-brand" href="#notes">Notes</a></nav>
+      {/* The racing track is fixed and full-bleed; every other layer sits above
+          it, which is how the reference gets the landscape to read as behind the
+          content rather than inside a panel. */}
+      <div className="rx-bg" aria-hidden="true">
+        <LazyTrackScene className="rx-bg__canvas" />
+      </div>
+
+      <p className="rx-scroll-hint">Scroll or press ↓ and ↑</p>
+
+      <main>
+        {/* ── hero ─────────────────────────────────────────────────────────── */}
+        <section className="rx-hero">
+          {/* Solid type, matching the reference: the landing wordmark is ordinary
+              pink display type. The particle work on this page is the track. */}
+          <h1 className="rx-hero__wordmark">
+            <span className="rx-hero__mark">
+              <span className="rx-hero__mark-remix">REMIX</span>
+              <span className="rx-hero__mark-plus">+</span>
+              <span className="rx-hero__mark-gclass">GCLASS</span>
+            </span>
+          </h1>
+
+          <h2 className="rx-hero__title">
+            The fully-stacked
+            <br />
+            web framework
+          </h2>
+
+          <p className="rx-hero__lede">
+            Remix brings together a server runtime, routing, authentication, sessions, database integrations, a
+            UI framework, asset compilation, dynamic styling, and accessible components in a cohesive{" "}
+            <span className="rx-hero__accent">stack built on Web APIs — with gclass-anims wired into the root.</span>
+          </p>
+
+          <CommandBar />
+        </section>
+
+        {/* ── the stack card ───────────────────────────────────────────────── */}
+        <section className="rx-section" id="fully-stacked">
+          <StackCard />
+        </section>
+
+        {/* ── the runner kit ───────────────────────────────────────────────── */}
+        <section className="rx-section rx-section--sprue" id="runner-kit">
+          <Scene className="rx-sprue">
+            <LazySprueScene className="rx-sprue__canvas" />
+          </Scene>
+          <div className="rx-section__copy">
+            <h2 className="rx-section__title">One runner, thirty-two frames</h2>
+            <p className="rx-section__lede">
+              The same engine, cut into a different chassis on every pass — Vue, React, Svelte, Astro, Next, Remix,
+              and two dozen more. One <code>initAnimations()</code> call per environment, identical class names
+              everywhere.
+            </p>
+            <div className="rx-chips">
+              {["vue", "react", "svelte", "astro", "next", "nuxt", "qwik", "solid", "lit", "angular", "ember", "remix"].map(
+                (env) => (
+                  <span key={env} className="rx-chip">
+                    {env}
+                  </span>
+                ),
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* ── documentation ────────────────────────────────────────────────── */}
+        <section className="rx-section rx-section--docs" id="docs">
+          <div className="rx-doc">
+            <h2>Install</h2>
+            <p>
+              GClass ships as the npm package gclass-anims. GSAP is a regular dependency and is installed
+              automatically — nothing is bundled or redistributed.
+            </p>
+            <Snippet code={"npm install gclass-anims"} onCopy={copy} />
+          </div>
+
+          <div className="rx-doc" id="quick-start">
+            <h2>Quick start</h2>
+            <p>
+              Import initAnimations once your DOM is ready. From then on, everything is class-driven: add a
+              utility class to an element and it animates — no per-element JS, no config files.
+            </p>
+            <Snippet
+              code={`import { Outlet, useLocation } from '@remix-run/react'
+import { useEffect } from 'react'
+import { initAnimations } from 'gclass-anims'
+
+export default function App() {
+  const location = useLocation()
+
+  // Remix swaps the DOM on client navigation without a reload
+  useEffect(() => {
+    initAnimations()
+  }, [location.pathname])
+
+  return <Outlet />
+}`}
+              onCopy={copy}
+            />
+          </div>
+
+          <div className="rx-doc" id="anatomy">
+            <h2>Class anatomy</h2>
+            <p>
+              Three parts, any order: <strong>behaviour</strong> (.spawn-up), <strong>trigger</strong> (.scroll,
+              .appear) and <strong>tunables</strong> (.time-1, .ease-back, .priority-2). Order in class does not
+              matter.
+            </p>
+            <Snippet
+              code={`// behaviour + trigger + tunables
+<div class="appear scroll spawn-up">…</div>
+<div class="appear scroll order ease-expo time-1 priority-2">…</div>
+<div class="float">loops forever</div>
+<button class="magnet click-expand">magnet + click</button>`}
+              onCopy={copy}
+            />
+          </div>
+
+          <div className="rx-doc" id="notes">
+            <h2>Notes</h2>
+            <ul className="rx-notes">
+              <li>
+                <strong>Dual ESM + CJS.</strong> The package ships dist/gclass.esm.js and dist/gclass.cjs via
+                vite.lib.config.js — GSAP is external, not bundled. The build is tree-shakable with sideEffects:
+                false.
+              </li>
+              <li>
+                <strong>GSAP stays external.</strong> gsap ^3.15 installs automatically as a dependency. Nothing
+                is bundled or redistributed here either.
+              </li>
+              <li>
+                <strong>WebGL is deferred.</strong> Both scenes load behind a lazy boundary and dispose their GL
+                resources on unmount, so client navigation does not leak contexts.
+              </li>
+              <li>
+                <strong>Reduced motion.</strong> Nothing animates once the OS preference is set.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </main>
+
+      <FeatureRail />
+
+      <footer className="rx-footer">
+        <p>
+          Not affiliated with or endorsed by Remix. Layout, colours and type copied from{" "}
+          <a href="https://remix.run/" target="_blank" rel="noreferrer">
+            https://remix.run/
+          </a>
+          . Racing track and runner kit built with three.js.
+        </p>
+      </footer>
     </div>
-  </header>
+  );
+}
 
-  <main className="mx-auto max-w-4xl px-6 pb-24">
-    <section className="py-16">
-      <p className="font-mono text-sm text-brand">https://remix.run/</p>
-      <h1 className="mt-3 font-display text-5xl font-bold leading-[1.1] tracking-tight sm:text-6xl">
-        gclass-anims <span className="text-accent">for Remix</span>
-      </h1>
-      <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">Remix client navigation does not reload. Re-init on useLocation().pathname change — same as the Next App Router usePathname pattern, but through the Vite plugin (@remix-run/dev vite:dev), not Turbopack.</p>
-      <a href="#install" className="mt-8 inline-block rounded-full bg-brand px-6 py-3 text-sm font-bold text-page transition-opacity hover:opacity-90">Get started</a>
-    </section>
-
-    <section id="install" className="scroll-mt-24 py-10">
-      <h2 className="font-display text-3xl font-bold tracking-tight">Install</h2>
-      <p className="mt-3 text-muted">GClass ships as the npm package gclass-anims. GSAP is a regular dependency and is installed automatically — nothing is bundled or redistributed.</p>
-      <div className="mt-5"><pre className="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-codeink"><code>{"npm install gclass-anims"}</code><button type="button" data-copy className="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
-    </section>
-
-    <section id="quick-start" className="scroll-mt-24 py-10">
-      <h2 className="font-display text-3xl font-bold tracking-tight">Quick start</h2>
-      <p className="mt-3 text-muted">Import initAnimations once your DOM is ready. From then on, everything is class-driven: add a utility class to an element and it animates — no per-element JS, no config files.</p>
-      <h3 className="mt-7 font-display text-lg font-bold">Usage — Remix root</h3>
-      <div className="mt-4"><pre className="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-codeink"><code>{"import { Outlet, useLocation } from '@remix-run/react'\nimport { useEffect } from 'react'\nimport { initAnimations } from 'gclass-anims'\n\nexport default function App() {\n  const location = useLocation()\n\n  useEffect(() => {\n    initAnimations()\n  }, [location.pathname])\n\n  return <Outlet />\n}"}</code><button type="button" data-copy className="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
-      <p className="mt-4 border-l-2 border-brand pl-4 text-sm text-muted">Dynamic content. The engine watches the DOM for .appear elements and plays their entrance each time they mount, so markup injected later keeps working.</p>
-    </section>
-
-    <section id="anatomy" className="scroll-mt-24 py-10">
-      <h2 className="font-display text-3xl font-bold tracking-tight">Class anatomy</h2>
-      <p className="mt-3 text-muted">Class anatomy: <strong className="text-ink">behaviour</strong> (.spawn-up) + <strong className="text-ink">trigger</strong> (.scroll, .appear) + <strong className="text-ink">tunables</strong> (.time-1, .ease-back, .priority-2). Combine freely — order in class does not matter.</p>
-      <div className="mt-5"><pre className="group relative overflow-x-auto rounded-lg border border-line bg-code p-4 pr-16 font-mono text-[13px] leading-relaxed text-codeink"><code>{"// behaviour + trigger + tunables\n<div class=\"appear scroll spawn-up\">\u2026</div>\n<div class=\"appear scroll order ease-expo time-1 priority-2\">\u2026</div>\n<div class=\"float\">loops forever</div>\n<button class=\"magnet click-expand\">magnet + click</button>"}</code><button type="button" data-copy className="absolute right-2 top-2 rounded border border-line bg-page px-2 py-1 font-sans text-[11px] font-medium text-muted transition-colors hover:border-brand hover:text-brand" aria-label="Copy code">Copy</button></pre></div>
-      <div className="mt-6 grid gap-4 sm:grid-cols-3"><div className="rounded-lg border border-line bg-panel p-4"><h4 className="font-display font-bold text-brand">Behaviour</h4><p className="mt-1 font-mono text-[12px] text-muted">spawn-up, float, marquee, magnet</p></div><div className="rounded-lg border border-line bg-panel p-4"><h4 className="font-display font-bold text-brand">Trigger</h4><p className="mt-1 font-mono text-[12px] text-muted">appear, scroll, preserve</p></div><div className="rounded-lg border border-line bg-panel p-4"><h4 className="font-display font-bold text-brand">Tunables</h4><p className="mt-1 font-mono text-[12px] text-muted">order, ease-expo, time-1, priority-2</p></div></div>
-    </section>
-
-    <section id="notes" className="scroll-mt-24 py-10">
-      <h2 className="font-display text-3xl font-bold tracking-tight">Notes</h2>
-      <ul className="mt-6 space-y-4"><li className="rounded-lg border border-line bg-panel p-5"><strong className="text-ink">Dual ESM + CJS.</strong> The package ships dual ESM + CJS and is framework-agnostic. It never touches your build config: every feature is driven by class names you put on markup.</li><li className="rounded-lg border border-line bg-panel p-5"><strong className="text-ink">GSAP stays external.</strong> ESM is dist/gclass.esm.js and CJS is dist/gclass.cjs via vite.lib.config.js — GSAP is external, not bundled. The build is tree-shakable with sideEffects: false and prepublishOnly: build.</li><li className="rounded-lg border border-line bg-panel p-5"><strong className="text-ink">Requirements.</strong> gsap ^3.15 is installed automatically as a dependency (package.json:52 gsap ^3.15.0). Node &gt;=16 is required for build (package.json:56 engines). A modern browser with ES module support is expected — CJS via require() is also available.</li></ul>
-    </section>
-
-    <footer className="border-t border-line pt-8 text-sm text-muted">
-      <p>Colours and type sampled from <a className="text-brand hover:underline" href="https://remix.run/">https://remix.run/</a>. This page is Remix's own build output, running gclass-anims 1.0.0-beta.24 from npm.</p>
-    </footer>
-  </main>
-    </>
+function Snippet({ code, onCopy }: { code: string; onCopy: (text: string, cb: (v: boolean) => void) => void }) {
+  return (
+    <div className="rx-snippet" data-copy-block>
+      <pre>
+        <code>{code}</code>
+      </pre>
+      <button
+        type="button"
+        data-copy
+        className="rx-snippet__copy"
+        aria-label="Copy code"
+        onClick={(e) =>
+          onCopy(code, () => {
+            const el = e.currentTarget;
+            el.textContent = "Copied";
+            setTimeout(() => {
+              el.textContent = "Copy";
+            }, 1400);
+          })
+        }
+      >
+        Copy
+      </button>
+    </div>
   );
 }
