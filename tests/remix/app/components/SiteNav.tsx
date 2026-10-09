@@ -1,38 +1,32 @@
 import { Link } from "@remix-run/react";
 
-/**
- * The `path` links go through Remix's <Link> so navigation is client-side and
- * the root's `useEffect` re-runs initAnimations() without a reload. `href`
- * links are plain anchors, used for the external destinations.
- */
-const LINKS = [
-  ["G", "Guides", null, "#fully-stacked"],
-  ["A", "Api", null, "#api"],
-  ["H", "Github", null, "https://github.com/Saturn-sepehr/GClass"],
-  ["B", "Blog", null, "#blog"],
-  ["N", "Newsletter", null, "#newsletter"],
-  ["J", "Jam", null, "#jam"],
-  ["S", "Store", null, "#store"],
-] as const;
+import logo from "../logo.svg?url";
 
 /**
- * The fixed top bar: wordmark on the left, keyboard-shortcut pills on the right.
+ * The fixed top bar: the wordmark on the left, keyboard-shortcut pills on the
+ * right.
  *
- * The wordmark is set as type rather than drawn as paths. remix.run's own mark is
- * a custom cut of a geometric grotesque, and reproducing it as hand-authored SVG
- * path data produces shapes that are not the mark — the letters distort the
- * moment the viewBox is rescaled. Type stays correct at every size, and the
- * reference's landing hero is set in type too.
+ * There is one logo, not two. It starts centred over the hero and travels up
+ * into this bar once the hero has been scrolled past, so `state` decides where
+ * it sits: the same element is styled into the hero, then into the header.
+ *
+ * The `slot` span is the mechanism, not decoration. gclass-anims' `.flip` morph
+ * is driven by a MutationObserver watching `childList` — *not* attributes — and
+ * it only re-checks `.flip` elements inside the container whose children
+ * changed. Adding or removing this span is that change, and it is why the logo
+ * glides between the two positions instead of jumping: the node persists, so
+ * gclass still holds the bounds it captured back in the hero.
+ *
+ * Drop the span and the logo would still move, just without the transition.
+ * Put `flip` on the span instead of the img and there would be nothing to morph,
+ * since the img is what moves.
  */
-export function SiteNav({ wordmark = "REMIX + GCLASS" }: { wordmark?: string }) {
+export function SiteNav({ state = "header", wordmark = "REMIX + GCLASS" }: { state?: "hero" | "header"; wordmark?: string }) {
   return (
-    <header className="rx-nav">
+    <header className="rx-nav" data-state={state}>
       <Link to="/" className="rx-nav__brand" aria-label={`${wordmark} home`}>
-        <span className="rx-logo">
-          <span className="rx-logo__remix">REMIX</span>
-          <span className="rx-logo__plus">+</span>
-          <span className="rx-logo__gclass">GCLASS</span>
-        </span>
+        {state === "header" ? <span className="rx-nav__brand-slot" aria-hidden="true" /> : null}
+        <img className="rx-logo__img flip ease-expo" src={logo} alt="" draggable={false} />
       </Link>
 
       <nav className="rx-nav__links" aria-label="Main">
@@ -64,3 +58,18 @@ export function SiteNav({ wordmark = "REMIX + GCLASS" }: { wordmark?: string }) 
     </header>
   );
 }
+
+/**
+ * The `path` links go through Remix's <Link> so navigation is client-side and
+ * the root's `useEffect` re-runs initAnimations  () without a reload. `href`
+ * links are plain anchors, used for the external destinations.
+ */
+const LINKS = [
+  ["G", "Back to docs", null, "https://saturn-sepehr.github.io/GClass/documentation/quick-start/"],
+  ["A", "Api", null, "#fully-stacked"],
+  ["I", "Install", null, "#install"],
+  ["Q", "Quick start", null, "#quick-start"],
+  ["C", "Class anatomy", null, "#anatomy"],
+  ["N", "Notes", null, "#notes"],
+
+] as const;

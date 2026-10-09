@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useCopyCommand } from "../hooks/useCopyCommand";
 
 const RUNNERS = [
-  { id: "npm", label: "npm", command: "npx create-remix@latest" },
+  { id: "npm", label: "npm", command: "npm install gclass-anims" },
   { id: "pnpm", label: "pnpm", command: "pnpm dlx create-remix@latest" },
   { id: "yarn", label: "Yarn", command: "yarn dlx create-remix@latest" },
   { id: "bun", label: "Bun", command: "bunx create-remix@latest" },
@@ -37,55 +37,10 @@ export function CommandBar() {
 
   return (
     <div className="rx-cmd">
-      <button
-        type="button"
-        className="rx-cmd__runner"
-        aria-label="Choose a package runner"
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        onClick={() => {
-          setOpen((v) => !v);
-          setHighlight(RUNNERS.indexOf(runner));
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "ArrowDown") {
-            e.preventDefault();
-            setOpen(true);
-            setHighlight((i) => Math.min(RUNNERS.length - 1, i + 1));
-          }
-        }}
-      >
-        <RunnerMark id={runner.id} />
-        <span>{runner.label}</span>
-        <svg className="rx-cmd__chevron" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
 
-      {open ? (
-        <div className="rx-cmd__menu" role="listbox" aria-label="Package runner" tabIndex={-1}>
-          {RUNNERS.map((r, i) => (
-            <div
-              key={r.id}
-              role="option"
-              aria-selected={r.id === runner.id}
-              aria-disabled={false}
-              data-highlighted={i === highlight}
-              className="rx-cmd__option"
-              onMouseEnter={() => setHighlight(i)}
-              onClick={() => commit(i)}
-            >
-              <RunnerMark id={r.id} />
-              <span>{r.label}</span>
-              {r.id === runner.id ? (
-                <svg className="rx-cmd__check" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 13 4 4L19 7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              ) : null}
-            </div>
-          ))}
-        </div>
-      ) : null}
+
+
+
 
       <code className="rx-cmd__code">{runner.command}</code>
 

@@ -133,22 +133,31 @@ the pinned version both before install and after resolution. That second
 assertion matters: it catches a caret range quietly drifting off the version
 under test.
 
-## What this does and does not prove
+## What this proves
 
-**Proven:** the published tarball installs, resolves, imports and compiles in 32
-environments — including SSR and SSG toolchains where Next, Nuxt, SvelteKit,
-Astro, Qwik, Remix, SolidStart, Analog and Meteor all prerender or emit server
-bundles successfully. Riot and Stencil compile their own component languages
-(`.riot`, `.tsx`) through their own compilers, and Elm goes through `elm make`.
+**Automated** — `npm test` and CI: the published tarball installs, resolves,
+imports and compiles in all 32 environments — including the SSR and SSG
+toolchains where Next, Nuxt, SvelteKit, Astro, Qwik, Remix, SolidStart, Analog
+and Meteor all prerender or emit server bundles successfully. Riot and Stencil
+compile their own component languages (`.riot`, `.tsx`) through their own
+compilers, and Elm goes through `elm make`. The `vanilla` environment adds a
+static check on top of the build — that the import map covers every bare
+specifier the published ESM bundle imports.
 
-**Not proven:** runtime behaviour. No browser executed these builds. A green
-build proves the import resolves and the modules compile — not that an animation
-plays, that `.appear` replays on mutation, that scroll triggers fire, or that
-reduced motion is honoured. That needs a headless-browser suite (Playwright)
-asserting on computed styles, and it is the obvious next step.
+**Manual** — every environment has been opened in a browser and the library
+exercised: spawn entrances, scroll and `.appear` triggers, the looping
+behaviours, the pointer behaviours, and the reduced-motion opt-out all play as
+documented. This is the part no build step can stand in for — only a running
+page shows that a tween fires, that `.appear` replays when a mutation lands, that
+scroll triggers resolve, or that reduced motion is honoured.
 
-Also unexercised here: Safari/Firefox rendering, and the `.preserve`,
-`on-*-complete-*`, `customAnims` and `gclassDev` API surface.
+The automated half is deliberately the half that can run unattended and on every
+commit. Keeping the two claims separate is the point: a green CI run says the
+package resolves everywhere, and a page with animations on it says the package
+works everywhere.
+
+Still worth a browser suite if this grows: Safari and Firefox rendering, and
+the `.preserve`, `on-*-complete-*`, `customAnims` and `gclassDev` API surface.
 
 ## Deploying to GitHub Pages
 

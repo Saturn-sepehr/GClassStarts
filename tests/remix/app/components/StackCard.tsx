@@ -33,312 +33,37 @@ type Category = {
  */
 const CATEGORIES: Category[] = [
   {
-    id: "server",
-    label: "Server",
-    title: "Build a complete server with Web APIs",
-    body: "Route standard Web Requests through typed middleware and Controllers, then return standard Responses for HTML, JSON, redirects, files, and streams.",
+    id: "init",
+    label: "Init",
+    title: "One call, and the class attribute does the rest",
+    body: "gclass-anims has no per-element wiring and no config file. Init it once and behaviour lives in the markup: add a utility class to an element and it animates. A MutationObserver watches the document, so anything rendered after the first call is picked up too.",
     examples: [
       {
-        id: "request",
-        label: "Request",
-        title: "Receive a standard Request",
-        body: "Your server adapter turns an incoming HTTP request into a Web Request, then hands it to the router. The Request remains the common language all the way through.",
-        file: "app.tsx",
-        code: `import { createRequestListener } from "remix/node-fetch-server"
-import { router } from "./app/router.ts"
-
-let server = http.createServer(
-  createRequestListener(router.fetch),
-)
-
-server.listen(3000)`,
-      },
-      {
-        id: "routes",
-        label: "Routes",
-        title: "Describe the whole tree once",
-        body: "Routes are configuration, not convention. Every URL, method and loader lives in one file that the server and the client both read from.",
-        file: "routes.ts",
-        code: `export const routes = {
-  "/": { index: () => import("./home.tsx") },
-  "/docs/:slug": { page: () => import("./doc.tsx") },
-} satisfies RouteConfig`,
-      },
-      {
-        id: "resources",
-        label: "Resources",
-        title: "Resources are just URLs",
-        body: "A route module is a resource. Fetching it over HTTP returns the same data the component would have loaded, so the two halves of the app cannot drift.",
-        file: "app/routes/api.projects.ts",
-        code: `export async function loader() {
-  const projects = await db.project.findMany()
-  return Response.json(projects)
-}`,
-      },
-      {
-        id: "controllers",
-        label: "Controllers",
-        title: "One handler per resource",
-        body: "Controllers hold the HTTP-shaped logic — parsing, validating, responding — and stay free of framework concerns.",
-        file: "controllers/project.ts",
-        code: `export async function update(request: Request) {
-  const form = await request.formData()
-  const project = await db.project.update({
-    where: { id: String(form.get("id")) },
-    data: { name: String(form.get("name")) },
-  })
-  return Response.json(project)
-}`,
-      },
-      {
-        id: "middleware",
-        label: "Middleware",
-        title: "Typed middleware, composed",
-        body: "Middleware runs on the server only, in order, and each layer can wrap the response the next layer returns.",
-        file: "server/middleware.ts",
-        code: `export const middleware: Middleware[] = [
-  session(),
-  rateLimit({ max: 100 }),
-  csrf(),
-]`,
-      },
-      {
-        id: "rendering",
-        label: "Rendering",
-        title: "Render where it belongs",
-        body: "Stream the shell, then the data. gclass-anims initialises once the DOM lands and its MutationObserver handles everything after.",
-        file: "root.tsx",
-        code: `useEffect(() => {
-  initAnimations()
-}, [location.pathname])`,
-      },
-      {
-        id: "responses",
-        label: "Responses",
-        title: "Return anything the web can",
-        body: "HTML, JSON, redirects, files and streams all come back through the same Response object, so one handler covers every case.",
-        file: "app/routes/report.ts",
-        code: `export async function loader() {
-  const csv = await renderCsv(await db.report.findMany())
-  return new Response(csv, {
-    headers: { "Content-Type": "text/csv" },
-  })
-}`,
-      },
-    ],
-  },
-  {
-    id: "data",
-    label: "Data",
-    title: "Load and mutate in one place",
-    body: "Loaders read, actions write, and both can be called directly from a component. No data-fetching library in the middle.",
-    examples: [
-      {
-        id: "loader",
-        label: "Loaders",
-        title: "Read on the server",
-        body: "A loader runs before the route renders and its return value is handed to the component as a prop.",
-        file: "app/routes/projects._index.tsx",
-        code: `export async function loader() {
-  return { projects: await db.project.findMany() }
-}
-
-export default function Projects({ projects }) {
-  return <ul>{projects.map((p) => <li key={p.id}>{p.name}</li>)}</ul>
-}`,
-      },
-      {
-        id: "actions",
-        label: "Actions",
-        title: "Write from the same module",
-        body: "Actions are the POST/DELETE/PATCH half of a route. One module owns both reads and writes for a URL.",
-        file: "app/routes/projects.ts",
-        code: `export async function action({ request }) {
-  const intent = await readIntent(request)
-  if (intent.type === "delete") return deleteProject(intent.id)
-  return createProject(intent.values)
-}`,
-      },
-      {
-        id: "forms",
-        label: "Forms",
-        title: "Progressive enhancement",
-        body: "A <Form> works without JavaScript, then upgrades to a client transition when the runtime is there.",
-        file: "app/routes/projects.new.tsx",
-        code: `<Form method="post">
-  <input name="name" />
-  <button type="submit">Create</button>
-</Form>`,
-      },
-    ],
-  },
-  {
-    id: "auth",
-    label: "Auth",
-    title: "Sessions are just cookies",
-    body: "No auth framework. Read a cookie, look up a session, return a Set-Cookie header — the whole layer is a few functions.",
-    examples: [
-      {
-        id: "session",
-        label: "Sessions",
-        title: "A signed cookie and a row",
-        body: "Store what you need server-side and keep only an opaque id in the cookie.",
-        file: "app/session.server.ts",
-        code: `export async function getSession(request: Request) {
-  const id = request.headers.get("Cookie")?.match(/session=(\\w+)/)?.[1]
-  if (!id) return createSession()
-  return db.session.findUnique({ where: { id } })
-}`,
-      },
-      {
-        id: "protect",
-        label: "Protecting routes",
-        title: "Guard in the loader",
-        body: "Redirect before rendering anything the user is not allowed to see.",
-        file: "app/routes/admin.tsx",
-        code: `export async function loader({ request }) {
-  const user = await requireUser(request)
-  if (!user) throw redirect("/login")
-  return { user }
-}`,
-      },
-      {
-        id: "passwords",
-        label: "Passwords",
-        title: "Hash with the platform",
-        body: "Node's scrypt and Web Crypto's PBKDF2 are both one call. No dependency required.",
-        file: "app/password.server.ts",
-        code: `import { scrypt } from "node:crypto"
-
-export const hashPassword = (pw: string) =>
-  new Promise<string>((res) => scrypt(pw, "salt", 64, (e, k) => res(k.toString("hex"))))`,
-      },
-    ],
-  },
-  {
-    id: "assets",
-    label: "Assets",
-    title: "Import files, get a URL",
-    body: "CSS, images and fonts are imported like modules. The bundler fingerprints and serves them.",
-    examples: [
-      {
-        id: "css",
-        label: "CSS",
-        title: "Side-effect imports",
-        body: "Tailwind, plain CSS and CSS modules all work the way they do in any bundler.",
+        id: "once",
+        label: "Once",
+        title: "Call it when the DOM is ready",
+        body: "The only required step. From here the observer discovers elements as they appear, so a list that re-renders needs no second call.",
         file: "app/root.tsx",
-        code: `import styles from "./styles.css?url"
+        code: `import { useEffect } from 'react'
+import { initAnimations } from 'gclass-anims'
 
-export const links = () => [{ rel: "stylesheet", href: styles }]`,
-      },
-      {
-        id: "images",
-        label: "Images",
-        title: "Hashed by default",
-        body: "An imported image resolves to its fingerprinted URL, so it can be cached forever.",
-        file: "app/hero.tsx",
-        code: `import hero from "./hero.png"
+export default function App() {
+  useEffect(() => {
+    initAnimations()
+  }, [])
 
-export function Hero() {
-  return <img src={hero} alt="" width={384} height={384} />
-}`,
-      },
-    ],
-  },
-  {
-    id: "components",
-    label: "Components",
-    title: "State is JavaScript",
-    body: "A component runs setup once and returns a render function. No hooks, no reconciler conventions.",
-    examples: [
-      {
-        id: "counter",
-        label: "State",
-        title: "An ordinary variable",
-        body: "Keep state wherever you like — a closure, an object, a class — then return markup from render.",
-        file: "app/components/counter.ts",
-        code: `export function counter() {
-  let count = 0
-
-  return {
-    setup(el) {
-      el.textContent = String(count)
-      el.addEventListener("click", () => {
-        count += 1
-        handle.update()
-      })
-    },
-    render() {
-      return String(count)
-    },
-  }
+  return <Outlet />
 }`,
       },
       {
-        id: "attrs",
-        label: "Attributes",
-        title: "Dynamic styling without a class list",
-        body: "Attributes are functions, so a value can be computed at render time rather than toggled through CSS.",
-        file: "app/styles.ts",
-        code: `export const opacity = (value: number) => ({
-  opacity: value,
-  transition: "opacity .2s ease",
-})`,
-      },
-    ],
-  },
-  {
-    id: "ui",
-    label: "UI",
-    title: "Primitives and accessibility",
-    body: "Focus management, ARIA wiring and keyboard handling ship as composable mixins rather than a component tree.",
-    examples: [
-      {
-        id: "dialog",
-        label: "Dialog",
-        title: "Focus trapped, escape handled",
-        body: "The behaviour attaches to an element; the markup stays yours.",
-        file: "app/dialog.ts",
-        code: `export const dialog = (trigger, panel) => {
-  trigger.on("click", () => panel.show())
-  panel.on("keydown", (e) => {
-    if (e.key === "Escape") panel.hide()
-  })
-  return { role: "dialog", "aria-modal": "true" }
-}`,
-      },
-      {
-        id: "listbox",
-        label: "Listbox",
-        title: "Roving focus",
-        body: "Arrow keys move the highlight, Enter commits. The same contract as the runner picker in the command bar.",
-        file: "app/listbox.ts",
-        code: `export function listbox(options) {
-  return {
-    onKeydown(e) {
-      if (e.key === "ArrowDown") e.preventDefault(), options.next()
-      if (e.key === "Enter") options.commit()
-    },
-  }
-}`,
-      },
-    ],
-  },
-  {
-    id: "animation",
-    label: "Animation",
-    title: "Motion as a class",
-    body: "This is where gclass-anims sits: one call after mount, then behaviour, trigger and tunables in the class attribute.",
-    examples: [
-      {
-        id: "init",
-        label: "Init",
-        title: "One call, once",
-        body: "Call initAnimations() after the DOM is present. A MutationObserver discovers everything that renders after.",
+        id: "navigation",
+        label: "Navigation",
+        title: "Re-init on client navigation",
+        body: "Remix replaces the DOM on a client-side route change without a reload, so the engine is initialised per pathname rather than once per page load.",
         file: "app/root.tsx",
-        code: `import { Outlet, useLocation } from "@remix-run/react"
-import { useEffect } from "react"
-import { initAnimations } from "gclass-anims"
+        code: `import { useLocation } from '@remix-run/react'
+import { useEffect } from 'react'
+import { initAnimations } from 'gclass-anims'
 
 export default function App() {
   const location = useLocation()
@@ -351,33 +76,379 @@ export default function App() {
 }`,
       },
       {
-        id: "anatomy",
-        label: "Anatomy",
-        title: "Behaviour + trigger + tunables",
-        body: "Three parts, any order. Order in the class attribute does not matter.",
-        file: "app/routes/home.tsx",
-        code: `<div class="appear scroll spawn-up">…</div>
-<div class="appear scroll order ease-expo time-1 priority-2">…</div>
-<div class="float">loops forever</div>
-<button class="magnet click-expand">magnet + click</button>`,
+        id: "teardown",
+        label: "Teardown",
+        title: "It hands the teardown back",
+        body: "initAnimations returns a function that removes every listener and trigger it registered. Useful in a component that mounts more than once.",
+        file: "app/component.tsx",
+        code: `useEffect(() => {
+  const dispose = initAnimations()
+  return dispose
+}, [])`,
+      },
+    ],
+  },
+  {
+    id: "spawn",
+    label: "Spawn",
+    title: "Forty-five entrances, named by direction",
+    body: "Every entrance is a class. spawn-* slides in from an edge, expand-* scales a single axis, clip-reveal-* wipes through an inset, and draw, typewriter, scramble and count handle text and SVG strokes.",
+    examples: [
+      {
+        id: "direction",
+        label: "Direction",
+        title: "spawn-* slides, expand-* scales",
+        body: "Direction is the class name rather than an argument. spawn-up enters from below, spawn-left from the left; expand-vertical collapses on the Y axis.",
+        file: "index.html",
+        code: `<div class="spawn-up">from below</div>
+<div class="spawn-left">from the left</div>
+<div class="spawn-fade">opacity only</div>
+<div class="spawn-blur">out of a blur</div>
+<div class="expand-vertical">collapses on Y</div>
+<div class="expand-all">collapses on both</div>`,
       },
       {
-        id: "dynamic",
-        label: "Dynamic",
-        title: "Late mounts keep working",
-        body: "Because the observer watches the document, a v-if that swaps in new markup animates without another call.",
-        file: "app/routes/home.tsx",
-        code: `{items.map((item) => (
-  <li class="appear scroll spawn-up order">{item.label}</li>
-))}`,
+        id: "three-d",
+        label: "3D",
+        title: "Rotating entrances",
+        body: "The x/y variants scale from zero while rotating around one axis, which reads as a 3D object turning into place.",
+        file: "index.html",
+        code: `<div class="spawn-x-up">rotates on X</div>
+<div class="spawn-y-left">rotates on Y</div>
+<div class="spawn-cw">spins clockwise</div>
+<div class="spawn-ccw">spins counter-clockwise</div>`,
+      },
+      {
+        id: "clip",
+        label: "Clip",
+        title: "Wipes through an inset",
+        body: "clip-reveal animates a CSS clip-path inset, so the reveal has hard edges instead of fading. curtain-* opens from the centre outward.",
+        file: "index.html",
+        code: `<div class="clip-reveal-up">wipes upward</div>
+<div class="clip-reveal-left">wipes left</div>
+<div class="clip-reveal">default wipe</div>
+<div class="curtain-horizontal">opens from the middle</div>`,
+      },
+      {
+        id: "text",
+        label: "Text",
+        title: "Type, scramble and count",
+        body: "Text gets its own entrances. typewriter-split handles the string per character, scramble resolves glyphs out of noise, and count animates a number up.",
+        file: "index.html",
+        code: `<p class="typewriter">types out</p>
+<p class="typewriter-split">per character</p>
+<p class="scramble">resolves from noise</p>
+<p class="scramble-all">every glyph at once</p>
+<span class="count" data-to="1240">0</span>`,
+      },
+      {
+        id: "draw",
+        label: "Draw",
+        title: "Tracing an SVG stroke",
+        body: "draw animates stroke-dashoffset so a path draws itself. draw-split does it per subpath, which suits an icon with separate strokes.",
+        file: "index.html",
+        code: `<svg class="draw" viewBox="0 0 24 24">
+  <path d="M4 12h16M12 4v16" />
+</svg>
+
+<svg class="draw-split" viewBox="0 0 24 24">
+  <path d="M4 12h16" />
+  <path d="M12 4v16" />
+</svg>`,
+      },
+    ],
+  },
+  {
+    id: "loops",
+    label: "Loops",
+    title: "Motion that runs until told otherwise",
+    body: "A loop needs no trigger. The class is the entire instruction — it starts on init and repeats forever, leaving and re-entering the viewport has no effect on it.",
+    examples: [
+      {
+        id: "ambient",
+        label: "Ambient",
+        title: "float, pulse, radiate",
+        body: "The ambient set: a slow drift, a scale pulse, or a ring expanding outward from the element.",
+        file: "index.html",
+        code: `<div class="float">drifts</div>
+<div class="pulse">scales in and out</div>
+<div class="radiate">ring expands outward</div>
+<div class="bell">swings like a bell</div>`,
+      },
+      {
+        id: "impact",
+        label: "Impact",
+        title: "shake, bounce, spin",
+        body: "Impact loops for attention rather than ambience. The spin pair is directional; shake is randomised.",
+        file: "index.html",
+        code: `<button class="shake">shakes</button>
+<div class="bounce">bounces</div>
+<div class="spin-cw">clockwise</div>
+<div class="spin-ccw">counter-clockwise</div>`,
+      },
+      {
+        id: "marquee",
+        label: "Marquee",
+        title: "Continuous travel in four directions",
+        body: "marquee-* translates the element indefinitely. It is meant for content wider or taller than its frame.",
+        file: "index.html",
+        code: `<div class="marquee-right"><span>scrolling ticker →</span></div>
+<div class="marquee-left"><span>← scrolling ticker</span></div>
+<div class="marquee-up">…</div>
+<div class="marquee-down">…</div>`,
+      },
+    ],
+  },
+  {
+    id: "triggers",
+    label: "Triggers",
+    title: "A behaviour says what, a trigger says when",
+    body: "They compose on the same element in any order. scroll and appear fire once when the element enters the viewport, hover and click answer the pointer, and magnet pulls the element toward it.",
+    examples: [
+      {
+        id: "scroll",
+        label: "Scroll",
+        title: "Fires once on entry",
+        body: "scroll wires the entrance to the viewport. progressStart and progressEnd tune the line at which the trigger counts as reached.",
+        file: "index.html",
+        code: `<div class="spawn-up scroll">enters from below, once</div>
+<div class="scroll-progress">tied to scroll position</div>
+<div class="pin scroll">pinned while in view</div>
+
+<!-- move the trigger line -->
+<div class="scroll" data-progress-start="top bottom"></div>`,
+      },
+      {
+        id: "appear",
+        label: "Appear",
+        title: "On mount, rather than on scroll",
+        body: "appear plays as soon as the element exists, which is what you want for content already in view on first paint.",
+        file: "index.html",
+        code: `<div class="spawn-fade appear">plays on mount</div>
+<div class="appear">with no entrance of its own</div>
+<div class="leave">animates out on removal</div>`,
+      },
+      {
+        id: "pointer",
+        label: "Pointer",
+        title: "hover, click and expand",
+        body: "hover scales on entry, click is a discrete press, and click-expand grows the element away from the cursor.",
+        file: "index.html",
+        code: `<button class="hover">scales on hover</button>
+<button class="click">presses</button>
+<button class="click-expand">grows from the cursor</button>`,
+      },
+      {
+        id: "magnet",
+        label: "Magnet",
+        title: "Pulled toward the pointer",
+        body: "magnet translates the element after the cursor. magnet3d does the same and additionally tilts it so the face tracks the pointer — including when the element moves to a different place in the layout.",
+        file: "index.html",
+        code: `<button class="magnet">follows the cursor</button>
+<button class="magnet3d">tilts to face it</button>
+
+<!-- tuned per element -->
+<div class="magnet3d amount-0.15 mgrow-1.05 mtilt-8 mtime-0.6"></div>`,
+      },
+      {
+        id: "flip",
+        label: "Flip",
+        title: "Morph between two layouts",
+        body: "flip captures an element's resting bounds and, when its layout changes, inverts the difference and plays it back. One element, moved between two positions, animates between them.",
+        file: "app/header.tsx",
+        code: `// the node persists; only its position in the layout changes
+<header>
+  <Link className="flip">
+    <img src={logo} />
+  </Link>
+</header>`,
+      },
+    ],
+  },
+  {
+    id: "tunables",
+    label: "Tunables",
+    title: "Adjusted from the class attribute",
+    body: "Tunables are prefixes, not config. time-, delay-, priority- and ease- apply to nearly everything; the magnet family adds its own set.",
+    examples: [
+      {
+        id: "timing",
+        label: "Timing",
+        title: "time-, delay-, stagger-",
+        body: "time- sets the duration in seconds. delay- offsets the start. stagger- spreads children out by index instead of by hand.",
+        file: "index.html",
+        code: `<div class="spawn-up time-1-5">1.5 seconds</div>
+<div class="spawn-up delay-0-3">starts a beat late</div>
+
+<ul>
+  <!-- each child offset from the one before -->
+  <li class="spawn-up stagger-0-05">one</li>
+  <li class="spawn-up stagger-0-05">two</li>
+  <li class="spawn-up stagger-0-05">three</li>
+</ul>`,
+      },
+      {
+        id: "ease",
+        label: "Ease",
+        title: "ease- takes a GSAP ease",
+        body: "The value after ease- is passed to GSAP, so the whole set is available — back, elastic, expo, power1 through power4, circ, sine, steps.",
+        file: "index.html",
+        code: `<div class="spawn-up ease-back">overshoots and settles</div>
+<div class="spawn-up ease-expo">fast start</div>
+<div class="spawn-up ease-elastic">springy</div>
+<div class="spawn-up ease-none">linear</div>`,
+      },
+      {
+        id: "priority",
+        label: "Priority",
+        title: "priority- settles ties",
+        body: "Elements that animate together default to a fixed stagger. priority- overrides it for one element so it lands first or last.",
+        file: "index.html",
+        code: `<div class="spawn-up order priority-3">lands first</div>
+<div class="spawn-up order priority-1">then this</div>
+<div class="spawn-up order">default slot</div>`,
+      },
+      {
+        id: "magnet-tuning",
+        label: "Magnet tuning",
+        title: "amount-, mtime-, mgrow-, mtilt-",
+        body: "The magnet prefix set: how far it follows, how quickly it catches up, how much it grows, and how far it tilts.",
+        file: "index.html",
+        code: `<div class="magnet3d amount-0-4 mtilt-20">pulls hard, tilts far</div>
+<div class="magnet amount-0-1 mgrow-1-02">barely moves</div>`,
+      },
+    ],
+  },
+  {
+    id: "envs",
+    label: "Environments",
+    title: "The same classes in every framework",
+    body: "The class names are identical everywhere. Only the init call differs, because that is the one thing each framework has to tell you.",
+    examples: [
+      {
+        id: "react",
+        label: "React",
+        title: "Init once on mount",
+        body: "The engine finds elements itself, so a re-render never needs a re-init.",
+        file: "app/root.tsx",
+        code: `import { useEffect } from 'react'
+import { initAnimations } from 'gclass-anims'
+
+export default function App() {
+  useEffect(() => { initAnimations() }, [])
+  return <Outlet />
+}`,
+      },
+      {
+        id: "vue",
+        label: "Vue",
+        title: "onMounted",
+        body: "Identical from here on — the markup carries the same classes.",
+        file: "main.js",
+        code: `import { onMounted } from 'vue'
+import { initAnimations } from 'gclass-anims'
+
+onMounted(() => initAnimations())`,
+      },
+      {
+        id: "svelte",
+        label: "Svelte",
+        title: "onMount",
+        body: "The one-liner, for the framework where init is genuinely one line.",
+        file: "+layout.svelte",
+        code: `import { onMount } from 'svelte'
+import { initAnimations } from 'gclass-anims'
+
+onMount(() => initAnimations())`,
+      },
+      {
+        id: "remix",
+        label: "Remix",
+        title: "Per pathname",
+        body: "The only environment that needs more than one line, because it swaps the DOM on client navigation without a reload.",
+        file: "app/root.tsx",
+        code: `const location = useLocation()
+useEffect(() => { initAnimations() }, [location.pathname])`,
+      },
+      {
+        id: "static",
+        label: "No framework",
+        title: "One script tag",
+        body: "Plain HTML works too. The observer covers everything the page renders afterwards.",
+        file: "index.html",
+        code: `<script type="module">
+  import { initAnimations } from 'gclass-anims'
+  initAnimations()
+</script>
+
+<div class="spawn-up scroll">…</div>`,
+      },
+    ],
+  },
+  {
+    id: "config",
+    label: "Config",
+    title: "Engine defaults, and opting out",
+    body: "gclassOpts changes the defaults the whole engine builds from. toggleAnimations persists a reader's choice. .reduced opts a single element out when the OS asks for less motion.",
+    examples: [
+      {
+        id: "opts",
+        label: "Defaults",
+        title: "gclassOpts",
+        body: "Durations, the stagger divisor, the default ease and the scroll trigger line are all settable before init.",
+        file: "app/root.tsx",
+        code: `import { gclassOpts, initAnimations } from 'gclass-anims'
+
+gclassOpts({
+  effectDuration: 0.8,
+  orderDivide: 4,
+  ease: 'expo',
+  progressStart: 'top bottom',
+})
+
+initAnimations()`,
+      },
+      {
+        id: "toggle",
+        label: "Toggle",
+        title: "A persisted opt-out",
+        body: "toggleAnimations writes the choice to localStorage and reloads, so a reader who turns motion off keeps it off across visits.",
+        file: "app/settings.tsx",
+        code: `import { toggleAnimations } from 'gclass-anims'
+
+<button onClick={() => toggleAnimations()}>
+  Reduce motion
+</button>`,
+      },
+      {
+        id: "reduced",
+        label: "Reduced",
+        title: "Opting one element out",
+        body: "With the OS preference set, .reduced leaves that element alone — no spawn, no loop, no pointer response — while the rest of the page still animates.",
+        file: "index.html",
+        code: `<!-- nothing animates on this one, whatever it is doing -->
+<div class="spawn-up scroll reduced">…</div>`,
+      },
+      {
+        id: "preserve",
+        label: "Preserve",
+        title: "Keeping something still",
+        body: "An element that survives a route change would otherwise re-animate on the way back in. preserve keeps its rendered state, and applies to descendants too.",
+        file: "app/layout.tsx",
+        code: `<div class="preserve">
+  {/* survives navigation without replaying its entrance */}
+</div>`,
       },
     ],
   },
 ];
-
 export function StackCard() {
   const [category, setCategory] = useState(CATEGORIES[0]);
   const [example, setExample] = useState(CATEGORIES[0].examples[0]);
+  // Drives the button's own label. There is no gclass copy behaviour in this
+  // build — the `data-copy` attributes that used to sit on these buttons are
+  // inert, and nothing else was going to tell the reader the copy landed.
+  const [copied, setCopied] = useState(false);
   const copy = useCopyCommand();
 
   function pickCategory(next: Category) {
@@ -387,7 +458,7 @@ export function StackCard() {
 
   return (
     <div className="rx-card" data-home-card>
-      <div role="tablist" aria-label="Remix stack layers" className="rx-card__tabs">
+      <div role="tablist" aria-label="gclass-anims API groups" id="api" className="rx-card__tabs">
         {CATEGORIES.map((c) => (
           <button
             key={c.id}
@@ -458,11 +529,15 @@ export function StackCard() {
                 type="button"
                 className="rx-code__copy"
                 aria-label={`Copy ${example.file}`}
-                data-copy
-                onClick={() => copy(example.code, () => {})}
+                onClick={() => copy(example.code, setCopied)}
               >
-                Copy
+                {copied ? "Copied" : "Copy"}
               </button>
+              {/* The label swap is the visible feedback; this is the announced
+                  one, for a reader who never sees the button change. */}
+              <span role="status" aria-live="polite" className="sr-only">
+                {copied ? `${example.file} copied` : ""}
+              </span>
             </div>
           </div>
         </div>

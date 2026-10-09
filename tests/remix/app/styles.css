@@ -1,4 +1,4 @@
-/* ─────────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────────
    remix.run's own stylesheet, transcribed.
 
    Not a sampling — these are the literal declarations from that site's
@@ -80,6 +80,19 @@ body {
   background: #000;
   min-height: 100%;
   margin: 0;
+  /* Keeps fragment links clear of the fixed header.
+
+     An in-page anchor stops the target flush with the top of the viewport, which
+     is underneath the bar — clicking "Api" put the top 45px of the card behind
+     it. `scroll-padding-top` moves the scroll *stop* down rather than the target,
+     so one rule covers every section instead of a `scroll-margin-top` on each.
+
+     This has to be on `html`, not on `.rx-page`: scroll padding applies to the
+     scroll container, and here that is the document root. Set on `.rx-page` it
+     is silently ignored, which looks identical to not setting it at all.
+
+     84px is the bar's 64px plus 20px of breathing room. */
+  scroll-padding-top: 84px;
 }
 
 body {
@@ -127,32 +140,162 @@ body {
   position: relative;
   min-height: 100vh;
   isolation: isolate;
+  /* Clears the fixed header. A fixed box is out of flow, so nothing reserves
+     space for it and the first thing in the document slides underneath —
+     64px is the bar's height: 12px of padding top and bottom around a 40px
+     logo (200px wide at logo.svg's 5.04:1). */
+  padding-top: 64px;
 }
 
-/* The GL layer. Fixed, full-bleed, and behind everything: the reference draws
-   its landscape as a full-viewport background rather than an element in flow.
-   The radial gradients are the fallback while the scene module loads. */
+/* The backdrop layer. Fixed and full-bleed, behind everything: the reference
+   draws its landscape as a full-viewport background rather than an element in
+   flow. The gradients are the base wash; .rx-bg__art paints over them.
+
+   `overflow: hidden` is load-bearing rather than tidy. The art is deliberately
+   larger than the viewport so the landscape runs off both edges instead of
+   stopping short inside them, and without the clip that oversize becomes a
+   scrollbar on a page whose whole point is that it scrolls vertically. */
 .rx-bg {
   position: fixed;
   inset: 0;
   z-index: 0;
+  overflow: hidden;
   pointer-events: none;
+  /* How far back the scene art sits. Kept low on purpose: the traced source is a
+     bright particle field and the copy sits straight on top of it at 15px. */
+  --rx-scene-dim: 0.6;
   background:
     radial-gradient(120% 80% at 20% 90%, rgba(60, 255, 60, 0.1), transparent 60%),
     radial-gradient(90% 60% at 75% 80%, rgba(255, 60, 40, 0.08), transparent 60%),
     #000;
 }
 
-.rx-bg__canvas {
-  display: block;
+/* One scene layer's transform target.
+
+   Each SVG is wrapped in a div so a Tailwind transform — `scale-110`,
+   `-rotate-2`, `translate-x-12` — can be applied to that layer alone. The div
+   is exactly the frame `.rx-bg` is, and `.rx-bg`'s overflow: hidden is what
+   trims whatever a transform pushes past the edge.
+
+   Split from the img deliberately: magnet3d writes an inline `transform` on the
+   img on every mousemove, so a transform utility on that same element would be
+   silently overwritten the first time the cursor moved. Two elements, two jobs. */
+
+/* The art, filling its slot exactly and scaled to fit inside it.
+
+   `contain`, not `cover`: cover scales to fill and crops the overflow inward,
+   which would show only the middle slice of the wide layers (road is 5.6:1
+   against a ~1.9:1 viewport). Contain keeps the whole drawing visible and
+   letterboxes whatever is left over — which the base gradients then fill, so
+   the bands above and below read as sky rather than as padding.
+
+   `object-position: 50% 100%` pins that letterboxing to the bottom edge, so a
+   wide layer still sits on the bottom of the frame with open space above it. The
+   landscape is a ground plane; centring it would leave a band of empty space
+   under the horizon as well as over it.
+
+   This also retires the per-layer `--rx-scene-ratio`. object-fit derives the
+   scale from the art's own proportions, so the five layers no longer need to be
+   told how wide they are, and nothing has to be kept in step with logo.svg-sized
+   numbers sitting in another file.
+
+   The slot is the viewport and the art fits inside it, so `max-width: none` is
+   no longer needed to beat Tailwind preflight's `img { max-width: 100% }` —
+   which no longer contradicts anything here. */
+.rx-scene {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
+  object-fit: contain;
+  object-position: 50% 100%;
+  display: block;
+  /* The backdrop is pointer-transparent so it never intercepts the page, but
+     magnet3d binds its mousemove to the element itself — so these opt back in.
+     Everything with content sits at z-index 20 or above, so it still gets its
+     events first. */
+  pointer-events: auto;
+  opacity: 0;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Opacity comes from the scroll driver, which writes one custom property per
+   layer on .rx-bg and nothing else. The dim multiplier is a variable rather than
+   a literal in each rule so the base knock-down is declared once — and so the
+   per-layer rules stay a single class, which they have to: `.rx-scene.is-live`
+   below is two classes and would otherwise outrank them and flatten every fade
+   to one constant. */
+.rx-scene--1 { opacity: calc(var(--rx-scene-1, 0) * var(--rx-scene-dim)); }
+.rx-scene--2 { opacity: calc(var(--rx-scene-2, 0) * var(--rx-scene-dim)); }
+.rx-scene--3 { opacity: calc(var(--rx-scene-3, 0) * var(--rx-scene-dim)); }
+.rx-scene--4 { opacity: calc(var(--rx-scene-4, 0) * var(--rx-scene-dim)); }
+.rx-scene--5 { opacity: calc(var(--rx-scene-5, 0) * var(--rx-scene-dim)); }
+
+/* The glow, and only on a layer the scroll driver has decided is on screen.
+
+   drop-shadow rather than blur(), because drop-shadow follows the alpha of what
+   it is applied to — the glow traces the particles and the road line instead of
+   blooming a rectangle around the whole image. Two radii because one cannot do
+   both jobs: the small one is the rim on the road, the large one is the haze
+   that lifts it off the gradients. Both keyed to the blue the art is filled
+   with.
+
+   Deliberately faint, and on `.is-live` only. A blurred full-viewport layer is
+   expensive to rasterise, and magnet3d re-composites one on every mousemove, so
+   a filter left on a layer scrolled past is cost paid for nothing. */
+.rx-scene.is-live {
+  filter: drop-shadow(0 0 3px rgba(106, 174, 245, 0.42)) drop-shadow(0 0 14px rgba(106, 174, 245, 0.2));
+  /* Promoted ahead of the transform work, so that work is a composite rather
+     than a repaint of a multi-megabyte path. */
+  will-change: transform;
+}
+
+/* ── boot overlay ────────────────────────────────────────────────────────── */
+
+/* The black screen the runner sits in.
+
+   Deliberately restating what gclass-anims injects at init
+   (`html.gclass-booting .boot-up { position: fixed; inset: 0; z-index: 9999;
+   display: grid; place-items: center }`). Both are needed, and neither replaces
+   the other: the engine's rule only exists once `initAnimations()` has run,
+   which is an effect after hydration, so without this copy the overlay renders
+   in the flow for those first few frames and the page flashes behind it. When
+   the engine's stylesheet does arrive it agrees with this one, so nothing jumps.
+
+   `inset: 0` plus the gutter would leave a seam at the scrollbar on Windows, so
+   this is the one layer that ignores the page's gutter and goes edge to edge.
+   The background is #000 rather than --color-page because the reference boot
+   screen is true black with nothing behind it. */
+.boot-up {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  background: #000;
+}
+
+/* remix-runner.avif, 384x384. Sized small and in viewport units rather than to a
+   fixed width: the reference mark is a small figure adrift in a large field, so
+   it wants to stay a constant visual weight against the viewport rather than
+   grow with it. The lower bound keeps it legible on a phone, where 14vmin would
+   otherwise shrink it to nothing. */
+.boot-up__mark {
+  display: block;
+  width: clamp(120px, 14vmin, 200px);
+  height: auto;
 }
 
 /* ── nav ────────────────────────────────────────────────────────────────── */
 
+/* Fixed, so it stays put over the scrolling page rather than travelling with
+   the document. That takes it out of flow entirely, which is why `.rx-page` now
+   carries the matching top padding — nothing reserves space for a fixed box, so
+   without it the scroll hint and the hero slide up underneath the bar. */
 .rx-nav {
-  position: relative;
+  position: fixed;
+  inset: 0 0 auto;
   z-index: 30;
   display: flex;
   align-items: center;
@@ -165,10 +308,64 @@ body {
   line-height: 0;
 }
 
-.rx-logo svg {
+/* Reserves the brand's place in the flex row while the logo itself is out of
+   flow over the hero. Without it the pills would be the row's only in-flow
+   child and `space-between` would drop them to the left. It is also what
+   gclass's flip observer keys off to decide the logo's layout changed — see the
+   note in SiteNav. */
+.rx-nav__brand-slot {
+  display: block;
+  width: 200px;
+  height: 40px;
+}
+
+/* While the logo is still the hero's, it is pulled out of the bar and centred
+   over the hero at display size. The bar is `position: fixed`, so this
+   coordinates against the viewport and centres on the page without knowing
+   where the hero is — which is the point, since the hero scrolls. */
+.rx-nav[data-state="hero"] .rx-nav__brand {
+  position: fixed;
+  top: 96px;
+  left: 50%;
+  /* The independent `translate` property: gclass writes `transform` on the img
+     during the flip and the two compose rather than collide. */
+  translate: -50% 0;
+  width: min(calc(100% - 2 * var(--rx-gutter)), 1100px);
+}
+
+.rx-nav[data-state="hero"] .rx-logo__img {
+  width: 100%;
+}
+
+/* The pills have lost their flex sibling in this state; auto margin puts them
+   back on the right. */
+.rx-nav[data-state="hero"] .rx-nav__links {
+  margin-left: auto;
+}
+
+/* logo.svg, at 197.717 x 39.216 — 5.04:1. Width drives the height, so the mark
+   keeps its proportions at any size.
+
+   The colour is a slow hue cycle rather than a fixed tint: hue-rotate carries
+   the mark through muted red, blue and green and back, at the same saturation
+   the art is drawn in. 18s is slow enough to read as a shift in light rather
+   than as a strobe, and linear so the pace never changes direction. The global
+   reduced-motion block at the top of this file already collapses it. */
+.rx-logo__img {
   display: block;
   width: 200px;
   height: auto;
+  animation: rx-logo-hue 18s linear infinite;
+}
+
+@keyframes rx-logo-hue {
+  from {
+    filter: hue-rotate(0deg) saturate(0.5);
+  }
+
+  to {
+    filter: hue-rotate(360deg) saturate(0.5);
+  }
 }
 
 .rx-nav__links {
@@ -198,35 +395,6 @@ body {
   font-size: 12px;
 }
 
-/* The wordmark lockup. Set in type rather than drawn as paths: remix.run's mark
-   is a custom cut of a geometric grotesque, and hand-authored SVG data distorts
-   the moment the viewBox is rescaled. Italic + tight tracking reproduces the
-   read of the original, and `+ gclass` at a lighter colour sits after it. */
-.rx-logo {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.28em;
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 900;
-  font-style: italic;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.rx-logo__plus {
-  font-style: normal;
-  font-weight: 400;
-  opacity: 0.55;
-}
-
-.rx-logo__gclass {
-  font-style: normal;
-  font-weight: 700;
-  opacity: 0.8;
-}
-
 /* ── hero ───────────────────────────────────────────────────────────────── */
 
 .rx-scroll-hint {
@@ -250,38 +418,16 @@ body {
   padding: 24px var(--rx-gutter) 120px;
 }
 
-/* The wordmark spans the page width above the headline, set as display type:
-   900 weight, italic, tight tracking, all caps — the reference's own treatment.
-   `clamp` keeps it from overflowing on narrow viewports without a breakpoint. */
-.rx-hero__wordmark {
-  width: 100%;
-  margin: 0 0 40px;
-  line-height: 0.85;
-}
+/* The space the wordmark occupies while it is still the hero's.
 
+   Sized from the same two figures as the logo above — logo.svg's 5.04:1 ratio
+   and the same 1100px cap — so the gap the logo leaves behind is exactly the
+   gap it filled. `aspect-ratio` rather than a height, so the two cannot drift
+   apart if the cap ever changes. */
 .rx-hero__mark {
-  display: block;
-  font-family: var(--font-display);
-  font-size: clamp(44px, 11.4vw, 218px);
-  font-weight: 900;
-  font-style: italic;
-  letter-spacing: -0.045em;
-  text-transform: uppercase;
-  color: var(--color-pink);
-}
-
-.rx-hero__mark-plus {
-  display: inline-block;
-  margin: 0 0.06em;
-  font-style: normal;
-  font-weight: 400;
-  opacity: 0.6;
-}
-
-.rx-hero__mark-gclass {
-  font-style: normal;
-  font-weight: 700;
-  opacity: 0.85;
+  width: min(calc(100% - 2 * var(--rx-gutter)), 1100px);
+  aspect-ratio: 197.71669 / 39.215565;
+  margin-bottom: 40px;
 }
 
 .rx-hero__title {
@@ -423,6 +569,12 @@ body {
   color: var(--color-ink);
 }
 
+/* The only feedback the command bar's copy button gives — it is an icon, so
+   there is no label to swap the way the snippet and code buttons do. */
+.rx-cmd__copy[data-status="done"] {
+  color: var(--color-accent);
+}
+
 /* ── feature rail ───────────────────────────────────────────────────────── */
 
 .rx-rail {
@@ -529,24 +681,10 @@ body {
   padding: 120px 0;
 }
 
-.rx-section--sprue {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
-  gap: 48px;
-  min-height: 620px;
-}
-
-/* The sprue canvas fills its grid cell and bleeds behind the copy, which is how
-   the reference's object sits half behind the panel. */
-.rx-sprue {
-  min-width: 0;
-}
-
-.rx-sprue__canvas {
-  display: block;
-  width: 100%;
-  height: 620px;
+/* The runner kit section is copy only, so the block is measured rather than
+   stretched: a full 1040px line of prose is too long to read comfortably. */
+.rx-section--runner .rx-section__copy {
+  max-width: 62ch;
 }
 
 .rx-section__title {
@@ -859,13 +997,8 @@ body {
 
 @media (width <= 900px) {
   .rx-example,
-  .rx-card__body,
-  .rx-section--sprue {
+  .rx-card__body {
     grid-template-columns: 1fr;
-  }
-
-  .rx-sprue__canvas {
-    height: 380px;
   }
 
   .rx-section {
@@ -890,7 +1023,7 @@ body {
 }
 
 @media (width <= 640px) {
-  .rx-logo svg {
+  .rx-logo__img {
     width: 140px;
   }
 

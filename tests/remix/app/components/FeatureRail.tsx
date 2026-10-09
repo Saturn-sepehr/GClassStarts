@@ -16,12 +16,13 @@ import { useEffect, useRef, useState } from "react";
  * changes when the reader crosses a section boundary.
  */
 const SECTIONS = [
-  { id: "top", label: "Fully stacked", value: "gclass-anims" },
-  { id: "fully-stacked", label: "Single package", value: "Remix" },
-  { id: "runner-kit", label: "Smaller mental model", value: "Class-driven" },
-  { id: "docs", label: "Re-rethinking", value: "Class anatomy" },
-  { id: "notes", label: "Humans + agents", value: "One call" },
-  { id: "gallery", label: "Test drive", value: "initAnimations()" },
+  { id: "hero", label: "Class-driven", value: "gclass-anims" },
+  { id: "fully-stacked", label: "API", value: "Seven groups" },
+  { id: "runner-kit", label: "Environments", value: "Twelve" },
+  { id: "docs", label: "Install", value: "npm i" },
+  { id: "quick-start", label: "Getting started", value: "One call" },
+  { id: "anatomy", label: "Anatomy", value: "Three parts" },
+  { id: "notes", label: "Notes", value: "Reduced motion" },
 ];
 
 export function FeatureRail() {
@@ -78,7 +79,6 @@ export function FeatureRail() {
         {SECTIONS.map((s, i) => (
           <li key={s.id} className={i === active ? "is-active" : undefined}>
             <span className="rx-rail__label">{s.label}</span>
-            <span className="rx-rail__value">{s.value}</span>
           </li>
         ))}
       </ul>

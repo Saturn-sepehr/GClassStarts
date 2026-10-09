@@ -1,54 +1,104 @@
+import { useRef, useState } from "react";
+
+import { useBackdrop } from "../components/Backdrop";
 import { CommandBar } from "../components/CommandBar";
 import { FeatureRail } from "../components/FeatureRail";
-import { LazySprueScene, LazyTrackScene, Scene } from "../components/Scenes";
 import { SiteNav } from "../components/SiteNav";
 import { StackCard } from "../components/StackCard";
 import { useCopyCommand } from "../hooks/useCopyCommand";
+import { useHeroPassed } from "../hooks/useHeroPassed";
+import cutout from "../cutout.svg?url";
+import final from "../final.svg?url";
+import road from "../road.svg?url";
+import runner from "../runner.svg?url";
+import windows from "../windows.svg?url";
 
 export const meta = () => [
-  { title: "Remix + GClass — The Fully-Stacked Web Framework" },
-  { name: "description", content: "The fully-stacked web framework, running gclass-anims 1.0.0-beta.24" },
+  { title: "gclass-anims — Class-driven animation for any framework" },
+  {
+    name: "description",
+    content:
+      "gclass-anims turns utility classes into animations. One initAnimations() call, then behaviour, trigger and tunables live in the markup.",
+  },
 ];
 
 export default function Index() {
   const copy = useCopyCommand();
+  const backdrop = useBackdrop();
+  const heroRef = useRef<HTMLElement | null>(null);
+  const heroPassed = useHeroPassed(heroRef);
 
   return (
     <div className="rx-page">
-      <SiteNav />
+      <SiteNav state={heroPassed ? "header" : "hero"} />
 
-      {/* The racing track is fixed and full-bleed; every other layer sits above
-          it, which is how the reference gets the landscape to read as behind the
-          content rather than inside a panel. */}
-      <div className="rx-bg" aria-hidden="true">
-        <LazyTrackScene className="rx-bg__canvas" />
+{/* The backdrop is fixed and full-bleed; every other layer sits above it,
+          which is how the reference gets the landscape to read as behind the
+          content rather than inside a panel.
+
+          Five scene layers over the base gradients, each in its own div so a
+          Tailwind transform can be applied to one layer without touching the
+          others. They crossfade on scroll — the first is up while the page
+          introduces itself, the last by the footer.
+
+          The div and the img are separate elements on purpose. magnet3d writes
+          an inline `transform` on the img on every mousemove, which would
+          overwrite a `scale-*` / `rotate-*` utility sitting on that same
+          element. Split, the div carries the layer transform and the img keeps
+          the magnet response.
+
+          Each div also carries its own `--rx-scene-ratio`, which is that SVG's
+          width-to-height. The five range from 1.16:1 (windows) to 3.5:1 (road),
+          so a single shared figure would leave four of them undersized. */}
+
+      <div className="rx-bg" ref={backdrop} aria-hidden="true">
+        <div className=" opacity-50" >
+          <img className="rx-scene rx-scene--1 " src={road} alt="" draggable={false} />
+        </div>
+        <div className="opacity-50" >
+          <img className="rx-scene rx-scene--2 " src={cutout} alt="" draggable={false} />
+        </div>
+        <div className="opacity-50" >
+          <img className="rx-scene rx-scene--3 " src={runner} alt="" draggable={false} />
+        </div>
+        <div className="opacity-50" >
+          <img className="rx-scene rx-scene--4 " src={windows} alt="" draggable={false} />
+        </div>
+        <div className=" opacity-50" >
+          <img className="rx-scene rx-scene--5 " src={final} alt="" draggable={false} />
+        </div>
       </div>
 
       <p className="rx-scroll-hint">Scroll or press ↓ and ↑</p>
+      <p className="rx-scroll-hint">Not affiliated with or endorsed by Remix</p>
+      <a href='https://remix.run/' className="rx-scroll-hint underline text-brand">Official Remix website</a>
 
       <main>
         {/* ── hero ─────────────────────────────────────────────────────────── */}
-        <section className="rx-hero">
-          {/* Solid type, matching the reference: the landing wordmark is ordinary
-              pink display type. The particle work on this page is the track. */}
-          <h1 className="rx-hero__wordmark">
-            <span className="rx-hero__mark">
-              <span className="rx-hero__mark-remix">REMIX</span>
-              <span className="rx-hero__mark-plus">+</span>
-              <span className="rx-hero__mark-gclass">GCLASS</span>
-            </span>
+        <section className="rx-hero" id="hero" ref={heroRef}>
+          {/* The wordmark is one element and lives in the header — it is styled
+              into the hero until the hero is scrolled past, then travels up into
+              the bar. It cannot be in this section's flow, so this reserves the
+              space it occupies.
+
+              Always rendered, in both states. Collapsing it once the logo had
+              left would change the document's scroll height under the reader,
+              which re-scales the scroll position the hero, the rail and the
+              backdrop are all measured against — a feedback loop for a gap
+              nobody can see, because by then the hero is off-screen. */}
+          <div className="rx-hero__mark" aria-hidden="true" />
+
+          {/* The hero's own heading, promoted from h2: it was the only h1 on the
+              page once the wordmark stopped betests/remix/app/CopyQ.CNYAwZ.pnging one. */}
+          <h1 className="rx-hero__title">
+            gclass-anims
+            <br />
+            for Remix
           </h1>
 
-          <h2 className="rx-hero__title">
-            The fully-stacked
-            <br />
-            web framework
-          </h2>
-
           <p className="rx-hero__lede">
-            Remix brings together a server runtime, routing, authentication, sessions, database integrations, a
-            UI framework, asset compilation, dynamic styling, and accessible components in a cohesive{" "}
-            <span className="rx-hero__accent">stack built on Web APIs — with gclass-anims wired into the root.</span>
+            
+            Framework agnostic. just call initAnimations once DOM is ready and your animations will be ready to play!
           </p>
 
           <CommandBar />
@@ -60,14 +110,11 @@ export default function Index() {
         </section>
 
         {/* ── the runner kit ───────────────────────────────────────────────── */}
-        <section className="rx-section rx-section--sprue" id="runner-kit">
-          <Scene className="rx-sprue">
-            <LazySprueScene className="rx-sprue__canvas" />
-          </Scene>
+        <section className="rx-section rx-section--runner" id="runner-kit">
           <div className="rx-section__copy">
-            <h2 className="rx-section__title">One runner, thirty-two frames</h2>
+            <h2 className="rx-section__title">One runner, every possible frame</h2>
             <p className="rx-section__lede">
-              The same engine, cut into a different chassis on every pass — Vue, React, Svelte, Astro, Next, Remix,
+              The same engine, completely framework indifferent — Vue, React, Svelte, Astro, Next, Remix,
               and two dozen more. One <code>initAnimations()</code> call per environment, identical class names
               everywhere.
             </p>
@@ -85,7 +132,7 @@ export default function Index() {
 
         {/* ── documentation ────────────────────────────────────────────────── */}
         <section className="rx-section rx-section--docs" id="docs">
-          <div className="rx-doc">
+          <div className="rx-doc" id="install">
             <h2>Install</h2>
             <p>
               GClass ships as the npm package gclass-anims. GSAP is a regular dependency and is installed
@@ -149,8 +196,8 @@ export default function App() {
                 is bundled or redistributed here either.
               </li>
               <li>
-                <strong>WebGL is deferred.</strong> Both scenes load behind a lazy boundary and dispose their GL
-                resources on unmount, so client navigation does not leak contexts.
+                <strong>No canvas.</strong> The backdrop is CSS gradients, so there is no WebGL context to create,
+                lose or leak on client navigation.
               </li>
               <li>
                 <strong>Reduced motion.</strong> Nothing animates once the OS preference is set.
@@ -164,40 +211,50 @@ export default function App() {
 
       <footer className="rx-footer">
         <p>
-          Not affiliated with or endorsed by Remix. Layout, colours and type copied from{" "}
-          <a href="https://remix.run/" target="_blank" rel="noreferrer">
-            https://remix.run/
-          </a>
-          . Racing track and runner kit built with three.js.
+          Colours, types and backgrounds sampled from <a href="https://remix.run/" target="_blank" rel="noreferrer">
+              https://remix.run/
+          </a> including the runner gif
+
+        </p>
+        <p>
+          I couldn't replicate the threejs models so I just traced them with SVGs TmT
         </p>
       </footer>
     </div>
   );
 }
 
+/**
+ * Inline style for a scene layer's wrapper div.
+ *
+ * React's CSSProperties has no index signature for custom properties, so this
+ * is the cast in one place instead of five. The value is the SVG's own
+ * width-to-height, which `.rx-scene` needs to size the art to cover without
+ * distorting it.
+ */
+function sceneSlot(ratio: number) {
+  return { "--rx-scene-ratio": String(ratio) } as React.CSSProperties;
+}
+
 function Snippet({ code, onCopy }: { code: string; onCopy: (text: string, cb: (v: boolean) => void) => void }) {
+  const [copied, setCopied] = useState(false);
+
   return (
-    <div className="rx-snippet" data-copy-block>
+    <div className="rx-snippet">
       <pre>
         <code>{code}</code>
       </pre>
       <button
         type="button"
-        data-copy
         className="rx-snippet__copy"
         aria-label="Copy code"
-        onClick={(e) =>
-          onCopy(code, () => {
-            const el = e.currentTarget;
-            el.textContent = "Copied";
-            setTimeout(() => {
-              el.textContent = "Copy";
-            }, 1400);
-          })
-        }
+        onClick={() => onCopy(code, setCopied)}
       >
-        Copy
+        {copied ? "Copied" : "Copy"}
       </button>
+      <span role="status" aria-live="polite" className="sr-only">
+        {copied ? "Code copied" : ""}
+      </span>
     </div>
   );
 }
