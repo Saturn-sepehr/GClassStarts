@@ -26,7 +26,7 @@ export function SiteNav({ state = "header", wordmark = "REMIX + GCLASS" }: { sta
     <header className="rx-nav" data-state={state}>
       <Link to="/" className="rx-nav__brand" aria-label={`${wordmark} home`}>
         {state === "header" ? <span className="rx-nav__brand-slot" aria-hidden="true" /> : null}
-        <img className="rx-logo__img flip ease-expo" src={logo} alt="" draggable={false} />
+        <img className="rx-logo__img flip ease-expo spawn-down" src={logo} alt="" draggable={false} />
       </Link>
 
       <nav className="rx-nav__links" aria-label="Main">

@@ -36,7 +36,7 @@ export function CommandBar() {
   }
 
   return (
-    <div className="rx-cmd">
+    <div className="rx-cmd spawn-down ease-expo scroll">
 
 
 

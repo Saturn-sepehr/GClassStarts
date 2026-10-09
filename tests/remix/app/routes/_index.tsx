@@ -14,7 +14,7 @@ import runner from "../runner.svg?url";
 import windows from "../windows.svg?url";
 
 export const meta = () => [
-  { title: "gclass-anims — Class-driven animation for any framework" },
+  { title: "gclass-anims — Remix" },
   {
     name: "description",
     content:
@@ -26,7 +26,7 @@ export default function Index() {
   const copy = useCopyCommand();
   const backdrop = useBackdrop();
   const heroRef = useRef<HTMLElement | null>(null);
-  const heroPassed = useHeroPassed(heroRef);
+  const heroPassed = useHeroPassed();
 
   return (
     <div className="rx-page">
@@ -69,9 +69,9 @@ export default function Index() {
         </div>
       </div>
 
-      <p className="rx-scroll-hint">Scroll or press ↓ and ↑</p>
-      <p className="rx-scroll-hint">Not affiliated with or endorsed by Remix</p>
-      <a href='https://remix.run/' className="rx-scroll-hint underline text-brand">Official Remix website</a>
+      <p className="rx-scroll-hint scroll typewriter">Scroll or press ↓ and ↑</p>
+      <p className="rx-scroll-hint scroll typewriter">Not affiliated with or endorsed by Remix</p>
+      <a href='https://remix.run/' className="rx-scroll-hint scroll typewriter underline text-brand">Official Remix website</a>
 
       <main>
         {/* ── hero ─────────────────────────────────────────────────────────── */}
@@ -90,13 +90,13 @@ export default function Index() {
 
           {/* The hero's own heading, promoted from h2: it was the only h1 on the
               page once the wordmark stopped betests/remix/app/CopyQ.CNYAwZ.pnging one. */}
-          <h1 className="rx-hero__title">
+          <h1 className="rx-hero__title spawn-text-spawn-up letter scroll ease-expo">
             gclass-anims
             <br />
             for Remix
           </h1>
 
-          <p className="rx-hero__lede">
+          <p className="rx-hero__lede scroll typewriter">
             
             Framework agnostic. just call initAnimations once DOM is ready and your animations will be ready to play!
           </p>
@@ -112,8 +112,8 @@ export default function Index() {
         {/* ── the runner kit ───────────────────────────────────────────────── */}
         <section className="rx-section rx-section--runner" id="runner-kit">
           <div className="rx-section__copy">
-            <h2 className="rx-section__title">One runner, every possible frame</h2>
-            <p className="rx-section__lede">
+            <h2 className="rx-section__title spawn-text-spawn-up scroll ease-expo letter">One runner, every possible frame</h2>
+            <p className="rx-section__lede typewriter scroll">
               The same engine, completely framework indifferent — Vue, React, Svelte, Astro, Next, Remix,
               and two dozen more. One <code>initAnimations()</code> call per environment, identical class names
               everywhere.
@@ -121,7 +121,7 @@ export default function Index() {
             <div className="rx-chips">
               {["vue", "react", "svelte", "astro", "next", "nuxt", "qwik", "solid", "lit", "angular", "ember", "remix"].map(
                 (env) => (
-                  <span key={env} className="rx-chip">
+                  <span key={env} className="rx-chip order scroll spawn-down ease-expo">
                     {env}
                   </span>
                 ),
@@ -133,8 +133,8 @@ export default function Index() {
         {/* ── documentation ────────────────────────────────────────────────── */}
         <section className="rx-section rx-section--docs" id="docs">
           <div className="rx-doc" id="install">
-            <h2>Install</h2>
-            <p>
+            <h2 className="spawn-text-spawn-up ease-expo scroll letter">Install</h2>
+            <p className="typewriter scroll letter">
               GClass ships as the npm package gclass-anims. GSAP is a regular dependency and is installed
               automatically — nothing is bundled or redistributed.
             </p>
@@ -142,8 +142,8 @@ export default function Index() {
           </div>
 
           <div className="rx-doc" id="quick-start">
-            <h2>Quick start</h2>
-            <p>
+            <h2 className="spawn-text-spawn-up ease-expo scroll letter">Quick start</h2>
+            <p className="typewriter scroll letter">
               Import initAnimations once your DOM is ready. From then on, everything is class-driven: add a
               utility class to an element and it animates — no per-element JS, no config files.
             </p>
@@ -167,8 +167,8 @@ export default function App() {
           </div>
 
           <div className="rx-doc" id="anatomy">
-            <h2>Class anatomy</h2>
-            <p>
+            <h2 className="spawn-text-spawn-up ease-expo scroll letter">Class anatomy</h2>
+            <p className="typewriter scroll letter">
               Three parts, any order: <strong>behaviour</strong> (.spawn-up), <strong>trigger</strong> (.scroll,
               .appear) and <strong>tunables</strong> (.time-1, .ease-back, .priority-2). Order in class does not
               matter.
@@ -184,22 +184,22 @@ export default function App() {
           </div>
 
           <div className="rx-doc" id="notes">
-            <h2>Notes</h2>
+            <h2 className="spawn-text-spawn-up ease-expo scroll letter">Notes</h2>
             <ul className="rx-notes">
-              <li>
+              <li className="priority-50 spawn-down order ease-expo scroll">
                 <strong>Dual ESM + CJS.</strong> The package ships dist/gclass.esm.js and dist/gclass.cjs via
                 vite.lib.config.js — GSAP is external, not bundled. The build is tree-shakable with sideEffects:
                 false.
               </li>
-              <li>
+              <li className="priority-50 spawn-down order ease-expo scroll">
                 <strong>GSAP stays external.</strong> gsap ^3.15 installs automatically as a dependency. Nothing
                 is bundled or redistributed here either.
               </li>
-              <li>
+              <li className="priority-50 spawn-down order ease-expo scroll">
                 <strong>No canvas.</strong> The backdrop is CSS gradients, so there is no WebGL context to create,
                 lose or leak on client navigation.
               </li>
-              <li>
+              <li className="priority-50 spawn-down order ease-expo scroll">
                 <strong>Reduced motion.</strong> Nothing animates once the OS preference is set.
               </li>
             </ul>
@@ -240,9 +240,9 @@ function Snippet({ code, onCopy }: { code: string; onCopy: (text: string, cb: (v
   const [copied, setCopied] = useState(false);
 
   return (
-    <div className="rx-snippet">
+    <div className="rx-snippet scroll spawn-down ease-expo">
       <pre>
-        <code>{code}</code>
+        <code className="scroll typewriter">{code}</code>
       </pre>
       <button
         type="button"

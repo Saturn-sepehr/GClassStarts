@@ -457,7 +457,7 @@ export function StackCard() {
   }
 
   return (
-    <div className="rx-card" data-home-card>
+    <div className="rx-card ease-expo scroll spawn-down" data-home-card>
       <div role="tablist" aria-label="gclass-anims API groups" id="api" className="rx-card__tabs">
         {CATEGORIES.map((c) => (
           <button

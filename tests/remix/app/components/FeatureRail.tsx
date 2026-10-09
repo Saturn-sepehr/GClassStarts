@@ -74,7 +74,7 @@ export function FeatureRail() {
   }, []);
 
   return (
-    <aside className="rx-rail" aria-label="Feature highlights" ref={railRef}>
+    <aside className="rx-rail spawn-left ease-expo" aria-label="Feature highlights" ref={railRef}>
       <ul>
         {SECTIONS.map((s, i) => (
           <li key={s.id} className={i === active ? "is-active" : undefined}>

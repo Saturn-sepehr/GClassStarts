@@ -1,6 +1,26 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
+ * How far the page must scroll before the logo leaves the hero.
+ *
+ * Deliberately tiny. The old trigger was the hero's bottom edge crossing half
+ * the viewport, which meant a full half-screen of scrolling before anything
+ * moved — the logo sat dead centre of the hero and then, long after the page
+ * had clearly committed to moving, snapped upward. A few pixels is enough to
+ * read as intent: any downward input at all reads as "I am scrolling".
+ */
+const ENTER = 8;
+
+/**
+ * How far it must scroll back before the logo returns.
+ *
+ * Below ENTER, so the dead zone between the two lines stops a wheel notch or a
+ * trackpad's momentum from bouncing the logo across the header and back. Half
+ * the gap that ENTER opens up is enough for the morph to settle.
+ */
+const EXIT = 4;
+
+/**
  * Whether the hero has been scrolled past.
  *
  * The wordmark is one element, not two. It starts centred over the hero and
@@ -8,15 +28,13 @@ import { useEffect, useRef, useState } from "react";
  * different DOM position for the same node — the condition gclass-anims' `.flip`
  * needs in order to morph it rather than snap it.
  *
- * Hysteretic, not a bare threshold. The trigger is the hero's bottom edge
- * crossing the middle of the viewport, and the logo travels between two very
- * different sizes at that moment; a single threshold would fire repeatedly for a
- * reader hovering either side of it, which is exactly when they are scrolling
- * back and forth. So it switches on when the bottom edge rises past half the
- * viewport, and only switches back once it has dropped past three quarters. The
- * gap between those two lines is the dead zone.
+ * Measured off the scroll offset rather than the hero's geometry, so the hero
+ * never gets to weigh in. `scrollY` is the reader's own input, one to one: no
+ * viewport-height multiplier, no dependence on how tall the hero happened to
+ * render, and the logo responds to the first pixel instead of the halfway mark.
+ * Both thresholds are read-only here; no layout is read per frame.
  */
-export function useHeroPassed(ref: React.RefObject<HTMLElement | null>): boolean {
+export function useHeroPassed(): boolean {
   const [passed, setPassed] = useState(false);
 
   /**
@@ -29,16 +47,12 @@ export function useHeroPassed(ref: React.RefObject<HTMLElement | null>): boolean
   const current = useRef(false);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
     let frame = 0;
 
     const update = () => {
       frame = 0;
-      const h = window.innerHeight;
-      const bottom = el.getBoundingClientRect().bottom;
-      const next = current.current ? bottom < h * 0.75 : bottom < h * 0.5;
+      const y = window.scrollY;
+      const next = current.current ? y > EXIT : y > ENTER;
       // Guarded so a scroll that does not cross a threshold costs no render.
       if (next === current.current) return;
       current.current = next;
@@ -60,7 +74,7 @@ export function useHeroPassed(ref: React.RefObject<HTMLElement | null>): boolean
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
     };
-  }, [ref]);
+  }, []);
 
   return passed;
 }
