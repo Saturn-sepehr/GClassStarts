@@ -12,6 +12,7 @@
     "build.server": "nuxt build"
   },
   "dependencies": {
+    "@nuxt/fonts": "^0.14.0",
     "gclass-anims": "1.0.0-beta.24",
     "nuxt": "^4.5.2",
     "vue": "^3.5.43"

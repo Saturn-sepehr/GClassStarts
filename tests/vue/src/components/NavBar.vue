@@ -76,6 +76,7 @@ onBeforeUnmount(() => {
         <a href="#quick-start">Quick start</a>
         <a href="#anatomy">Class anatomy </a>
         <a href="#notes">Notes</a>
+        <a href="https://saturn-sepehr.github.io/GClass/documentation/quick-start/">Back to docs</a>
       </div>
     </div>
   </header>

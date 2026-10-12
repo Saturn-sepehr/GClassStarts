@@ -1,30 +1,128 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Design language copied from https://nuxt.com/
+   Design language copied from https://github.com/nuxt/nuxt.com
 
-   Every colour below is that site's own token, not an approximation.
+   The names below are @nuxt/ui's, not invented here, because that is what
+   nuxt.com's own markup uses: `bg-default`, `text-muted`, `ring-accented`,
+   `rounded-md`. Tailwind resolves each of those from a *different* namespace
+   (`--background-color-*`, `--text-color-*`, `--ring-color-*`, `--radius-*`),
+   which is exactly the split @nuxt/ui generates in src/templates.ts — the
+   reason `bg-muted` and `text-muted` are allowed to be different colours.
+
+   The values are nuxt.com's `.dark` branch of that token layer, i.e. the block
+   at the bottom of app/assets/css/main.css in the repo:
+
+       --ui-bg: neutral-950   --ui-bg-muted: neutral-900
+       --ui-bg-elevated: …   --ui-border: neutral-800
+
+   plus the three semantic text aliases (neutral-200 / neutral-400 /
+   neutral-500) that `--ui-text`, `--ui-text-muted` and `--ui-text-dimmed`
+   resolve to once that override has been applied.
+
+   --font-sans is likewise not written out here. `@nuxt/fonts` owns it: given
+   `Inter, sans-serif` below it resolves the generic against its
+   `defaults.fallbacks["sans-serif"]` list and rewrites the variable to
+   "Inter", "Inter Fallback: BlinkMacSystemFont", … — the stack nuxt.com
+   serves, with one metrics-adjusted @font-face per fallback behind it.
+   --font-heading is Outfit, which is what the big hero type is set in.
    ───────────────────────────────────────────────────────────────────────────── */
 
 @theme {
-  --color-brand: #00dc82;
-  --color-branddark: #020420;
-  --color-accent: #8ed6fb;
-  --color-warn: #f93920;
-  --color-ok: #00dc82;
+  --color-green50: #effdf5;
+  --color-green100: #d9fbe8;
+  --color-green200: #b3f5d1;
+  --color-green300: #75edae;
+  --color-green400: #00dc82;
+  --color-green500: #00c16a;
+  --color-green600: #00a155;
+  --color-green700: #007f45;
+  --color-green800: #016538;
+  --color-green900: #0a5331;
+  --color-green950: #052e16;
 
-  --color-page: #020420;
-  --color-panel: #0a0a38;
-  --color-panel2: #12124d;
-  --color-ink: #effdf5;
-  --color-muted: #8b93b8;
-  --color-line: #1c1c5c;
-  --color-code: #0a0a38;
-  --color-codeink: #8ed6fb;
+  --color-neutral50: oklch(98.5% 0 none);
+  --color-neutral200: oklch(92.2% 0 none);
+  --color-neutral300: oklch(87% 0 none);
+  --color-neutral400: oklch(70.8% 0 none);
+  --color-neutral500: oklch(55.6% 0 none);
+  --color-neutral600: oklch(43.9% 0 none);
+  --color-neutral700: oklch(37.1% 0 none);
+  --color-neutral800: oklch(26.9% 0 none);
+  --color-neutral900: oklch(20.5% 0 none);
+  --color-neutral950: oklch(14.5% 0 none);
 
-  --font-display: Inter, -apple-system, ui-sans-serif, system-ui, sans-serif;
-  --font-body: Inter, -apple-system, ui-sans-serif, system-ui, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* --ui-primary. `primary` rather than `brand`: nuxt.com sets
+     app.config.ts -> ui.colors.primary = 'green', and green-400 is the
+     #00DC82 that its --font-heading headline and its buttons both use. */
+  --color-primary: #00dc82;
+  --color-primary400: #00dc82;
+
+  /* --ui-text-* */
+  --text-color-default: var(--color-neutral200);
+  --text-color-highlighted: #fff;
+  --text-color-muted: var(--color-neutral400);
+  --text-color-dimmed: var(--color-neutral500);
+  --text-color-toned: var(--color-neutral300);
+  --text-color-inverted: var(--color-neutral900);
+
+  /* --ui-bg-* */
+  --background-color-default: var(--color-neutral950);
+  --background-color-muted: var(--color-neutral900);
+  --background-color-elevated: var(--color-neutral900);
+  --background-color-accented: var(--color-neutral800);
+  --background-color-inverted: #fff;
+
+  /* --ui-border-* / --ui-ring-* */
+  --border-color-default: var(--color-neutral800);
+  --border-color-muted: var(--color-neutral700);
+  --border-color-accented: var(--color-neutral700);
+  --ring-color-default: var(--color-neutral800);
+  --ring-color-muted: var(--color-neutral700);
+  --ring-color-accented: var(--color-neutral700);
+
+  /* shiki's `material-ocean`, which is what nuxt.com ships for its Vue
+     snippets. Sampled off the rendered tokens, not off the theme file:
+     `const` #C792EA, `"ts"` #C3E88D, `script` #F07178, `setup` #FFCB6B,
+     `4` #F78C6C, `useFetch` #82AAFF, `<` #89DDFF, `{` #BABED8. */
+  --color-synkeyword: #c792ea;
+  --color-synkwd: #c792ea;
+  --color-synstring: #c3e88d;
+  --color-synfunction: #82aaff;
+  --color-synnumber: #f78c6c;
+  --color-synbracket: #babed8;
+  --color-synoperator: #89ddff;
+  --color-synvariable: #ffcb6b;
+  --color-syntag: #f07178;
+  --color-synpunct: #babed8;
+  --color-syncomment: #546e7a;
+
+  --font-sans: "Inter", sans-serif;
+  --font-heading: "Outfit", sans-serif;
+  --font-display: var(--font-heading);
+  --font-body: var(--font-sans);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+
+  /* --radius-* in @nuxt/ui are derived from one knob, --ui-radius (0.25rem),
+     so rounded-sm is 4px, rounded-md 6px and rounded-2xl 16px. */
+  --radius-xs: calc(var(--ui-radius) * 0.5);
+  --radius-sm: var(--ui-radius);
+  --radius-md: calc(var(--ui-radius) * 1.5);
+  --radius-lg: calc(var(--ui-radius) * 2);
+  --radius-xl: calc(var(--ui-radius) * 3);
+  --radius-2xl: calc(var(--ui-radius) * 4);
+
+  /* --ui-header-height, in the spacing namespace because that is the only one
+     Tailwind reads to build h-*; a bare --header-height is silently ignored.
+     4.3125rem = 68px of bar plus the 1px border-bottom. */
+  --spacing-header: 4.3125rem;
+}
+
+:root {
+  --ui-radius: 0.25rem;
+  --ui-container: 90rem;
+  --ui-header-height: 4.3125rem;
 }
 
 html {
@@ -33,12 +131,26 @@ html {
 
 body {
   font-family: var(--font-body);
-  background: var(--color-page);
-  color: var(--color-ink);
+  background: var(--color-neutral950);
+  color: var(--color-neutral200);
   -webkit-font-smoothing: antialiased;
 }
 
+/* nuxt.com's main.css forces every heading onto Outfit at the *medium* weight,
+   overriding whatever bold the component asks for. */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-weight: 500;
+  }
+}
+
 ::selection {
-  background: var(--color-accent);
-  color: var(--color-page);
+  background: var(--color-primary);
+  color: var(--color-neutral950);
 }

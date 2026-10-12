@@ -4,7 +4,6 @@ import { useBackdrop } from "../components/Backdrop";
 import { CommandBar } from "../components/CommandBar";
 import { FeatureRail } from "../components/FeatureRail";
 import { SiteNav } from "../components/SiteNav";
-import { StackCard } from "../components/StackCard";
 import { useCopyCommand } from "../hooks/useCopyCommand";
 import { useHeroPassed } from "../hooks/useHeroPassed";
 import cutout from "../cutout.svg?url";
@@ -102,32 +101,6 @@ export default function Index() {
           </p>
 
           <CommandBar />
-        </section>
-
-        {/* ── the stack card ───────────────────────────────────────────────── */}
-        <section className="rx-section" id="fully-stacked">
-          <StackCard />
-        </section>
-
-        {/* ── the runner kit ───────────────────────────────────────────────── */}
-        <section className="rx-section rx-section--runner" id="runner-kit">
-          <div className="rx-section__copy">
-            <h2 className="rx-section__title spawn-text-spawn-up scroll ease-expo letter">One runner, every possible frame</h2>
-            <p className="rx-section__lede typewriter scroll">
-              The same engine, completely framework indifferent — Vue, React, Svelte, Astro, Next, Remix,
-              and two dozen more. One <code>initAnimations()</code> call per environment, identical class names
-              everywhere.
-            </p>
-            <div className="rx-chips">
-              {["vue", "react", "svelte", "astro", "next", "nuxt", "qwik", "solid", "lit", "angular", "ember", "remix"].map(
-                (env) => (
-                  <span key={env} className="rx-chip order scroll spawn-down ease-expo">
-                    {env}
-                  </span>
-                ),
-              )}
-            </div>
-          </div>
         </section>
 
         {/* ── documentation ────────────────────────────────────────────────── */}

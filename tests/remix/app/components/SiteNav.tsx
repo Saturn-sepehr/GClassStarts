@@ -66,7 +66,6 @@ export function SiteNav({ state = "header", wordmark = "REMIX + GCLASS" }: { sta
  */
 const LINKS = [
   ["G", "Back to docs", null, "https://saturn-sepehr.github.io/GClass/documentation/quick-start/"],
-  ["A", "Api", null, "#fully-stacked"],
   ["I", "Install", null, "#install"],
   ["Q", "Quick start", null, "#quick-start"],
   ["C", "Class anatomy", null, "#anatomy"],

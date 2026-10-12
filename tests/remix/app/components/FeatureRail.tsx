@@ -17,8 +17,6 @@ import { useEffect, useRef, useState } from "react";
  */
 const SECTIONS = [
   { id: "hero", label: "Class-driven", value: "gclass-anims" },
-  { id: "fully-stacked", label: "API", value: "Seven groups" },
-  { id: "runner-kit", label: "Environments", value: "Twelve" },
   { id: "docs", label: "Install", value: "npm i" },
   { id: "quick-start", label: "Getting started", value: "One call" },
   { id: "anatomy", label: "Anatomy", value: "Three parts" },
